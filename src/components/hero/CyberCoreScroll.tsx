@@ -46,21 +46,33 @@ export default function CyberCoreScroll({ badge, resumeUrl }: Props) {
     offset: ["start start", "end end"],
   });
 
-  // --- Manifest discovery ---------------------------------------------------
+  // --- Manifest discovery (device-aware: phones fetch the mobile variant) ---
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      try {
-        const res = await fetch("/sequence/manifest.json", { cache: "force-cache" });
-        if (!res.ok) throw new Error(`manifest ${res.status}`);
-        const m = (await res.json()) as SequenceManifest;
-        if (!m || typeof m.count !== "number" || m.count <= 0) {
-          throw new Error("invalid manifest");
+      const pickMobile = () => {
+        const coarse = window.matchMedia("(pointer: coarse)").matches;
+        const small = window.matchMedia("(max-width: 768px)").matches;
+        const saveData =
+          (navigator as { connection?: { saveData?: boolean } }).connection?.saveData === true;
+        return (coarse && small) || saveData;
+      };
+      const candidates = pickMobile()
+        ? ["/sequence/mobile/manifest.json", "/sequence/manifest.json"]
+        : ["/sequence/manifest.json", "/sequence/mobile/manifest.json"];
+      for (const url of candidates) {
+        try {
+          const res = await fetch(url, { cache: "force-cache" });
+          if (!res.ok) continue;
+          const m = (await res.json()) as SequenceManifest;
+          if (!m || typeof m.count !== "number" || m.count <= 0) continue;
+          if (!cancelled) setManifest(m);
+          return;
+        } catch {
+          // try next candidate
         }
-        if (!cancelled) setManifest(m);
-      } catch {
-        if (!cancelled) setUseFallback(true);
       }
+      if (!cancelled) setUseFallback(true);
     })();
     return () => {
       cancelled = true;
