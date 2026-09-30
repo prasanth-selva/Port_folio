@@ -1,5 +1,5 @@
 import { CrudTable } from "@/components/admin/AdminUI";
-import { deleteAchievement, reorderTable, saveAchievement } from "@/lib/admin-actions";
+import { deleteAchievement, reorderAchievements, saveAchievement } from "@/lib/admin-actions";
 import { getAchievements } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +13,7 @@ export default async function AdminAchievementsPage() {
       primaryKey="title"
       saveAction={saveAchievement}
       deleteAction={deleteAchievement}
-      reorderAction={(ids) => reorderTable("achievements", ids)}
+      reorderAction={reorderAchievements}
       fields={[
         { name: "title", label: "Title", full: true },
         { name: "detail", label: "Detail", type: "textarea", full: true },

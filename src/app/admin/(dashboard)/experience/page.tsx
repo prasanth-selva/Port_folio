@@ -1,5 +1,5 @@
 import { CrudTable } from "@/components/admin/AdminUI";
-import { deleteExperience, reorderTable, saveExperience } from "@/lib/admin-actions";
+import { deleteExperience, reorderExperiences, saveExperience } from "@/lib/admin-actions";
 import { getExperience } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +13,7 @@ export default async function AdminExperiencePage() {
       primaryKey="role"
       saveAction={saveExperience}
       deleteAction={deleteExperience}
-      reorderAction={(ids) => reorderTable("experiences", ids)}
+      reorderAction={reorderExperiences}
       fields={[
         { name: "role", label: "Role" },
         { name: "org", label: "Organization" },

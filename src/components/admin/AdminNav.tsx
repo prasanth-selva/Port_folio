@@ -21,8 +21,9 @@ export default function AdminNav({ unread, compact }: { unread: number; compact?
   return (
     <nav className={`mt-4 grid gap-1 ${compact ? "" : ""}`} aria-label="Admin">
       {ITEMS.map((item) => {
+        const p = pathname ?? "";
         const active =
-          item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
+          item.href === "/admin" ? p === "/admin" : p.startsWith(item.href);
         return (
           <Link
             key={item.href}

@@ -3,10 +3,15 @@ import { timingSafeEqual } from "crypto";
 import type { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
+import { rateLimit } from "@/lib/rate-limit";
+
 /**
  * Single-admin credentials auth. Admin credentials come from env:
- *   ADMIN_EMAIL / ADMIN_PASSWORD (plaintext in env, compared against
- *   ADMIN_PASSWORD_HASH when provided — otherwise bcrypt-hashed at boot).
+ *   ADMIN_EMAIL / ADMIN_PASSWORD (or ADMIN_PASSWORD_HASH — preferred).
+ *
+ * Brute-force protection: each source IP gets 5 login attempts per 10 minutes,
+ * enforced inside authorize() so only real authentication calls are counted.
+ * Sessions are JWTs in httpOnly cookies (12h).
  */
 
 function passwordMatches(password: string): boolean {
@@ -17,6 +22,19 @@ function passwordMatches(password: string): boolean {
   const a = Buffer.from(password);
   const b = Buffer.from(plain);
   return a.length === b.length && timingSafeEqual(a, b);
+}
+
+/** Reads a header from either a Headers instance (edge) or a plain object (pages router). */
+function headerOf(req: unknown, name: string): string {
+  const headers = (req as { headers?: unknown } | null | undefined)?.headers;
+  if (!headers) return "";
+  const maybeGet = (headers as { get?: unknown }).get;
+  if (typeof maybeGet === "function") {
+    return (maybeGet as (n: string) => string | null).call(headers, name) ?? "";
+  }
+  const v = (headers as Record<string, unknown>)[name];
+  if (Array.isArray(v)) return String(v[0] ?? "");
+  return typeof v === "string" ? v : "";
 }
 
 export const authOptions: NextAuthOptions = {
@@ -30,7 +48,16 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
+        // Brute-force throttle per IP (5 attempts / 10 min).
+        const forwarded = headerOf(req, "x-forwarded-for");
+        const ip =
+          headerOf(req, "x-real-ip") ||
+          forwarded.split(",")[0]?.trim() ||
+          "unknown";
+        const rl = rateLimit(`login:${ip}`, 5, 10 * 60 * 1000);
+        if (!rl.ok) return null;
+
         const email = credentials?.email?.trim().toLowerCase() ?? "";
         const password = credentials?.password ?? "";
         const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase() ?? "";

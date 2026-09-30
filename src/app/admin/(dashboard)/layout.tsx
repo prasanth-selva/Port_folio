@@ -1,5 +1,4 @@
 import { getServerSession } from "next-auth";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { authOptions } from "@/lib/auth";
@@ -8,7 +7,11 @@ import { supabasePublic } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminLayout({
+/**
+ * Guarded admin shell. Lives in the (dashboard) route group so
+ * /admin/login renders without it (breaking the login redirect loop).
+ */
+export default async function AdminDashboardLayout({
   children,
 }: {
   children: React.ReactNode;

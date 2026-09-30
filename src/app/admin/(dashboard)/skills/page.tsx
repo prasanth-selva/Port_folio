@@ -1,5 +1,5 @@
 import { CrudTable } from "@/components/admin/AdminUI";
-import { deleteSkill, reorderTable, saveSkill } from "@/lib/admin-actions";
+import { deleteSkill, reorderSkills, saveSkill } from "@/lib/admin-actions";
 import { getSkills } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +13,7 @@ export default async function AdminSkillsPage() {
       primaryKey="name"
       saveAction={saveSkill}
       deleteAction={deleteSkill}
-      reorderAction={(ids) => reorderTable("skills", ids)}
+      reorderAction={reorderSkills}
       fields={[
         { name: "name", label: "Name" },
         { name: "category", label: "Category (Core/Defense/Offense/Build)" },

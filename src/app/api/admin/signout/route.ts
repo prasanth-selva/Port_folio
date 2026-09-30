@@ -1,18 +1,8 @@
-import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import NextAuth from "next-auth";
 
 import { authOptions } from "@/lib/auth";
 
-/** Clears the admin session by hitting NextAuth's signout endpoint. */
-export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session) return NextResponse.redirect(new URL("/admin/login", req.url));
+const handler = NextAuth(authOptions);
 
-  const { default: NextAuth } = await import("next-auth");
-  const handler = NextAuth(authOptions);
-  return handler(req);
-}
-
-export async function GET(req: Request) {
-  return POST(req);
-}
+/** Delegates to NextAuth's built-in signout (clears session cookies). */
+export { handler as POST, handler as GET };

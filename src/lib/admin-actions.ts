@@ -222,7 +222,7 @@ export async function deleteSkill(id: string): Promise<ActionResult> {
 }
 
 // Reorder: pass an array of ids in the desired order.
-export async function reorderTable(
+async function reorderIds(
   table: "projects" | "experiences" | "certifications" | "achievements" | "skills",
   ids: string[]
 ): Promise<ActionResult> {
@@ -233,6 +233,23 @@ export async function reorderTable(
   if (error) return { ok: false, error: error.message };
   revalidatePublic();
   return { ok: true };
+}
+
+/** Direct-reference server actions (inline closures cannot cross the RSC boundary). */
+export async function reorderProjects(ids: string[]): Promise<ActionResult> {
+  return reorderIds("projects", ids);
+}
+export async function reorderExperiences(ids: string[]): Promise<ActionResult> {
+  return reorderIds("experiences", ids);
+}
+export async function reorderCertifications(ids: string[]): Promise<ActionResult> {
+  return reorderIds("certifications", ids);
+}
+export async function reorderAchievements(ids: string[]): Promise<ActionResult> {
+  return reorderIds("achievements", ids);
+}
+export async function reorderSkills(ids: string[]): Promise<ActionResult> {
+  return reorderIds("skills", ids);
 }
 
 // ------------------------------------------------------------------ posts

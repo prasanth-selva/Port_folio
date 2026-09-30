@@ -1,5 +1,5 @@
 import { CrudTable } from "@/components/admin/AdminUI";
-import { deleteProject, reorderTable, saveProject } from "@/lib/admin-actions";
+import { deleteProject, reorderProjects, saveProject } from "@/lib/admin-actions";
 import { getProjects } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +13,7 @@ export default async function AdminProjectsPage() {
       primaryKey="title"
       saveAction={saveProject}
       deleteAction={deleteProject}
-      reorderAction={(ids) => reorderTable("projects", ids)}
+      reorderAction={reorderProjects}
       fields={[
         { name: "title", label: "Title" },
         { name: "slug", label: "Slug (url)" },

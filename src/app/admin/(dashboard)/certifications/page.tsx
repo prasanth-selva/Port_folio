@@ -1,5 +1,5 @@
 import { CrudTable } from "@/components/admin/AdminUI";
-import { deleteCertification, reorderTable, saveCertification } from "@/lib/admin-actions";
+import { deleteCertification, reorderCertifications, saveCertification } from "@/lib/admin-actions";
 import { getCertifications } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +13,7 @@ export default async function AdminCertificationsPage() {
       primaryKey="title"
       saveAction={saveCertification}
       deleteAction={deleteCertification}
-      reorderAction={(ids) => reorderTable("certifications", ids)}
+      reorderAction={reorderCertifications}
       fields={[
         { name: "title", label: "Title", full: true },
         { name: "issuer", label: "Issuer" },

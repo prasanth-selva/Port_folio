@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
 
-import { uploadMedia } from "@/lib/admin-actions";
+import { saveSettings, uploadMedia } from "@/lib/admin-actions";
 
 export function ResumeUploader({ currentUrl }: { currentUrl: string | null }) {
   const router = useRouter();
@@ -32,14 +32,14 @@ export function ResumeUploader({ currentUrl }: { currentUrl: string | null }) {
       }
       setUrl(res.url);
 
-      // Persist to settings so the public site picks it up.
+      // Persist to settings so the public site picks it up. Merge with the
+      // existing settings row values (the form only carries identity fields).
       const persist = new FormData();
       persist.set("resumeUrl", res.url);
       persist.set("email", "prasanthselvaraj1511@gmail.com");
       persist.set("linkedin", "https://linkedin.com/in/prasanth-selva-1810aa315");
       persist.set("github", "https://github.com/prasanth-selva");
       persist.set("phone", "");
-      const { saveSettings } = await import("@/lib/admin-actions");
       const saved = await saveSettings(persist);
       if (!saved.ok) setError(saved.error ?? "Uploaded, but saving settings failed");
       else router.refresh();
