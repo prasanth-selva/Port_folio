@@ -30,7 +30,7 @@ export const projectSchema = z.object({
   description: z.string().trim().min(10).max(8000),
   tech: z.array(z.string().trim().min(1).max(40)).max(24).default([]),
   cover_image: urlish,
-  gallery: z.array(urlish).max(12).default([]),
+  gallery: z.array(z.string().trim().url("Enter a valid gallery URL").max(500)).max(12).default([]),
   live_url: urlish,
   github_url: urlish,
   featured: z.boolean().default(false),
@@ -116,14 +116,17 @@ export type PostInput = z.infer<typeof postSchema>;
 export const settingsSchema = z.object({
   heroBadge: z.string().trim().max(80).default(""),
   resumeUrl: urlish,
+  aboutPhoto: urlish,
   email: z.string().trim().email(),
   linkedin: urlish,
   github: urlish,
-  phone: urlish,
+  phone: z.string().trim().max(40).optional().or(z.literal("")).transform((v) => v || null),
   seoTitle: z.string().trim().max(120).default(""),
   seoDescription: z.string().trim().max(300).default(""),
 });
 export type SettingsInput = z.infer<typeof settingsSchema>;
+
+export const resumeUrlSchema = z.string().trim().url().max(500);
 
 export const messageUpdateSchema = z.object({
   id: z.string().uuid(),

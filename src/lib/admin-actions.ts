@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { z } from "zod";
 
 import { authOptions } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase";
@@ -15,6 +16,7 @@ import {
   projectSchema,
   settingsSchema,
   skillSchema,
+  resumeUrlSchema,
 } from "@/lib/validation";
 
 /**
@@ -33,7 +35,10 @@ const NOT_CONFIGURED =
 
 async function requireAdmin() {
   const session = await getServerSession(authOptions);
-  if (!session) redirect("/admin/login");
+  const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  if (!session || !adminEmail || session.user?.email?.trim().toLowerCase() !== adminEmail) {
+    redirect("/admin/login");
+  }
   return session;
 }
 
@@ -47,6 +52,33 @@ async function withDb(fn: (sb: SupabaseClient) => Promise<ActionResult>): Promis
   } catch (err) {
     return { ok: false, error: (err as Error).message };
   }
+}
+
+type ContentTable = "projects" | "experiences" | "certifications" | "achievements" | "skills" | "posts";
+
+async function saveContentRow(
+  sb: SupabaseClient,
+  table: ContentTable,
+  formData: FormData,
+  payload: Record<string, unknown>
+): Promise<ActionResult> {
+  const rawId = String(formData.get("id") ?? "").trim();
+  const parsedId = rawId ? z.string().uuid().safeParse(rawId) : null;
+  if (parsedId && !parsedId.success) return { ok: false, error: "Invalid record ID" };
+
+  if (parsedId) {
+    const { data, error } = await sb
+      .from(table)
+      .update(payload)
+      .eq("id", parsedId.data)
+      .select("id")
+      .maybeSingle();
+    if (error) return { ok: false, error: error.message };
+    return data ? { ok: true } : { ok: false, error: "This record no longer exists. Refresh and try again." };
+  }
+
+  const { error } = await sb.from(table).insert(payload);
+  return error ? { ok: false, error: error.message } : { ok: true };
 }
 
 function revalidatePublic() {
@@ -72,19 +104,31 @@ export async function uploadMedia(
   }
 
   let payload: Buffer = Buffer.from(await file.arrayBuffer());
-  const isImage = file.type.startsWith("image/");
+  const allowedImageTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/avif", "image/gif"]);
+  const isImage = allowedImageTypes.has(file.type);
+  if (!isImage && file.type !== "application/pdf") {
+    return { ok: false, error: "Upload a PNG, JPEG, WebP, AVIF, GIF, or PDF file." };
+  }
+  if (file.type === "application/pdf" && payload.subarray(0, 5).toString() !== "%PDF-") {
+    return { ok: false, error: "The selected file is not a valid PDF." };
+  }
   let contentType = file.type;
-  let ext = (file.name.split(".").pop() ?? "bin").toLowerCase();
+  let ext = file.type === "application/pdf" ? "pdf" : (file.type.split("/")[1] ?? "img").replace("jpeg", "jpg");
 
-  // Auto-compress raster images to WebP; PDFs and WebP pass through.
-  if (isImage && file.type !== "image/webp") {
+  // Validate image bytes, then auto-compress supported raster formats to WebP.
+  if (isImage) {
     try {
       const sharp = (await import("sharp")).default;
-      payload = await sharp(payload).webp({ quality: 82 }).toBuffer();
-      contentType = "image/webp";
-      ext = "webp";
+      const image = sharp(payload, { failOn: "error" });
+      const metadata = await image.metadata();
+      if (!metadata.width || !metadata.height) throw new Error("Invalid image dimensions");
+      if (file.type !== "image/webp") {
+        payload = await image.webp({ quality: 82 }).toBuffer();
+        contentType = "image/webp";
+        ext = "webp";
+      }
     } catch (err) {
-      console.error("[upload] compression failed, storing original:", (err as Error).message);
+      return { ok: false, error: `Invalid or unsupported image: ${(err as Error).message}` };
     }
   }
 
@@ -123,12 +167,20 @@ export async function saveProject(formData: FormData): Promise<ActionResult> {
     if (!parsed.success) {
       return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid data" };
     }
-    const { error } = await sb
-      .from("projects")
-      .upsert({ ...parsed.data, tagline: parsed.data.tagline || null }, { onConflict: "slug" });
-    if (error) return { ok: false, error: error.message };
+    const rawId = String(formData.get("id") ?? "").trim();
+    let previousSlug: string | null = null;
+    if (rawId) {
+      const { data: previous } = await sb.from("projects").select("slug").eq("id", rawId).maybeSingle();
+      previousSlug = previous?.slug ?? null;
+    }
+    const saved = await saveContentRow(sb, "projects", formData, {
+      ...parsed.data,
+      tagline: parsed.data.tagline || null,
+    });
+    if (!saved.ok) return saved;
     revalidatePublic();
     revalidatePath(`/projects/${parsed.data.slug}`);
+    if (previousSlug && previousSlug !== parsed.data.slug) revalidatePath(`/projects/${previousSlug}`);
     return { ok: true };
   });
 }
@@ -154,11 +206,11 @@ export async function saveExperience(formData: FormData): Promise<ActionResult> 
     if (!parsed.success) {
       return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid data" };
     }
-    const { error } = await sb.from("experiences").upsert({
+    const saved = await saveContentRow(sb, "experiences", formData, {
       ...parsed.data,
       location: parsed.data.location || null,
     });
-    if (error) return { ok: false, error: error.message };
+    if (!saved.ok) return saved;
     revalidatePublic();
     return { ok: true };
   });
@@ -183,8 +235,8 @@ export async function saveCertification(formData: FormData): Promise<ActionResul
     if (!parsed.success) {
       return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid data" };
     }
-    const { error } = await sb.from("certifications").upsert(parsed.data);
-    if (error) return { ok: false, error: error.message };
+    const saved = await saveContentRow(sb, "certifications", formData, parsed.data);
+    if (!saved.ok) return saved;
     revalidatePublic();
     return { ok: true };
   });
@@ -209,11 +261,11 @@ export async function saveAchievement(formData: FormData): Promise<ActionResult>
     if (!parsed.success) {
       return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid data" };
     }
-    const { error } = await sb.from("achievements").upsert({
+    const saved = await saveContentRow(sb, "achievements", formData, {
       ...parsed.data,
       detail: parsed.data.detail || null,
     });
-    if (error) return { ok: false, error: error.message };
+    if (!saved.ok) return saved;
     revalidatePublic();
     return { ok: true };
   });
@@ -238,8 +290,8 @@ export async function saveSkill(formData: FormData): Promise<ActionResult> {
     if (!parsed.success) {
       return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid data" };
     }
-    const { error } = await sb.from("skills").upsert(parsed.data);
-    if (error) return { ok: false, error: error.message };
+    const saved = await saveContentRow(sb, "skills", formData, parsed.data);
+    if (!saved.ok) return saved;
     revalidatePublic();
     return { ok: true };
   });
@@ -297,26 +349,29 @@ export async function savePost(formData: FormData): Promise<ActionResult> {
       return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid data" };
     }
     const { published_at, ...rest } = parsed.data;
-    const { data: existing } = await sb
-      .from("posts")
-      .select("published_at")
-      .eq("slug", parsed.data.slug)
-      .single();
-    const { error } = await sb.from("posts").upsert(
-      {
-        ...rest,
-        excerpt: rest.excerpt || null,
-        cover_image: rest.cover_image || null,
-        published_at: published_at
-          ? new Date(published_at).toISOString()
-          : (existing?.published_at ?? new Date().toISOString()),
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "slug" }
-    );
-    if (error) return { ok: false, error: error.message };
+    const rawDate = published_at ? new Date(published_at) : null;
+    if (rawDate && Number.isNaN(rawDate.getTime())) {
+      return { ok: false, error: "Enter a valid publication date" };
+    }
+    const rawId = String(formData.get("id") ?? "").trim();
+    const existingQuery = sb.from("posts").select("published_at, slug");
+    const { data: existing } = rawId
+      ? await existingQuery.eq("id", rawId).maybeSingle()
+      : await existingQuery.eq("slug", parsed.data.slug).maybeSingle();
+    const saved = await saveContentRow(sb, "posts", formData, {
+      ...rest,
+      excerpt: rest.excerpt || null,
+      cover_image: rest.cover_image || null,
+      published_at:
+        rawDate?.toISOString() ?? existing?.published_at ?? (rest.published ? new Date().toISOString() : null),
+      updated_at: new Date().toISOString(),
+    });
+    if (!saved.ok) return saved;
     revalidatePublic();
     revalidatePath(`/writeups/${parsed.data.slug}`);
+    if (existing?.slug && existing.slug !== parsed.data.slug) {
+      revalidatePath(`/writeups/${existing.slug}`);
+    }
     return { ok: true };
   });
 }
@@ -348,6 +403,21 @@ export async function saveSettings(formData: FormData): Promise<ActionResult> {
     if (error) return { ok: false, error: error.message };
     revalidatePublic();
     revalidatePath("/admin/settings");
+    return { ok: true };
+  });
+}
+
+/** Update the resume URL without overwriting unrelated site settings. */
+export async function saveResumeUrl(url: string): Promise<ActionResult> {
+  return withDb(async (sb) => {
+    const parsed = resumeUrlSchema.safeParse(url);
+    if (!parsed.success) return { ok: false, error: "Enter a valid resume URL" };
+    const { error } = await sb.from("settings").upsert(
+      { key: "resumeUrl", value: parsed.data, updated_at: new Date().toISOString() },
+      { onConflict: "key" }
+    );
+    if (error) return { ok: false, error: error.message };
+    revalidatePublic();
     return { ok: true };
   });
 }

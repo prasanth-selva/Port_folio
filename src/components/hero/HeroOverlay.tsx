@@ -8,7 +8,6 @@ import {
 import type { ReactNode } from "react";
 
 import { MagneticLink } from "@/components/ui/MagneticLink";
-import { useMagnetic } from "@/components/ui/MagneticButton";
 
 type Props = {
   scrollYProgress: MotionValue<number>;

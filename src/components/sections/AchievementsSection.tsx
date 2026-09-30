@@ -3,10 +3,9 @@
 import Image from "next/image";
 
 import { Reveal, SectionHeading } from "@/components/ui/Reveal";
-import { useAchievementsData } from "@/components/sections/usePublicData";
+import type { Achievement } from "@/lib/types";
 
-export default function AchievementsSection() {
-  const items = useAchievementsData();
+export default function AchievementsSection({ items }: { items: Achievement[] }) {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">

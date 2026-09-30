@@ -6,12 +6,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Reveal, SectionHeading } from "@/components/ui/Reveal";
-import { SEED_SETTINGS } from "@/lib/seed-data";
+import type { SiteSettings } from "@/lib/data";
 import { contactSchema, type ContactInput } from "@/lib/validation";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
-export default function ContactSection() {
+export default function ContactSection({ settings }: { settings: SiteSettings }) {
   const [status, setStatus] = useState<Status>("idle");
   const [serverError, setServerError] = useState<string | null>(null);
 
@@ -66,15 +66,15 @@ export default function ContactSection() {
             <ul className="space-y-3 pt-4 font-mono text-sm">
               <li>
                 <a
-                  href={`mailto:${SEED_SETTINGS.email}`}
+                  href={`mailto:${settings.email}`}
                   className="group flex items-center gap-3 text-white/60 transition-colors hover:text-accent-cyan"
                 >
-                  <span className="text-accent-cyan/60">→</span> {SEED_SETTINGS.email}
+                  <span className="text-accent-cyan/60">→</span> {settings.email}
                 </a>
               </li>
               <li>
                 <a
-                  href={SEED_SETTINGS.linkedin}
+                  href={settings.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex items-center gap-3 text-white/60 transition-colors hover:text-accent-cyan"
@@ -84,7 +84,7 @@ export default function ContactSection() {
               </li>
               <li>
                 <a
-                  href={SEED_SETTINGS.github}
+                  href={settings.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex items-center gap-3 text-white/60 transition-colors hover:text-accent-cyan"
@@ -94,9 +94,9 @@ export default function ContactSection() {
               </li>
             </ul>
 
-            {SEED_SETTINGS.resumeUrl && (
+            {settings.resumeUrl && (
               <a
-                href={SEED_SETTINGS.resumeUrl}
+                href={settings.resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-6 inline-flex items-center gap-2 rounded-full bg-accent-cyan px-6 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-black shadow-glow transition-shadow hover:shadow-glow-sm"

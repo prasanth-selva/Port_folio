@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import { authOptions } from "@/lib/auth";
 import AdminNav from "@/components/admin/AdminNav";
-import { supabasePublic } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
@@ -21,13 +21,16 @@ export default async function AdminDashboardLayout({
 
   // Unread badge
   let unread = 0;
-  const sb = supabasePublic();
-  if (sb) {
-    const { count } = await sb
-      .from("messages")
-      .select("*", { count: "exact", head: true })
-      .eq("read", false);
-    unread = count ?? 0;
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const { count } = await supabaseAdmin()
+        .from("messages")
+        .select("*", { count: "exact", head: true })
+        .eq("read", false);
+      unread = count ?? 0;
+    } catch {
+      // Keep navigation usable when the inbox database is temporarily offline.
+    }
   }
 
   return (

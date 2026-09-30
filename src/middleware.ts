@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 import { withAuth } from "next-auth/middleware";
 
 /**
@@ -8,7 +7,7 @@ import { withAuth } from "next-auth/middleware";
  * NextAuth's default authorized() from redirecting it to itself.
  */
 export default withAuth(
-  function middleware(req) {
+  function middleware() {
     return NextResponse.next();
   },
   {

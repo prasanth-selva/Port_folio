@@ -38,8 +38,9 @@ async function withFallback<T>(
       .eq("published", true)
       .order(order);
     if (error) throw error;
-    if (!data || data.length === 0) return seed;
-    return data as T[];
+    // An empty configured table is an intentional empty state, not a reason
+    // to resurrect seed rows that the admin may have deleted.
+    return (data ?? []) as T[];
   } catch (err) {
     if (process.env.NODE_ENV !== "production") {
       console.warn(`[data] ${table}: falling back to seed (${(err as Error).message})`);
@@ -90,6 +91,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 export type SiteSettings = {
   heroBadge: string;
   resumeUrl: string | null;
+  aboutPhoto: string | null;
   email: string;
   linkedin: string;
   github: string;
@@ -101,6 +103,7 @@ export type SiteSettings = {
 const FALLBACK_SETTINGS: SiteSettings = {
   heroBadge: SEED_SETTINGS.heroBadge,
   resumeUrl: SEED_SETTINGS.resumeUrl,
+  aboutPhoto: null,
   email: SEED_SETTINGS.email,
   linkedin: SEED_SETTINGS.linkedin,
   github: SEED_SETTINGS.github,
@@ -125,6 +128,7 @@ export async function getSettings(): Promise<SiteSettings> {
     return {
       heroBadge: str("heroBadge", FALLBACK_SETTINGS.heroBadge),
       resumeUrl: nstr("resumeUrl", FALLBACK_SETTINGS.resumeUrl),
+      aboutPhoto: nstr("aboutPhoto", FALLBACK_SETTINGS.aboutPhoto),
       email: str("email", FALLBACK_SETTINGS.email),
       linkedin: nstr("linkedin", FALLBACK_SETTINGS.linkedin) ?? FALLBACK_SETTINGS.linkedin,
       github: nstr("github", FALLBACK_SETTINGS.github) ?? FALLBACK_SETTINGS.github,

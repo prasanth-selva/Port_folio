@@ -7,6 +7,8 @@ import { useEffect, useRef, useState } from "react";
 import { Reveal, SectionHeading } from "@/components/ui/Reveal";
 import { getAboutContent, type StatItem } from "@/lib/about";
 
+type Props = { photoUrl: string | null };
+
 function Counter({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement | null>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -30,8 +32,9 @@ function Counter({ value, suffix }: { value: number; suffix: string }) {
   );
 }
 
-export default function AboutSection() {
+export default function AboutSection({ photoUrl }: Props) {
   const content = getAboutContent();
+  const photo = photoUrl ?? content.photo;
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">
@@ -45,9 +48,9 @@ export default function AboutSection() {
               aria-hidden="true"
             />
             <div className="glass relative aspect-[4/5] overflow-hidden rounded-2xl">
-              {content.photo ? (
+              {photo ? (
                 <Image
-                  src={content.photo}
+                  src={photo}
                   alt="Portrait of Prasanth Selva"
                   fill
                   sizes="(max-width: 768px) 100vw, 280px"
@@ -57,9 +60,9 @@ export default function AboutSection() {
                 /* Photo slot: stylized terminal portrait until an image is uploaded via /admin */
                 <div className="flex h-full flex-col items-center justify-center gap-3 bg-black/40 font-mono text-white/30">
                   <svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-                    <path d="M32 8l18 7v14c0 11-7.6 18.4-18 22-10.4-3.6-18-11-18-22V15l18-7z" stroke="rgba(0,240,255,0.35)" strokeWidth="1.5" />
-                    <circle cx="32" cy="27" r="6" stroke="rgba(0,240,255,0.35)" strokeWidth="1.5" />
-                    <path d="M22 44c2.5-5 6.5-7 10-7s7.5 2 10 7" stroke="rgba(0,240,255,0.35)" strokeWidth="1.5" />
+                    <path d="M32 8l18 7v14c0 11-7.6 18.4-18 22-10.4-3.6-18-11-18-22V15l18-7z" stroke="rgba(115,224,190,0.48)" strokeWidth="1.5" />
+                    <circle cx="32" cy="27" r="6" stroke="rgba(115,224,190,0.48)" strokeWidth="1.5" />
+                    <path d="M22 44c2.5-5 6.5-7 10-7s7.5 2 10 7" stroke="rgba(115,224,190,0.48)" strokeWidth="1.5" />
                   </svg>
                   <span className="text-[10px] tracking-[0.3em]">PHOTO SLOT</span>
                   <span className="text-[10px] text-white/20">upload via /admin settings</span>

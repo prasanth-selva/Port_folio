@@ -150,7 +150,7 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
         </div>
         <div className="flex items-end">
           <label className="flex items-center gap-3 font-mono text-xs text-white/60">
-            <input type="checkbox" name="published" defaultChecked={post?.published ?? true} className="h-4 w-4 rounded border-white/20 bg-white/5 accent-[#00F0FF]" />
+            <input type="checkbox" name="published" defaultChecked={post?.published ?? true} className="h-4 w-4 rounded border-white/20 bg-white/5 accent-accent-cyan" />
             Published
           </label>
         </div>

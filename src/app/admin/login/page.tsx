@@ -18,18 +18,23 @@ function LoginForm() {
     setLoading(true);
     setError(null);
     const fd = new FormData(e.currentTarget);
-    const res = await signIn("credentials", {
-      email: String(fd.get("email") ?? ""),
-      password: String(fd.get("password") ?? ""),
-      redirect: false,
-    });
-    setLoading(false);
-    if (res?.error) {
-      setError("Invalid credentials.");
-      return;
+    try {
+      const res = await signIn("credentials", {
+        email: String(fd.get("email") ?? ""),
+        password: String(fd.get("password") ?? ""),
+        redirect: false,
+      });
+      if (res?.error) {
+        setError("Invalid credentials.");
+        return;
+      }
+      router.push("/admin");
+      router.refresh();
+    } catch {
+      setError("Unable to sign in right now. Check your connection and try again.");
+    } finally {
+      setLoading(false);
     }
-    router.push("/admin");
-    router.refresh();
   };
 
   const inputCls =
@@ -44,7 +49,7 @@ function LoginForm() {
           Admin access
         </h1>
         <p className="mt-1.5 font-mono text-xs text-white/40">
-          Single-operator terminal. Attempts are logged and rate-limited.
+          Single-operator access. Sign-in attempts are rate-limited.
         </p>
 
         <form onSubmit={onSubmit} className="mt-8 space-y-4">

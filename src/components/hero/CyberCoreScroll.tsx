@@ -1,15 +1,9 @@
 "use client";
 
-import {
-  motion,
-  useScroll,
-  useTransform,
-  type MotionValue,
-} from "framer-motion";
+import { useScroll } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 import {
-  FALLBACK_MANIFEST,
   type SequenceManifest,
   frameUrls,
 } from "@/lib/sequence";
@@ -102,7 +96,7 @@ export default function CyberCoreScroll({ badge, resumeUrl }: Props) {
         canvas.width = Math.round(w * dpr);
         canvas.height = Math.round(h * dpr);
       }
-      ctx.fillStyle = "#050505";
+      ctx.fillStyle = "#080D12";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       const scale = Math.max(canvas.width / img.width, canvas.height / img.height);
       const dw = img.width * scale;
@@ -224,13 +218,13 @@ export default function CyberCoreScroll({ badge, resumeUrl }: Props) {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(5,5,5,0.55) 82%, #050505 100%)",
+              "radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(8,13,18,0.55) 82%, #080D12 100%)",
           }}
           aria-hidden="true"
         />
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0 h-40"
-          style={{ background: "linear-gradient(to bottom, transparent, #050505)" }}
+          style={{ background: "linear-gradient(to bottom, transparent, #080D12)" }}
           aria-hidden="true"
         />
 

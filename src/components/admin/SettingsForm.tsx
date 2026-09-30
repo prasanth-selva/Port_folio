@@ -8,6 +8,7 @@ import { saveSettings, uploadMedia } from "@/lib/admin-actions";
 type Settings = {
   heroBadge: string;
   resumeUrl: string | null;
+  aboutPhoto: string | null;
   email: string;
   linkedin: string;
   github: string;
@@ -23,7 +24,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
   const [pending, startTransition] = useTransition();
   const photoRef = useRef<HTMLInputElement | null>(null);
   const [photoUploading, setPhotoUploading] = useState(false);
-  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(settings.aboutPhoto);
 
   const onSubmit = (fd: FormData) => {
     startTransition(async () => {
@@ -78,7 +79,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
         </div>
         <div>
           <label className="mono-label mb-2 block" htmlFor="phone">Phone (optional, hidden if blank)</label>
-          <input id="phone" name="phone" defaultValue={settings.phone ?? ""} className={inputCls} />
+          <input id="phone" name="phone" type="tel" defaultValue={settings.phone ?? ""} className={inputCls} />
         </div>
         <div>
           <label className="mono-label mb-2 block" htmlFor="linkedin">LinkedIn URL</label>
@@ -91,6 +92,18 @@ export function SettingsForm({ settings }: { settings: Settings }) {
         <div className="sm:col-span-2">
           <label className="mono-label mb-2 block" htmlFor="resumeUrl">Resume URL (or upload on the Resume page)</label>
           <input id="resumeUrl" name="resumeUrl" defaultValue={settings.resumeUrl ?? ""} className={`${inputCls} font-mono text-xs`} />
+        </div>
+        <div className="sm:col-span-2">
+          <label className="mono-label mb-2 block" htmlFor="aboutPhoto">About photo URL</label>
+          <input
+            id="aboutPhoto"
+            name="aboutPhoto"
+            type="url"
+            value={photoUrl ?? ""}
+            onChange={(e) => setPhotoUrl(e.target.value)}
+            placeholder="Upload a photo below or paste an image URL"
+            className={`${inputCls} font-mono text-xs`}
+          />
         </div>
       </div>
 
@@ -128,7 +141,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
           </button>
           {photoUrl && (
             <p className="mt-3 break-all font-mono text-xs text-accent-cyan">
-              {photoUrl} — paste this into the photo field of the About section or use it as any cover image.
+              {photoUrl} — save settings to publish this as your profile photo.
             </p>
           )}
         </div>
