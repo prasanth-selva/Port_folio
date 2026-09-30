@@ -18,9 +18,9 @@ export default async function AdminAchievementsPage() {
         { name: "title", label: "Title", full: true },
         { name: "detail", label: "Detail", type: "textarea", full: true },
         { name: "occurred_on", label: "When (e.g. Mar 2026)" },
-        { name: "image", label: "Image URL", full: true },
+        { name: "image", label: "Achievement image", type: "image", full: true },
         { name: "sort_order", label: "Sort order", type: "number" },
-        { name: "published", label: "Published" },
+        { name: "published", label: "Published", type: "checkbox" },
       ]}
     />
   );

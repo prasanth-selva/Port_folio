@@ -396,7 +396,9 @@ export async function saveSettings(formData: FormData): Promise<ActionResult> {
     }
     const rows = Object.entries(parsed.data).map(([key, value]) => ({
       key,
-      value: value as unknown,
+      // settings.value is NOT NULL; represent cleared optional values as an
+      // empty string, which getSettings() already normalizes to null.
+      value: value ?? "",
       updated_at: new Date().toISOString(),
     }));
     const { error } = await sb.from("settings").upsert(rows, { onConflict: "key" });

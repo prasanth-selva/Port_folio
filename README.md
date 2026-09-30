@@ -38,8 +38,9 @@ Supabase · NextAuth (credentials) · Zod · react-hook-form
   middleware-protected routes, per-IP login rate limiting (5 / 10 min)
 - Full CRUD + drag-to-reorder + publish/draft for: Projects, Experience,
   Certifications, Achievements, Skills, Writeups
-- MDX editor with live preview, image upload (auto-compressed to WebP),
-  resume PDF upload, site settings (hero badge, socials, SEO, phone)
+- MDX editor with live preview; direct image uploads for project covers and
+  galleries, certifications, achievements, and writeup covers (auto-compressed
+  to WebP); resume PDF upload; site settings (hero badge, socials, SEO, phone)
 - Contact inbox: unread badge, read/unread toggle, delete, reply-by-mailto
 - Dashboard: content counts, recent messages, 14-day visit analytics
 - On-demand ISR: every save revalidates affected public pages instantly

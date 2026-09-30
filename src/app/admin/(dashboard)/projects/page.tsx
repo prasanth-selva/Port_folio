@@ -20,13 +20,13 @@ export default async function AdminProjectsPage() {
         { name: "tagline", label: "Tagline", full: true },
         { name: "description", label: "Description", type: "textarea", full: true },
         { name: "tech", label: "Tech (comma-separated)", full: true },
-        { name: "cover_image", label: "Cover image URL", full: true },
-        { name: "gallery", label: "Gallery URLs (comma-separated)", full: true },
+        { name: "cover_image", label: "Cover image", type: "image", full: true },
+        { name: "gallery", label: "Project gallery", type: "images", full: true },
         { name: "live_url", label: "Live URL" },
         { name: "github_url", label: "GitHub URL" },
         { name: "sort_order", label: "Sort order", type: "number" },
-        { name: "featured", label: "Featured" },
-        { name: "published", label: "Published" },
+        { name: "featured", label: "Featured", type: "checkbox", defaultChecked: false },
+        { name: "published", label: "Published", type: "checkbox" },
       ]}
     />
   );

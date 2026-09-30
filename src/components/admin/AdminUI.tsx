@@ -4,12 +4,15 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
+
 type FieldDef = {
   name: string;
   label: string;
-  type?: "text" | "textarea" | "number" | "checkbox" | "url" | "date";
+  type?: "text" | "textarea" | "number" | "checkbox" | "url" | "date" | "image" | "images";
   placeholder?: string;
   full?: boolean;
+  defaultChecked?: boolean;
 };
 
 type Row = Record<string, unknown> & { id: string };
@@ -214,7 +217,7 @@ export function CrudTable({
                 {fields.map((f) => {
                   const value = editing !== "new" ? editing[f.name] : undefined;
                   if (f.type === "checkbox") {
-                    const checked = editing === "new" ? true : Boolean(value);
+                    const checked = editing === "new" ? (f.defaultChecked ?? true) : Boolean(value);
                     return (
                       <label key={f.name} className="flex items-center gap-3 font-mono text-xs text-white/60">
                         <input
@@ -233,6 +236,18 @@ export function CrudTable({
                       : value == null
                         ? ""
                         : String(value);
+                  if (f.type === "image" || f.type === "images") {
+                    return (
+                      <div key={f.name} className={f.full ? "sm:col-span-2" : ""}>
+                        <ImageUploadField
+                          name={f.name}
+                          label={f.label}
+                          defaultValue={defaultVal}
+                          multiple={f.type === "images"}
+                        />
+                      </div>
+                    );
+                  }
                   return (
                     <div key={f.name} className={f.full ? "sm:col-span-2" : ""}>
                       <label className="mono-label mb-2 block" htmlFor={`f-${f.name}`}>
