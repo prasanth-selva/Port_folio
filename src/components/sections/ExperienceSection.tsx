@@ -36,7 +36,6 @@ function TimelineItem({ item, index }: { item: Experience; index: number }) {
         {/* Node */}
         <div className="absolute left-[7px] top-1.5 md:relative md:left-0 md:order-2 md:flex md:justify-center">
           <span className="relative block h-3 w-3">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-cyan/40 [animation-duration:2.4s]" />
             <span className="relative inline-flex h-3 w-3 rounded-full border-2 border-base bg-accent-cyan" />
           </span>
         </div>

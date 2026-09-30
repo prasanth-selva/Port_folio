@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
  * Magnetic effect: the element subtly tracks the pointer while hovered and
  * springs back on exit. Respects prefers-reduced-motion and coarse pointers.
  */
-export function useMagnetic<T extends HTMLElement>(strength = 0.35) {
+export function useMagnetic<T extends HTMLElement>(strength = 0.12) {
   const ref = useRef<T | null>(null);
 
   useEffect(() => {

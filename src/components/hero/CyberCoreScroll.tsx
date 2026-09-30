@@ -166,8 +166,8 @@ export default function CyberCoreScroll({ badge, resumeUrl }: Props) {
       if (disposed) return;
       if (ready) {
         const target = scrollYProgress.get() * (urls.length - 1);
-        // Lerp toward target; 0.18 gives responsive-but-smooth tracking.
-        current += (target - current) * 0.18;
+        // Gently ease toward target; low factor = calm, no jitter.
+        current += (target - current) * 0.08;
         if (Math.abs(target - current) < 0.05) current = target;
         const idx = Math.round(current);
         if (idx !== lastPainted) {

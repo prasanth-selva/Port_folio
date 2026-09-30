@@ -41,8 +41,9 @@ export default function CustomCursor() {
     };
 
     const tick = () => {
-      rx += (mx - rx) * 0.16;
-      ry += (my - ry) * 0.16;
+      // High factor = ring hugs the dot, no floaty trailing.
+      rx += (mx - rx) * 0.45;
+      ry += (my - ry) * 0.45;
       dot.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
       ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%) scale(${hover ? 1.9 : 1})`;
       ring.style.borderColor = hover ? "rgba(0,240,255,0.85)" : "rgba(0,240,255,0.4)";

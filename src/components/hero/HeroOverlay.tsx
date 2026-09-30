@@ -17,7 +17,7 @@ type Props = {
 };
 
 /**
- * Scroll-synced text overlays with fade + blur + translate windows:
+ * Scroll-synced text overlays with gentle fade + translate windows:
  *   0.00–0.22 intro (centered) · 0.26–0.46 SOC (left)
  *   0.54–0.74 stack (right)    · 0.84–1.00 outro + CTAs (centered)
  */
@@ -28,20 +28,16 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
     [1, 1, 0, 0],
     { clamp: true }
   );
-  const introY = useShift(scrollYProgress, 0, 0.22, 24);
-  const introBlur = useBlur(scrollYProgress, 0, 0.22);
+  const introY = useShift(scrollYProgress, 0, 0.22, 8);
 
   const socOpacity = useOpacity(scrollYProgress, 0.26, 0.31, 0.42, 0.47);
-  const socY = useShift(scrollYProgress, 0.26, 0.47, 40);
-  const socBlur = useBlur(scrollYProgress, 0.26, 0.47);
+  const socY = useShift(scrollYProgress, 0.26, 0.47, 14);
 
   const stackOpacity = useOpacity(scrollYProgress, 0.54, 0.59, 0.7, 0.75);
-  const stackY = useShift(scrollYProgress, 0.54, 0.75, 40);
-  const stackBlur = useBlur(scrollYProgress, 0.54, 0.75);
+  const stackY = useShift(scrollYProgress, 0.54, 0.75, 14);
 
   const outroOpacity = useOpacity(scrollYProgress, 0.84, 0.89, 1.01, 1.02);
-  const outroY = useShift(scrollYProgress, 0.84, 1.0, 36);
-  const outroBlur = useBlur(scrollYProgress, 0.84, 1.0);
+  const outroY = useShift(scrollYProgress, 0.84, 1.0, 12);
 
   return (
     <div className="pointer-events-none absolute inset-0 z-10">
@@ -64,16 +60,12 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
         aria-hidden="true"
       >
         <span className="font-mono text-[10px] tracking-[0.35em] text-white/35">SCROLL</span>
-        <motion.span
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-          className="block h-8 w-px bg-gradient-to-b from-accent-cyan/70 to-transparent"
-        />
+        <span className="block h-8 w-px bg-gradient-to-b from-accent-cyan/70 to-transparent" />
       </motion.div>
 
       {/* 0% — intro, centered */}
       <motion.div
-        style={{ opacity: introOpacity, y: introY, filter: introBlur }}
+        style={{ opacity: introOpacity, y: introY }}
         className="absolute inset-0 flex items-center justify-center px-6 text-center"
       >
         <div>
@@ -88,7 +80,7 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
 
       {/* 30% — SOC, left aligned */}
       <motion.div
-        style={{ opacity: socOpacity, y: socY, filter: socBlur }}
+        style={{ opacity: socOpacity, y: socY }}
         className="absolute inset-0 flex items-center px-6 md:px-16 lg:px-24"
       >
         <div className="max-w-md">
@@ -103,7 +95,7 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
 
       {/* 60% — stack, right aligned */}
       <motion.div
-        style={{ opacity: stackOpacity, y: stackY, filter: stackBlur }}
+        style={{ opacity: stackOpacity, y: stackY }}
         className="absolute inset-0 flex items-center justify-end px-6 text-right md:px-16 lg:px-24"
       >
         <div className="max-w-md">
@@ -118,7 +110,7 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
 
       {/* 90% — outro + CTAs, centered */}
       <motion.div
-        style={{ opacity: outroOpacity, y: outroY, filter: outroBlur }}
+        style={{ opacity: outroOpacity, y: outroY }}
         className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
       >
         <p className="mono-label mb-4">/ 03 — NEXT</p>
@@ -161,17 +153,6 @@ function useShift(
   amount: number
 ): MotionValue<string> {
   return useTransform(p, [from, to], [`${amount}px`, `-${amount}px`], { clamp: true });
-}
-
-function useBlur(
-  p: MotionValue<number>,
-  from: number,
-  to: number
-): MotionValue<string> {
-  const center = (from + to) / 2;
-  return useTransform(p, [from, center, to], ["blur(8px)", "blur(0px)", "blur(8px)"], {
-    clamp: true,
-  });
 }
 
 export type { ReactNode };

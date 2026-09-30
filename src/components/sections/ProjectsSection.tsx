@@ -15,8 +15,8 @@ function TiltCard({ project, index }: { project: Project; index: number }) {
   const my = useMotionValue(0.5);
   const reduce = useReducedMotionSafe();
 
-  const rotateX = useSpring(useTransform(my, [0, 1], [7, -7]), { stiffness: 220, damping: 22 });
-  const rotateY = useSpring(useTransform(mx, [0, 1], [-9, 9]), { stiffness: 220, damping: 22 });
+  const rotateX = useSpring(useTransform(my, [0, 1], [3, -3]), { stiffness: 220, damping: 26 });
+  const rotateY = useSpring(useTransform(mx, [0, 1], [-4, 4]), { stiffness: 220, damping: 26 });
   const glowX = useTransform(mx, [0, 1], ["20%", "80%"]);
   const glowY = useTransform(my, [0, 1], ["20%", "80%"]);
   const glowBg = useMotionTemplate`radial-gradient(420px circle at ${glowX} ${glowY}, rgba(0,240,255,0.09), transparent 65%)`;

@@ -42,7 +42,7 @@ export function paintFallbackFrame(
       vy: Math.sin(angle) * (60 + Math.random() * 80),
       size: 6 + Math.random() * 16,
       rot: Math.random() * Math.PI,
-      vr: (Math.random() - 0.5) * 2,
+      vr: (Math.random() - 0.5) * 0.8,
       hue,
     };
   });
@@ -51,7 +51,7 @@ export function paintFallbackFrame(
     angle: (i / 12) * Math.PI * 2,
     dist: 150 + Math.random() * 60,
     size: 2 + Math.random() * 3,
-    speed: 0.2 + Math.random() * 0.5,
+    speed: 0.06 + Math.random() * 0.15,
   }));
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

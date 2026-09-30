@@ -26,7 +26,7 @@ function SkillNode({
   const ring = index % 3;
   const radius = 2.1 + ring * 0.55;
   const angle0 = (index / total) * Math.PI * 2;
-  const speed = 0.12 + (2 - ring) * 0.05;
+  const speed = 0.05 + (2 - ring) * 0.02;
   const yOff = ((index % 5) - 2) * 0.22;
 
   useFrame(({ clock }) => {
@@ -34,14 +34,14 @@ function SkillNode({
     const m = meshRef.current;
     if (!m) return;
     const a = angle0 + t * speed;
-    m.position.set(Math.cos(a) * radius, yOff + Math.sin(t * 0.7 + index) * 0.12, Math.sin(a) * radius);
-    m.rotation.y = t * 0.6;
+    m.position.set(Math.cos(a) * radius, yOff + Math.sin(t * 0.7 + index) * 0.04, Math.sin(a) * radius);
+    m.rotation.y = t * 0.25;
   });
 
   const color = active ? "#00F0FF" : ring === 1 ? "#7C3AED" : "#67E8F9";
 
   return (
-    <Float speed={2} floatIntensity={0.4}>
+    <Float speed={0.8} floatIntensity={0.15}>
       <mesh
         ref={meshRef}
         onPointerOver={(e) => {
@@ -80,8 +80,8 @@ function CoreGlow() {
   useFrame(({ clock }) => {
     const m = ref.current;
     if (!m) return;
-    m.rotation.y = clock.getElapsedTime() * 0.25;
-    m.rotation.x = Math.sin(clock.getElapsedTime() * 0.2) * 0.3;
+    m.rotation.y = clock.getElapsedTime() * 0.1;
+    m.rotation.x = Math.sin(clock.getElapsedTime() * 0.2) * 0.1;
   });
   return (
     <mesh ref={ref}>
@@ -103,8 +103,8 @@ function Rig({ children }: { children: React.ReactNode }) {
   useFrame(({ pointer, clock }) => {
     const g = ref.current;
     if (!g) return;
-    g.rotation.y += (pointer.x * 0.35 - g.rotation.y) * 0.03;
-    g.rotation.x += (-pointer.y * 0.22 - g.rotation.x) * 0.03;
+    g.rotation.y += (pointer.x * 0.12 - g.rotation.y) * 0.02;
+    g.rotation.x += (-pointer.y * 0.07 - g.rotation.x) * 0.02;
     void clock;
   });
   return <group ref={ref}>{children}</group>;
@@ -135,7 +135,7 @@ export default function SkillOrbit({ skills }: OrbitProps) {
 
         <Rig>
           <CoreGlow />
-          <Sparkles count={90} scale={[9, 5, 9]} size={1.6} speed={0.25} color="#00F0FF" opacity={0.5} />
+          <Sparkles count={90} scale={[9, 5, 9]} size={1.6} speed={0.08} color="#00F0FF" opacity={0.5} />
           {rings.map((g, i) => (
             <mesh key={i} geometry={g} rotation={[-Math.PI / 2 + (i - 1) * 0.22, 0, 0]}>
               <meshBasicMaterial color={i === 1 ? 0x7c3aed : 0x00f0ff} transparent opacity={0.1} side={THREE.DoubleSide} />
