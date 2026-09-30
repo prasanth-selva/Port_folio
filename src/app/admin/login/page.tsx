@@ -7,7 +7,7 @@ import { Suspense, useState } from "react";
 function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const rateLimited = params.get("e") === "rate";
+  const rateLimited = params?.get("e") === "rate";
   const [error, setError] = useState<string | null>(
     rateLimited ? "Too many attempts. Wait 10 minutes and try again." : null
   );

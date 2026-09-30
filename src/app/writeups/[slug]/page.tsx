@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
+import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
@@ -45,7 +45,9 @@ export default async function WriteupPage({
   const post = await getPostBySlug(params.slug);
   if (!post) notFound();
 
-  // Strip frontmatter, render markdown -> HTML server-side.
+  // Markdown -> sanitized HTML server-side.
+  // remarkRehype drops raw HTML (allowDangerousHtml defaults to false),
+  // so even admin-authored content cannot inject markup here.
   const body = post.content.replace(/^---\n[\s\S]*?\n---\n?/, "");
   const file = await unified()
     .use(remarkParse)
@@ -53,8 +55,7 @@ export default async function WriteupPage({
     .use(remarkRehype)
     .use(rehypeSlug)
     .use(rehypeHighlight, { detect: true, ignoreMissing: true })
-    // stringify happens implicitly via react-markdown pipeline below; here we
-    // still pre-render through remark/rehype for consistent processing.
+    .use(rehypeStringify)
     .process(body);
   const html = String(file);
 
@@ -90,16 +91,7 @@ export default async function WriteupPage({
           </ul>
         </header>
 
-        <div className="mdx mt-10">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeSlug, [rehypeHighlight, { detect: true, ignoreMissing: true }]]}
-          >
-            {body}
-          </ReactMarkdown>
-        </div>
-        {/* Pre-rendered HTML kept for parity with admin preview pipeline */}
-        <div className="hidden" dangerouslySetInnerHTML={{ __html: html }} />
+        <div className="mdx mt-10" dangerouslySetInnerHTML={{ __html: html }} />
       </article>
     </main>
   );
