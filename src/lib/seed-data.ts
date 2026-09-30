@@ -14,7 +14,7 @@ import type {
  */
 
 export const SEED_SETTINGS = {
-  heroBadge: "B.E. CSE (Cybersecurity) — Class of 2027",
+  heroBadge: "B.E. CSE (Cybersecurity) — Class of 2028",
   resumeUrl: null as string | null,
   email: "prasanthselvaraj1511@gmail.com",
   linkedin: "https://linkedin.com/in/prasanth-selva-1810aa315",

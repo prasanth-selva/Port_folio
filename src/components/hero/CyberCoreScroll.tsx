@@ -17,7 +17,7 @@ import { paintFallbackFrame } from "@/components/hero/fallback-painter";
 import { HeroOverlay } from "@/components/hero/HeroOverlay";
 
 type Props = {
-  /** e.g. "B.E. CSE (Cybersecurity) — Class of 2027" */
+  /** e.g. "B.E. CSE (Cybersecurity) — Class of 2028" */
   badge: string;
   resumeUrl: string | null;
 };
