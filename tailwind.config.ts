@@ -5,10 +5,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        base: "#050505",
+        base: "#080D12",
         accent: {
-          cyan: "#00F0FF",
-          violet: "#7C3AED",
+          cyan: "#73E0BE",
+          violet: "#B3A0FF",
         },
       },
       fontFamily: {
@@ -31,9 +31,9 @@ const config: Config = {
         },
       },
       boxShadow: {
-        glow: "0 0 24px rgba(0, 240, 255, 0.25)",
-        "glow-sm": "0 0 12px rgba(0, 240, 255, 0.35)",
-        "glow-violet": "0 0 24px rgba(124, 58, 237, 0.25)",
+        glow: "0 0 24px rgba(115, 224, 190, 0.18)",
+        "glow-sm": "0 0 12px rgba(115, 224, 190, 0.24)",
+        "glow-violet": "0 0 24px rgba(179, 160, 255, 0.18)",
       },
     },
   },

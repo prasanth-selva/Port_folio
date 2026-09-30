@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 
 import { SectionHeading } from "@/components/ui/Reveal";
-import { SEED_SKILLS } from "@/lib/seed-data";
 import type { Skill } from "@/lib/types";
 
 // R3F orbit — client-only, mounted only when in view on capable devices.
@@ -44,8 +43,7 @@ function SkillOrbit2D({ skills }: { skills: Skill[] }) {
   );
 }
 
-export default function SkillsSection() {
-  const skills = SEED_SKILLS;
+export default function SkillsSection({ skills }: { skills: Skill[] }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [inView, setInView] = useState(false);
   const [use3D, setUse3D] = useState(false);

@@ -11,7 +11,14 @@ import ExperienceSection from "@/components/sections/ExperienceSection";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import SkillsSection from "@/components/sections/SkillsSection";
 import SectionShell from "@/components/sections/SectionShell";
-import { getSettings } from "@/lib/data";
+import {
+  getAchievements,
+  getCertifications,
+  getExperience,
+  getProjects,
+  getSettings,
+  getSkills,
+} from "@/lib/data";
 
 // 3D-heavy hero: client-only, never blocks server render.
 const CyberCoreScroll = dynamic(() => import("@/components/hero/CyberCoreScroll"), {
@@ -19,7 +26,15 @@ const CyberCoreScroll = dynamic(() => import("@/components/hero/CyberCoreScroll"
 });
 
 export default async function HomePage() {
-  const settings = await getSettings();
+  const [settings, projects, experience, skills, achievements, certifications] =
+    await Promise.all([
+      getSettings(),
+      getProjects(),
+      getExperience(),
+      getSkills(),
+      getAchievements(),
+      getCertifications(),
+    ]);
 
   return (
     <>
@@ -29,25 +44,25 @@ export default async function HomePage() {
           <CyberCoreScroll badge={settings.heroBadge} resumeUrl={settings.resumeUrl} />
         </SectionShell>
         <SectionShell kind="grid" id="about">
-          <AboutSection />
+          <AboutSection photoUrl={settings.aboutPhoto} />
         </SectionShell>
         <SectionShell id="experience">
-          <ExperienceSection />
+          <ExperienceSection items={experience} />
         </SectionShell>
         <SectionShell kind="grid" id="projects">
-          <ProjectsSection />
+          <ProjectsSection projects={projects} />
         </SectionShell>
         <SectionShell>
-          <SkillsSection />
+          <SkillsSection skills={skills} />
         </SectionShell>
         <SectionShell kind="grid" id="achievements">
-          <AchievementsSection />
+          <AchievementsSection items={achievements} />
         </SectionShell>
         <SectionShell>
-          <CertificationsSection />
+          <CertificationsSection items={certifications} />
         </SectionShell>
         <SectionShell id="contact">
-          <ContactSection />
+          <ContactSection settings={settings} />
         </SectionShell>
       </main>
       <Footer settings={settings} />

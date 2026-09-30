@@ -66,7 +66,7 @@ export function paintFallbackFrame(
       canvas.height = Math.round(h * dpr);
     }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = "#050505";
+    ctx.fillStyle = "#080D12";
     ctx.fillRect(0, 0, w, h);
 
     const p = progress.get(); // 0..1 scroll progress
@@ -79,9 +79,9 @@ export function paintFallbackFrame(
 
     // Radial glow
     const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 2.6);
-    glow.addColorStop(0, `rgba(0,240,255,${0.10 + explode * 0.08})`);
-    glow.addColorStop(0.5, `rgba(124,58,237,${0.05 + explode * 0.05})`);
-    glow.addColorStop(1, "rgba(5,5,5,0)");
+    glow.addColorStop(0, `rgba(115,224,190,${0.10 + explode * 0.08})`);
+    glow.addColorStop(0.5, `rgba(179,160,255,${0.05 + explode * 0.05})`);
+    glow.addColorStop(1, "rgba(8,13,18,0)");
     ctx.fillStyle = glow;
     ctx.fillRect(0, 0, w, h);
 
@@ -93,7 +93,7 @@ export function paintFallbackFrame(
       const d = n.dist * (1 + explode * 0.8);
       pts.push({ x: cx + Math.cos(a) * d, y: cy + Math.sin(a) * d * 0.72 });
     }
-    ctx.strokeStyle = "rgba(0,240,255,0.14)";
+    ctx.strokeStyle = "rgba(115,224,190,0.18)";
     for (let i = 0; i < pts.length; i++) {
       for (let j = i + 1; j < pts.length; j++) {
         const a = pts[i]!;
@@ -110,7 +110,7 @@ export function paintFallbackFrame(
     }
     ctx.globalAlpha = 1;
     for (const q of pts) {
-      ctx.fillStyle = "rgba(0,240,255,0.7)";
+      ctx.fillStyle = "rgba(115,224,190,0.7)";
       ctx.beginPath();
       ctx.arc(q.x, q.y, 1.8, 0, Math.PI * 2);
       ctx.fill();
@@ -125,7 +125,7 @@ export function paintFallbackFrame(
       ctx.translate(sx, sy);
       ctx.rotate(s.rot + s.vr * explode * 3);
       ctx.strokeStyle =
-        s.hue === "cyan" ? "rgba(0,240,255,0.5)" : "rgba(124,58,237,0.55)";
+        s.hue === "cyan" ? "rgba(115,224,190,0.52)" : "rgba(179,160,255,0.55)";
       ctx.strokeRect(-s.size / 2, -s.size / 2, s.size, s.size);
       ctx.restore();
     }
@@ -138,10 +138,10 @@ export function paintFallbackFrame(
     ctx.lineJoin = "round";
     ctx.lineWidth = 2;
     const grad = ctx.createLinearGradient(0, -sh, 0, sh);
-    grad.addColorStop(0, "rgba(0,240,255,0.95)");
-    grad.addColorStop(1, "rgba(124,58,237,0.9)");
+    grad.addColorStop(0, "rgba(115,224,190,0.95)");
+    grad.addColorStop(1, "rgba(179,160,255,0.9)");
     ctx.strokeStyle = grad;
-    ctx.shadowColor = "rgba(0,240,255,0.55)";
+    ctx.shadowColor = "rgba(115,224,190,0.45)";
     ctx.shadowBlur = 18 + explode * 24;
     ctx.beginPath();
     ctx.moveTo(0, -sh / 2);
@@ -175,9 +175,9 @@ export function paintFallbackFrame(
     ctx.beginPath();
     ctx.arc(0, py - chip * 0.28, pw / 2, Math.PI, 0);
     ctx.stroke();
-    ctx.fillStyle = "rgba(0,240,255,0.9)";
+    ctx.fillStyle = "rgba(115,224,190,0.9)";
     ctx.fillRect(-pw / 2, py - chip * 0.28, pw, pw * 0.7);
-    ctx.fillStyle = "#050505";
+    ctx.fillStyle = "#080D12";
     ctx.beginPath();
     ctx.arc(0, py - chip * 0.28 + pw * 0.3, pw * 0.1, 0, Math.PI * 2);
     ctx.fill();

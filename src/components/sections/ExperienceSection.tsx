@@ -3,8 +3,7 @@
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 
-import { Reveal, SectionHeading } from "@/components/ui/Reveal";
-import { useExperienceData } from "@/components/sections/usePublicData";
+import { SectionHeading } from "@/components/ui/Reveal";
 import type { Experience } from "@/lib/types";
 
 function TimelineItem({ item, index }: { item: Experience; index: number }) {
@@ -65,8 +64,7 @@ function TimelineItem({ item, index }: { item: Experience; index: number }) {
   );
 }
 
-export default function ExperienceSection() {
-  const items = useExperienceData();
+export default function ExperienceSection({ items }: { items: Experience[] }) {
   const lineRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: lineRef,

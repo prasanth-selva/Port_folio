@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Reveal, SectionHeading } from "@/components/ui/Reveal";
-import { SEED_PROJECTS } from "@/lib/seed-data";
 import type { Project } from "@/lib/types";
 
 function TiltCard({ project, index }: { project: Project; index: number }) {
@@ -19,7 +18,7 @@ function TiltCard({ project, index }: { project: Project; index: number }) {
   const rotateY = useSpring(useTransform(mx, [0, 1], [-4, 4]), { stiffness: 220, damping: 26 });
   const glowX = useTransform(mx, [0, 1], ["20%", "80%"]);
   const glowY = useTransform(my, [0, 1], ["20%", "80%"]);
-  const glowBg = useMotionTemplate`radial-gradient(420px circle at ${glowX} ${glowY}, rgba(0,240,255,0.09), transparent 65%)`;
+  const glowBg = useMotionTemplate`radial-gradient(420px circle at ${glowX} ${glowY}, rgba(115,224,190,0.10), transparent 65%)`;
 
   const onMove = useCallback(
     (e: React.PointerEvent) => {
@@ -70,7 +69,7 @@ function TiltCard({ project, index }: { project: Project; index: number }) {
                         key={i}
                         className="aspect-square rounded-[2px]"
                         style={{
-                          background: (i * 7 + index * 3) % 5 === 0 ? "rgba(0,240,255,0.5)" : "rgba(255,255,255,0.08)",
+                          background: (i * 7 + index * 3) % 5 === 0 ? "rgba(115,224,190,0.55)" : "rgba(255,255,255,0.09)",
                         }}
                       />
                     ))}
@@ -119,8 +118,8 @@ function useReducedMotionSafe() {
   return reduced;
 }
 
-export default function ProjectsSection() {
-  const projects = SEED_PROJECTS.filter((p) => p.published);
+export default function ProjectsSection({ projects }: { projects: Project[] }) {
+  const publishedProjects = projects.filter((p) => p.published);
   return (
     <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">
       <div className="flex flex-wrap items-end justify-between gap-6">
@@ -134,7 +133,7 @@ export default function ProjectsSection() {
       </div>
 
       <div className="mt-14 grid gap-6 md:grid-cols-2">
-        {projects.map((p, i) => (
+        {publishedProjects.map((p, i) => (
           <TiltCard key={p.id} project={p} index={i} />
         ))}
       </div>

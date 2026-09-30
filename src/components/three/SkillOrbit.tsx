@@ -38,7 +38,7 @@ function SkillNode({
     m.rotation.y = t * 0.25;
   });
 
-  const color = active ? "#00F0FF" : ring === 1 ? "#7C3AED" : "#67E8F9";
+  const color = active ? "#73E0BE" : ring === 1 ? "#B3A0FF" : "#83B9AE";
 
   return (
     <Float speed={0.8} floatIntensity={0.15}>
@@ -65,7 +65,7 @@ function SkillNode({
         <Html center distanceFactor={9} zIndexRange={[10, 0]}>
           <span
             className="pointer-events-none select-none whitespace-nowrap font-mono text-[10px] tracking-wide"
-            style={{ color: active ? "#00F0FF" : "rgba(255,255,255,0.55)" }}
+            style={{ color: active ? "#73E0BE" : "rgba(255,255,255,0.66)" }}
           >
             {skill.name}
           </span>
@@ -87,8 +87,8 @@ function CoreGlow() {
     <mesh ref={ref}>
       <octahedronGeometry args={[0.85, 0]} />
       <meshStandardMaterial
-        color="#00F0FF"
-        emissive="#00F0FF"
+        color="#73E0BE"
+        emissive="#73E0BE"
         emissiveIntensity={1.4}
         wireframe
         transparent
@@ -130,15 +130,15 @@ export default function SkillOrbit({ skills }: OrbitProps) {
         }}
       >
         <ambientLight intensity={0.35} />
-        <pointLight position={[6, 6, 6]} intensity={1.4} color="#00F0FF" />
-        <pointLight position={[-6, -4, -4]} intensity={0.8} color="#7C3AED" />
+        <pointLight position={[6, 6, 6]} intensity={1.2} color="#73E0BE" />
+        <pointLight position={[-6, -4, -4]} intensity={0.7} color="#B3A0FF" />
 
         <Rig>
           <CoreGlow />
-          <Sparkles count={90} scale={[9, 5, 9]} size={1.6} speed={0.08} color="#00F0FF" opacity={0.5} />
+          <Sparkles count={90} scale={[9, 5, 9]} size={1.6} speed={0.08} color="#73E0BE" opacity={0.5} />
           {rings.map((g, i) => (
             <mesh key={i} geometry={g} rotation={[-Math.PI / 2 + (i - 1) * 0.22, 0, 0]}>
-              <meshBasicMaterial color={i === 1 ? 0x7c3aed : 0x00f0ff} transparent opacity={0.1} side={THREE.DoubleSide} />
+              <meshBasicMaterial color={i === 1 ? 0xb3a0ff : 0x73e0be} transparent opacity={0.1} side={THREE.DoubleSide} />
             </mesh>
           ))}
           {skills.map((s, i) => (

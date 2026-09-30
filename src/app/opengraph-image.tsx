@@ -16,7 +16,7 @@ export default async function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 72,
-          background: "linear-gradient(135deg, #050505 0%, #0a0f1e 60%, #101024 100%)",
+          background: "linear-gradient(135deg, #080D12 0%, #101B20 60%, #17152A 100%)",
           color: "white",
           fontFamily: "monospace",
         }}
@@ -26,10 +26,10 @@ export default async function OpengraphImage() {
             <path
               d="M16 3l11 4v9c0 7-4.6 11.7-11 14C9.6 27.7 5 23 5 16V7l11-4z"
               fill="none"
-              stroke="#00F0FF"
+              stroke="#73E0BE"
               strokeWidth="2"
             />
-            <circle cx="16" cy="15" r="3.4" fill="#00F0FF" />
+            <circle cx="16" cy="15" r="3.4" fill="#73E0BE" />
           </svg>
           <span style={{ fontSize: 24, letterSpacing: "0.2em", color: "rgba(255,255,255,0.6)" }}>
             {"PRASANTH.SELVA"}
@@ -47,7 +47,7 @@ export default async function OpengraphImage() {
           >
             I break things
           </div>
-          <div style={{ fontSize: 76, fontWeight: 700, lineHeight: 1.05, color: "#00F0FF" }}>
+          <div style={{ fontSize: 76, fontWeight: 700, lineHeight: 1.05, color: "#73E0BE" }}>
             to secure them.
           </div>
         </div>

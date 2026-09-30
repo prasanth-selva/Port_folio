@@ -46,7 +46,7 @@ export default function CustomCursor() {
       ry += (my - ry) * 0.45;
       dot.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
       ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%) scale(${hover ? 1.9 : 1})`;
-      ring.style.borderColor = hover ? "rgba(0,240,255,0.85)" : "rgba(0,240,255,0.4)";
+      ring.style.borderColor = hover ? "rgba(115,224,190,0.9)" : "rgba(115,224,190,0.48)";
       raf = requestAnimationFrame(tick);
     };
 

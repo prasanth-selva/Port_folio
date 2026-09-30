@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 
 type FieldDef = {
   name: string;
@@ -38,6 +38,8 @@ export function CrudTable({
   const [dragId, setDragId] = useState<string | null>(null);
   const [order, setOrder] = useState<Row[]>(rows);
 
+  useEffect(() => setOrder(rows), [rows]);
+
   const openNew = () => {
     setError(null);
     setEditing("new");
@@ -49,22 +51,30 @@ export function CrudTable({
 
   const onSave = (fd: FormData) => {
     startTransition(async () => {
-      const res = await saveAction(fd);
-      if (!res.ok) {
-        setError(res.error ?? "Save failed");
-        return;
+      try {
+        const res = await saveAction(fd);
+        if (!res.ok) {
+          setError(res.error ?? "Save failed");
+          return;
+        }
+        setEditing(null);
+        router.refresh();
+      } catch {
+        setError("Save failed. Check your connection and try again.");
       }
-      setEditing(null);
-      router.refresh();
     });
   };
 
   const onDelete = (id: string) => {
     if (!window.confirm("Delete this entry permanently?")) return;
     startTransition(async () => {
-      const res = await deleteAction(id);
-      if (!res.ok) setError(res.error ?? "Delete failed");
-      else router.refresh();
+      try {
+        const res = await deleteAction(id);
+        if (!res.ok) setError(res.error ?? "Delete failed");
+        else router.refresh();
+      } catch {
+        setError("Delete failed. Check your connection and try again.");
+      }
     });
   };
 
@@ -84,8 +94,18 @@ export function CrudTable({
     setDragId(null);
     if (reorderAction) {
       startTransition(async () => {
-        await reorderAction(order.map((r) => r.id));
-        router.refresh();
+        try {
+          const res = await reorderAction(order.map((r) => r.id));
+          if (!res.ok) {
+            setError(res.error ?? "Reorder failed");
+            setOrder(rows);
+            return;
+          }
+          router.refresh();
+        } catch {
+          setError("Reorder failed. Check your connection and try again.");
+          setOrder(rows);
+        }
       });
     }
   };
@@ -201,7 +221,7 @@ export function CrudTable({
                           type="checkbox"
                           name={f.name}
                           defaultChecked={checked}
-                          className="h-4 w-4 rounded border-white/20 bg-white/5 accent-[#00F0FF]"
+                          className="h-4 w-4 rounded border-white/20 bg-white/5 accent-accent-cyan"
                         />
                         {f.label}
                       </label>
