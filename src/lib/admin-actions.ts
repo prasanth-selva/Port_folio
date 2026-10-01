@@ -1,5 +1,6 @@
 "use server";
 
+import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -88,67 +89,66 @@ function revalidatePublic() {
 }
 
 // ---------------------------------------------------------------- uploads
-export async function uploadMedia(
-  formData: FormData
-): Promise<{ ok: boolean; url?: string; error?: string }> {
+const MEDIA_CONTENT_TYPES: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/avif": "avif",
+  "image/gif": "gif",
+  "application/pdf": "pdf",
+};
+
+type MediaUploadGrant =
+  | { ok: true; path: string; token: string; url: string; contentType: string }
+  | { ok: false; error: string };
+
+/**
+ * Authorize a single direct browser-to-Supabase upload. Only the small file
+ * metadata crosses the Next/Vercel function; the service-role key stays here.
+ */
+export async function createMediaUploadGrant(formData: FormData): Promise<MediaUploadGrant> {
   await requireAdmin();
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    return { ok: false, error: NOT_CONFIGURED };
+  if (
+    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    !process.env.SUPABASE_SERVICE_ROLE_KEY
+  ) {
+    return {
+      ok: false,
+      error: "Supabase uploads need the project URL, public anon key, and server-only service-role key configured.",
+    };
   }
-  const file = formData.get("file");
-  if (!(file instanceof File) || file.size === 0) {
-    return { ok: false, error: "No file provided" };
+
+  const fileName = String(formData.get("name") ?? "").trim();
+  const contentType = String(formData.get("contentType") ?? "").trim().toLowerCase();
+  const size = Number(formData.get("size"));
+  if (!fileName || !Number.isFinite(size) || size <= 0) {
+    return { ok: false, error: "Choose a non-empty file to upload." };
   }
-  if (file.size > 8 * 1024 * 1024) {
+  if (size > 8 * 1024 * 1024) {
     return { ok: false, error: "File too large (max 8 MB)" };
   }
-
-  let payload: Buffer = Buffer.from(await file.arrayBuffer());
-  const allowedImageTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/avif", "image/gif"]);
-  const isImage = allowedImageTypes.has(file.type);
-  if (!isImage && file.type !== "application/pdf") {
+  const ext = MEDIA_CONTENT_TYPES[contentType];
+  if (!ext) {
     return { ok: false, error: "Upload a PNG, JPEG, WebP, AVIF, GIF, or PDF file." };
   }
-  if (file.type === "application/pdf" && payload.subarray(0, 5).toString() !== "%PDF-") {
-    return { ok: false, error: "The selected file is not a valid PDF." };
-  }
-  let contentType = file.type;
-  let ext = file.type === "application/pdf" ? "pdf" : (file.type.split("/")[1] ?? "img").replace("jpeg", "jpg");
 
-  // Validate image bytes, then auto-compress supported raster formats to WebP.
-  if (isImage) {
-    try {
-      const sharp = (await import("sharp")).default;
-      const image = sharp(payload, { failOn: "error" });
-      const metadata = await image.metadata();
-      if (!metadata.width || !metadata.height) throw new Error("Invalid image dimensions");
-      if (file.type !== "image/webp") {
-        payload = await image.webp({ quality: 82 }).toBuffer();
-        contentType = "image/webp";
-        ext = "webp";
-      }
-    } catch (err) {
-      return { ok: false, error: `Invalid or unsupported image: ${(err as Error).message}` };
-    }
-  }
-
-  const safeBase =
-    file.name
-      .replace(/\.[^.]+$/, "")
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .slice(0, 60) || "file";
-  const path = `${Date.now()}-${safeBase}.${ext}`;
+  const safeBase = fileName
+    .replace(/\\/g, "/")
+    .split("/")
+    .pop()!
+    .replace(/\.[^.]+$/, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .slice(0, 48) || "file";
+  const path = `${Date.now()}-${randomUUID()}-${safeBase}.${ext}`;
 
   try {
     const sb = supabaseAdmin();
-    const { error } = await sb.storage.from("media").upload(path, payload, {
-      contentType,
-      upsert: false,
-    });
+    const { data, error } = await sb.storage.from("media").createSignedUploadUrl(path, { upsert: false });
     if (error) return { ok: false, error: error.message };
-    const { data } = sb.storage.from("media").getPublicUrl(path);
-    return { ok: true, url: data.publicUrl };
+    const { data: publicData } = sb.storage.from("media").getPublicUrl(data.path);
+    return { ok: true, path: data.path, token: data.token, url: publicData.publicUrl, contentType };
   } catch (err) {
     return { ok: false, error: (err as Error).message };
   }

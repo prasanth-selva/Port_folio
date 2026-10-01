@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 
-import { uploadMedia } from "@/lib/admin-actions";
+import { uploadMediaFile } from "@/lib/media-upload-client";
 
 type Props = {
   name: string;
@@ -33,17 +33,11 @@ export function ImageUploadField({ name, label, defaultValue, multiple = false }
     try {
       for (const [index, file] of files.entries()) {
         setStatus(`Uploading ${index + 1} of ${files.length}…`);
-        const formData = new FormData();
-        formData.set("file", file);
-        const result = await uploadMedia(formData);
-        if (!result.ok || !result.url) {
-          uploadError = result.error ?? `Could not upload ${file.name}`;
-          break;
-        }
+        const result = await uploadMediaFile(file);
         uploaded.push(result.url);
       }
-    } catch {
-      uploadError = "Upload failed. Check your connection and try again.";
+    } catch (err) {
+      uploadError = err instanceof Error ? err.message : "Upload failed. Check your connection and try again.";
     } finally {
       setBusy(false);
     }
