@@ -19,9 +19,9 @@ export default async function AdminCertificationsPage() {
         { name: "issuer", label: "Issuer" },
         { name: "issued_on", label: "Issued (e.g. 2025)" },
         { name: "credential_url", label: "Credential URL", full: true },
-        { name: "image", label: "Image URL", full: true },
+        { name: "image", label: "Certificate or badge image", type: "image", full: true },
         { name: "sort_order", label: "Sort order", type: "number" },
-        { name: "published", label: "Published" },
+        { name: "published", label: "Published", type: "checkbox" },
       ]}
     />
   );

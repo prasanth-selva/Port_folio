@@ -4,6 +4,8 @@ import { debounce } from "es-toolkit";
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
 
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
+
 type Post = {
   id?: string;
   slug: string;
@@ -144,9 +146,12 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
           <label className="mono-label mb-2 block" htmlFor="w-reading">Reading minutes</label>
           <input id="w-reading" name="reading_minutes" type="number" min={1} max={120} defaultValue={post?.reading_minutes ?? 4} className={inputCls} />
         </div>
-        <div>
-          <label className="mono-label mb-2 block" htmlFor="w-cover">Cover image URL</label>
-          <input id="w-cover" name="cover_image" defaultValue={post?.cover_image ?? ""} className={inputCls} />
+        <div className="md:col-span-2">
+          <ImageUploadField
+            name="cover_image"
+            label="Writeup cover image"
+            defaultValue={post?.cover_image ?? ""}
+          />
         </div>
         <div className="flex items-end">
           <label className="flex items-center gap-3 font-mono text-xs text-white/60">

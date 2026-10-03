@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
 
-import { saveResumeUrl, uploadMedia } from "@/lib/admin-actions";
+import { saveResumeUrl } from "@/lib/admin-actions";
+import { uploadMediaFile } from "@/lib/media-upload-client";
 
 export function ResumeUploader({ currentUrl }: { currentUrl: string | null }) {
   const router = useRouter();
@@ -15,27 +16,27 @@ export function ResumeUploader({ currentUrl }: { currentUrl: string | null }) {
   const onPick = () => inputRef.current?.click();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.currentTarget;
     const file = e.target.files?.[0];
+    input.value = "";
     if (!file) return;
     if (file.type !== "application/pdf") {
       setError("Only PDF files are accepted.");
       return;
     }
     setError(null);
-    const fd = new FormData();
-    fd.set("file", file);
     startTransition(async () => {
-      const res = await uploadMedia(fd);
-      if (!res.ok || !res.url) {
-        setError(res.error ?? "Upload failed");
-        return;
-      }
-      setUrl(res.url);
+      try {
+        const res = await uploadMediaFile(file);
+        setUrl(res.url);
 
-      // Persist only the resume field; retain every unrelated setting.
-      const saved = await saveResumeUrl(res.url);
-      if (!saved.ok) setError(saved.error ?? "Uploaded, but saving settings failed");
-      else router.refresh();
+        // Persist only the resume field; retain every unrelated setting.
+        const saved = await saveResumeUrl(res.url);
+        if (!saved.ok) setError(saved.error ?? "Uploaded, but saving settings failed");
+        else router.refresh();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Upload failed. Check your connection and try again.");
+      }
     });
   };
 

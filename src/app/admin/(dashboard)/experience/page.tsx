@@ -20,11 +20,11 @@ export default async function AdminExperiencePage() {
         { name: "location", label: "Location" },
         { name: "start_date", label: "Start (e.g. Jun 2026)" },
         { name: "end_date", label: "End (blank if current)" },
-        { name: "current", label: "Current position", type: "checkbox" },
+        { name: "current", label: "Current position", type: "checkbox", defaultChecked: false },
         { name: "description", label: "Description", type: "textarea", full: true },
         { name: "tech", label: "Tech (comma-separated)", full: true },
         { name: "sort_order", label: "Sort order", type: "number" },
-        { name: "published", label: "Published" },
+        { name: "published", label: "Published", type: "checkbox" },
       ]}
     />
   );

@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
 
-import { saveSettings, uploadMedia } from "@/lib/admin-actions";
+import { saveSettings } from "@/lib/admin-actions";
+import { uploadMediaFile } from "@/lib/media-upload-client";
 
 type Settings = {
   heroBadge: string;
@@ -41,19 +42,20 @@ export function SettingsForm({ settings }: { settings: Settings }) {
   };
 
   const onPhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.currentTarget;
     const file = e.target.files?.[0];
+    input.value = "";
     if (!file) return;
     setPhotoUploading(true);
     setError(null);
-    const fd = new FormData();
-    fd.set("file", file);
-    const res = await uploadMedia(fd);
-    setPhotoUploading(false);
-    if (!res.ok || !res.url) {
-      setError(res.error ?? "Upload failed");
-      return;
+    try {
+      const result = await uploadMediaFile(file);
+      setPhotoUrl(result.url);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Photo upload failed. Check your connection and try again.");
+    } finally {
+      setPhotoUploading(false);
     }
-    setPhotoUrl(res.url);
   };
 
   const inputCls =
@@ -127,7 +129,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
           <input
             ref={photoRef}
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp,image/avif,image/gif"
             className="hidden"
             onChange={onPhotoChange}
           />
@@ -137,8 +139,9 @@ export function SettingsForm({ settings }: { settings: Settings }) {
             disabled={photoUploading}
             className="rounded-xl border border-white/15 px-5 py-2.5 font-mono text-xs uppercase tracking-[0.15em] text-white/70 transition-colors hover:border-accent-cyan/40 hover:text-accent-cyan disabled:opacity-50"
           >
-            {photoUploading ? "Uploading…" : "Upload photo (auto-webp)"}
+            {photoUploading ? "Uploading…" : "Upload photo"}
           </button>
+          <p className="mt-2 font-mono text-[10px] text-white/35">PNG, JPG, WebP, AVIF or GIF · Max 8 MB</p>
           {photoUrl && (
             <p className="mt-3 break-all font-mono text-xs text-accent-cyan">
               {photoUrl} — save settings to publish this as your profile photo.
