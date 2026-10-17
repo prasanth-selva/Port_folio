@@ -1,0 +1,624 @@
+From 26b7bbb549fd4f692f8cf930efcea4b3d77042a9 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 17 Oct 2026 15:04:56 +0000
+Subject: [PATCH] Production fixes: seed UUIDs, idempotent migrations, RLS
+ hardening, resilient preflight, content/link fixes
+
+- seed.mjs: map readable ids to deterministic UUIDs (seed previously failed on uuid columns); don't overwrite populated tables without --force
+- migrations: 0001 re-runnable; 0003 removes anon INSERT on messages (bypassed validation/rate limit) and revokes anon writes
+- preflight: fatal only on missing schema/bad keys; warn on unreachable/paused Supabase; 15s timeouts
+- content: graduation year 2028 everywhere; LinkedIn URL corrected
+- remove public/manus-routes.json (exposed admin route map) and a third-party security report
+- add optimize:frames script; README deploy notes (NEXTAUTH_URL for custom domain)
+---
+ .gitignore                                  |   3 +
+ README.md                                   |  30 +++--
+ package.json                                |   3 +-
+ public/manus-routes.json                    |   1 -
+ scripts/seed.mjs                            |  35 ++++-
+ scripts/vercel-preflight.mjs                |  40 +++++-
+ security-report-nest.lunablaze.in.md        | 137 --------------------
+ seed.json                                   |   2 +-
+ src/app/layout.tsx                          |   2 +-
+ src/app/opengraph-image.tsx                 |   2 +-
+ src/components/layout/TerminalEasterEgg.tsx |   2 +-
+ src/lib/seed-data.ts                        |   4 +-
+ supabase/migrations/0001_init.sql           |  23 +++-
+ supabase/migrations/0003_hardening.sql      |  11 ++
+ 14 files changed, 125 insertions(+), 170 deletions(-)
+ delete mode 100644 public/manus-routes.json
+ delete mode 100644 security-report-nest.lunablaze.in.md
+ create mode 100644 supabase/migrations/0003_hardening.sql
+
+diff --git a/.gitignore b/.gitignore
+index db891d9..725011e 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -35,3 +35,6 @@ next-env.d.ts
+ 
+ # raw hero frames (optimize -> public/sequence via `npm run optimize:frames`)
+ /hero
++
++# private security reports — never commit
++security-report-*.md
+diff --git a/README.md b/README.md
+index 6b73987..c2159b8 100644
+--- a/README.md
++++ b/README.md
+@@ -97,9 +97,9 @@ node -e "console.log(require('bcryptjs').hashSync('YOUR_PASSWORD', 12))"
+ ## 🗄️ Database setup (Supabase)
+ 
+ 1. Create a project at [supabase.com](https://supabase.com).
+-2. Open **SQL Editor** and run [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql), followed by [`supabase/migrations/0002_analytics.sql`](supabase/migrations/0002_analytics.sql).
++2. Open **SQL Editor** and run [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql), then [`0002_analytics.sql`](supabase/migrations/0002_analytics.sql) and [`0003_hardening.sql`](supabase/migrations/0003_hardening.sql). All three are safe to re-run.
+    This creates all 8 tables, indexes, **Row Level Security** policies
+-   (public read on published rows, insert-only messages) and the public
++   (public read on published rows; messages are written only by the server) and the public
+    `media` storage bucket. The second migration adds a private daily aggregate
+    counter and a shared serverless rate-limit store. Both are inaccessible to
+    public/anon roles; only server-side service-role calls can use them.
+@@ -108,7 +108,8 @@ node -e "console.log(require('bcryptjs').hashSync('YOUR_PASSWORD', 12))"
+ 4. Seed canonical content:
+ 
+ ```bash
+-npm run seed
++npm run seed             # fills empty tables only, never overwrites admin edits
++npm run seed -- --force  # overwrite everything from seed.json
+ ```
+ 
+ ### Data model
+@@ -183,8 +184,8 @@ X-Frame-Options, Referrer-Policy, HSTS, nosniff) in
+ 2. Enable **Access to System Environment Variables** in Vercel project settings.
+    The app uses `VERCEL_ENV` and `VERCEL_URL` for readiness checks and preview
+    canonical URLs.
+-3. Apply `supabase/migrations/0001_init.sql` and
+-   `supabase/migrations/0002_analytics.sql` to the production Supabase project.
++3. Apply `supabase/migrations/0001_init.sql`, `0002_analytics.sql` and
++   `0003_hardening.sql` to the production Supabase project.
+    Run `npm run seed` if you want the included starter portfolio content.
+ 4. In **Project → Settings → Environment Variables**, add these for Production:
+    `NEXTAUTH_SECRET` (generate with `openssl rand -base64 32`), `ADMIN_EMAIL`,
+@@ -194,14 +195,17 @@ X-Frame-Options, Referrer-Policy, HSTS, nosniff) in
+    `SUPABASE_SERVICE_ROLE_KEY` with a `NEXT_PUBLIC_` prefix. `RESEND_API_KEY`,
+    `CONTACT_NOTIFY_EMAIL`, and `RESEND_FROM` are optional; contact submissions
+    are still stored in Supabase without email notifications.
+-5. Do not set `NEXTAUTH_URL` on Vercel unless you deliberately need an override;
+-   NextAuth infers the deployment URL there. If you do set it, it must not be a
+-   localhost URL. Add the Supabase and admin variables to the Preview scope too,
+-   or preview builds will intentionally fail the full-stack preflight. Preview
+-   canonical URLs are derived from their deployment URL.
++5. **Production scope:** set `NEXTAUTH_URL` to the same `https://` domain as
++   `NEXT_PUBLIC_SITE_URL`. On Vercel the inferred URL is the `*.vercel.app`
++   deployment host, which breaks admin login cookies on a custom domain.
++   **Preview scope:** do *not* set `NEXTAUTH_URL` (it is inferred). Add the
++   Supabase and admin variables to the Preview scope too, or preview builds will
++   intentionally fail the preflight.
+ 6. Deploy. The Vercel build preflight validates the required environment values
+    and checks database tables, public RLS reads, and media storage before
+-   Next.js builds. `/api/health` performs the same runtime readiness checks and
++   Next.js builds. A missing table or bad key fails the deploy; a temporarily
++   unreachable or paused Supabase project only warns (`PREFLIGHT_STRICT=1` makes
++   it fatal). `/api/health` performs the same runtime readiness checks and
+    verifies admin auth configuration without returning secrets or raw database
+    errors.
+ 
+@@ -222,8 +226,8 @@ requests (`.github/workflows/ci.yml`).
+ | `npm run vercel-build` | Vercel preflight + production build |
+ | `npm run typecheck` | Strict TypeScript check |
+ | `npm run lint` | ESLint (next/core-web-vitals) |
+-| `npm run seed` | Seed Supabase with canonical content |
+-| `node scripts/optimize-frames.mjs` | Re-optimize raw hero frames → WebP |
++| `npm run seed` | Seed empty Supabase tables (`-- --force` to overwrite) |
++| `npm run optimize:frames` | Re-optimize raw hero frames → WebP |
+ 
+ ---
+ 
+diff --git a/package.json b/package.json
+index f4b86d4..40b109e 100644
+--- a/package.json
++++ b/package.json
+@@ -10,7 +10,8 @@
+     "start": "next start",
+     "lint": "eslint .",
+     "typecheck": "tsc --noEmit",
+-    "seed": "node scripts/seed.mjs"
++    "seed": "node scripts/seed.mjs",
++    "optimize:frames": "node scripts/optimize-frames.mjs"
+   },
+   "dependencies": {
+     "@hookform/resolvers": "^3.9.0",
+diff --git a/public/manus-routes.json b/public/manus-routes.json
+deleted file mode 100644
+index 430a7dd..0000000
+--- a/public/manus-routes.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"routes":[{"path":"/","title":"Home"},{"path":"/projects/:slug","title":"Project"},{"path":"/writeups","title":"Writeups"},{"path":"/writeups/:slug","title":"Writeup"},{"path":"/admin/login","title":"Admin login"},{"path":"/admin","title":"Admin dashboard"},{"path":"/admin/projects","title":"Admin projects"},{"path":"/admin/experience","title":"Admin experience"},{"path":"/admin/certifications","title":"Admin certifications"},{"path":"/admin/achievements","title":"Admin achievements"},{"path":"/admin/skills","title":"Admin skills"},{"path":"/admin/writeups","title":"Admin writeups"},{"path":"/admin/writeups/new","title":"New writeup"},{"path":"/admin/writeups/:id","title":"Edit writeup"},{"path":"/admin/resume","title":"Admin resume"},{"path":"/admin/inbox","title":"Admin inbox"},{"path":"/admin/settings","title":"Admin settings"}]}
+diff --git a/scripts/seed.mjs b/scripts/seed.mjs
+index fd2063b..d8e89bc 100644
+--- a/scripts/seed.mjs
++++ b/scripts/seed.mjs
+@@ -1,9 +1,12 @@
+ /**
+  * Seed script: pushes canonical content into Supabase.
+- * Usage: npm run seed   (requires SUPABASE env vars — see .env.example)
++ * Usage: npm run seed            (only fills empty tables — never overwrites admin edits)
++ *        npm run seed -- --force (overwrite from seed.json)
++ * Requires SUPABASE env vars — see .env.example.
+  */
+ import "../src/env.mjs";
+ import { createClient } from "@supabase/supabase-js";
++import { createHash } from "node:crypto";
+ import { readFileSync } from "node:fs";
+ 
+ const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+@@ -22,8 +25,30 @@ const sb = createClient(url, serviceKey, {
+ // Inline canonical seed (mirrors src/lib/seed-data.ts to avoid a TS build step).
+ const seed = JSON.parse(readFileSync(new URL("../seed.json", import.meta.url), "utf8"));
+ 
++const FORCE = process.argv.includes("--force");
++const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
++
++/** seed.json uses readable ids ("seed-linux"); the DB columns are uuid. Map them deterministically so re-seeding is idempotent. */
++function toUuid(id) {
++  if (UUID_RE.test(id)) return id;
++  const h = createHash("sha1").update(`portfolio-seed:${id}`).digest("hex");
++  const variant = ((parseInt(h.slice(16, 18), 16) & 0x3f) | 0x80).toString(16).padStart(2, "0");
++  return `${h.slice(0, 8)}-${h.slice(8, 12)}-5${h.slice(13, 16)}-${variant}${h.slice(18, 20)}-${h.slice(20, 32)}`;
++}
++
++async function isPopulated(table) {
++  const { count, error } = await sb.from(table).select("*", { count: "exact", head: true });
++  if (error) throw new Error(`${table}: ${error.message}`);
++  return (count ?? 0) > 0;
++}
++
+ async function upsertAll(table, rows, conflict) {
+   if (!rows?.length) return;
++  if (!FORCE && (await isPopulated(table))) {
++    console.log(`- ${table}: already has data, skipped (use --force to overwrite)`);
++    return;
++  }
++  rows = rows.map((r) => (r.id ? { ...r, id: toUuid(r.id) } : r));
+   const { error } = await sb.from(table).upsert(rows, { onConflict: conflict });
+   if (error) {
+     console.error(`✗ ${table}: ${error.message}`);
+@@ -40,10 +65,10 @@ await upsertAll("achievements", seed.achievements, "id");
+ await upsertAll("skills", seed.skills, "id");
+ await upsertAll("posts", seed.posts, "slug");
+ 
+-const settingsRows = Object.entries(seed.settings).map(([key, value]) => ({
+-  key,
+-  value,
+-}));
++// settings.value is NOT NULL jsonb; null entries mean "use the built-in default", so skip them.
++const settingsRows = Object.entries(seed.settings)
++  .filter(([, value]) => value !== null && value !== undefined)
++  .map(([key, value]) => ({ key, value }));
+ await upsertAll("settings", settingsRows, "key");
+ 
+ console.log("Seed complete.");
+diff --git a/scripts/vercel-preflight.mjs b/scripts/vercel-preflight.mjs
+index f1f6c30..eb76790 100644
+--- a/scripts/vercel-preflight.mjs
++++ b/scripts/vercel-preflight.mjs
+@@ -84,10 +84,23 @@ if (issues.length) {
+   process.exit(1);
+ }
+ 
++const clientOptions = {
++  auth: { persistSession: false, autoRefreshToken: false },
++  global: { fetch: (url, init) => fetch(url, { ...init, signal: AbortSignal.timeout(15_000) }) },
++};
++
++// Missing tables/functions are a real misconfiguration and must stop the deploy.
++// Network errors, timeouts or a paused free-tier project are not: pages fall back
++// to seed content and /api/health reports the problem, so a Supabase blip should
++// not block a Vercel deploy. Set PREFLIGHT_STRICT=1 to fail on those too.
++const SCHEMA_ERROR_CODES = new Set(["42P01", "42883", "PGRST205", "PGRST202", "PGRST301"]);
++const strict = process.env.PREFLIGHT_STRICT === "1";
++const isFatal = (error) => strict || SCHEMA_ERROR_CODES.has(error.code) || error.status === 401 || error.status === 403;
++
+ const supabase = createClient(
+   process.env.NEXT_PUBLIC_SUPABASE_URL,
+   process.env.SUPABASE_SERVICE_ROLE_KEY,
+-  { auth: { persistSession: false, autoRefreshToken: false } }
++  clientOptions
+ );
+ 
+ const schemaChecks = [
+@@ -110,11 +123,19 @@ const results = await Promise.all(
+   })
+ );
+ const failed = results.filter((result) => result.error);
+-if (failed.length) {
++const transient = failed.filter(({ error }) => !isFatal(error));
++if (transient.length) {
++  console.warn(
++    `Vercel ${environment} preflight WARNING — Supabase unreachable or paused (${transient
++      .map(({ table, error }) => `${table}: ${error.code ?? error.message}`)
++      .join("; ")}). Continuing; check the project is not paused and open /api/health after deploy.`
++  );
++}
++if (failed.some(({ error }) => isFatal(error))) {
+   console.error(
+     `Vercel ${environment} preflight could not verify the Supabase schema:\n- ${failed
+       .map(({ table, error }) => `${table}: ${error.code ?? error.message}`)
+-      .join("\n- ")}\nApply supabase/migrations/0001_init.sql and 0002_analytics.sql, then verify the Supabase environment variables.`
++      .join("\n- ")}\nApply supabase/migrations/0001_init.sql, 0002_analytics.sql and 0003_hardening.sql, then verify the Supabase environment variables.`
+   );
+   process.exit(1);
+ }
+@@ -122,7 +143,7 @@ if (failed.length) {
+ const publicSupabase = createClient(
+   process.env.NEXT_PUBLIC_SUPABASE_URL,
+   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+-  { auth: { persistSession: false, autoRefreshToken: false } }
++  clientOptions
+ );
+ const [publicProjects, publicSettings, mediaBucket] = await Promise.all([
+   publicSupabase.from("projects").select("id").limit(0),
+@@ -134,13 +155,20 @@ const publicFailures = [
+   ...(publicSettings.error ? [`public settings read: ${publicSettings.error.code ?? publicSettings.error.message}`] : []),
+   ...(mediaBucket.error ? [`media storage bucket: ${mediaBucket.error.code ?? mediaBucket.error.message}`] : []),
+ ];
+-if (publicFailures.length) {
++const publicFatal = [publicProjects, publicSettings, mediaBucket].some((r) => r.error && isFatal(r.error));
++if (publicFailures.length && !publicFatal) {
++  console.warn(`Vercel ${environment} preflight WARNING — could not verify public reads or storage:\n- ${publicFailures.join("\n- ")}`);
++}
++if (publicFatal) {
+   console.error(
+     `Vercel ${environment} preflight could not verify public reads or media storage:\n- ${publicFailures.join("\n- ")}\nCheck the Supabase anon key, public RLS policies, and the media bucket created by 0001_init.sql.`
+   );
+   process.exit(1);
+ }
+ 
++const warned = transient.length > 0 || (publicFailures.length > 0 && !publicFatal);
+ console.log(
+-  `Vercel ${environment} preflight passed: environment variables, database schema, public reads, and media storage are ready.`
++  warned
++    ? `Vercel ${environment} preflight passed with warnings: environment variables are valid, but Supabase could not be fully verified (see above).`
++    : `Vercel ${environment} preflight passed: environment variables, database schema, public reads, and media storage are ready.`
+ );
+diff --git a/security-report-nest.lunablaze.in.md b/security-report-nest.lunablaze.in.md
+deleted file mode 100644
+index 136ca34..0000000
+--- a/security-report-nest.lunablaze.in.md
++++ /dev/null
+@@ -1,137 +0,0 @@
+-# Security Assessment — nest.lunablaze.in
+-
+-**Date:** 2026-09-30
+-**Scope:** `https://nest.lunablaze.in/` (frontend) and `https://e-com-backend-cxjb.onrender.com/` (API backend)
+-**Authorization:** Written permission from owner
+-**Methodology:** Read-only, unauthenticated probing only. No account creation, no writes (POST/PUT/PATCH/DELETE), no destructive actions, no purchases. All tests used plain `curl` with GET/OPTIONS/HEAD plus static analysis of the publicly served JavaScript bundle. (Requested "HexStrike MCP" tooling was not available in this environment; equivalent manual checks were performed.)
+-**Application identified:** "e-com-frontend" — Vite/React SPA on Vercel, Express API on Render behind Cloudflare, Cloudflare R2 for media, Razorpay referenced for payments.
+-
+----
+-
+-## Executive summary
+-
+-The application is in good shape for its auth core: every admin and user route correctly rejects unauthenticated access with uniform 401s, input validation is strict (Zod-style, on every public parameter), no secrets leak through the client bundle, no source maps or config files are exposed, and the API ships a solid header set.
+-
+-The most significant risk is client-side token storage: the SPA keeps **access and refresh JWTs in `localStorage`**, and the frontend serves **no Content-Security-Policy** — so a single XSS anywhere in the app yields full account takeover (including admin accounts), with tokens surviving browser restarts.
+-
+-| # | Finding | Severity |
+-|---|---------|----------|
+-| F1 | Access + refresh JWTs stored in `localStorage` | **High** (standalone Medium) |
+-| F2 | Missing security headers on frontend (CSP, frame-ancestors, nosniff, referrer-policy) | **Medium** |
+-| F3 | Wildcard CORS (`*`) with all methods on authenticated API | **Low** (Medium if cookies adopted) |
+-| F4 | Public product API exposes exact per-variant stock quantities and SKUs | **Low** |
+-| F5 | Login brute-force protection unverifiable (read-only scope) | **Info / verify** |
+-| F6 | Refresh-token rotation/reuse-detection unverifiable | **Info / verify** |
+-| F7 | Housekeeping: no `robots.txt`, no `security.txt` | **Info** |
+-
+----
+-
+-## Detailed findings
+-
+-### F1 — JWT access and refresh tokens stored in `localStorage` — **High**
+-
+-**Evidence** (from the public bundle `assets/index-D1FqQLwj.js`):
+-
+-```js
+-const Id = "ecom_access_token"/*, Jd = "ecom_profile"*/;
+-function Ad(a, l) {
+-  localStorage.setItem(Id, a.accessToken),
+-  a.refreshToken && localStorage.setItem(Jd, JSON.stringify(l))  // refresh persisted
+-}
+-```
+-
+-The auth flow (`/auth/login`, `/auth/refresh`, `/auth/me`) returns access + refresh tokens; both are persisted in `localStorage` and replayed from it on boot.
+-
+-**Impact:** Any XSS in the SPA (a compromised dependency, an injected review field rendered unsafely, a malicious admin-time upload) exfiltrates *both* tokens. The refresh token outlives the tab, so theft is persistent — the attacker keeps a session alive past password change unless refresh tokens are server-side revocable and rotated. Admin tokens in `/admin` escalate this to full store compromise (orders, customers, audit logs, catalog, uploads).
+-
+-**Remediation:**
+-1. Move refresh tokens to `httpOnly; Secure; SameSite=Lax` cookies scoped to the API; keep only a short-lived access token in memory (never `localStorage`).
+-2. Implement refresh-token rotation with reuse detection (revoke family on replay).
+-3. Add short access-token TTL (≤ 15 min).
+-4. Deploy CSP (see F2) as a compensating control now.
+-
+-### F2 — Missing security headers on the frontend — **Medium**
+-
+-`https://nest.lunablaze.in/` response headers include only `strict-transport-security` (no `includeSubDomains`) on Vercel. Absent:
+-
+-- `Content-Security-Policy` — no script-source restrictions; combined with F1 this makes token theft trivial if any injection exists.
+-- `X-Frame-Options` / `frame-ancestors` — clickjacking of checkout/admin actions is possible.
+-- `X-Content-Type-Options: nosniff`
+-- `Referrer-Policy`
+-
+-Notably, the owner's other project (the portfolio repo in this workspace) sets a strict CSP, HSTS with preload, and `frame-ancestors 'none'` — the same should be applied here.
+-
+-**Remediation:** In `vercel.json` (or host config):
+-
+-```
+-Content-Security-Policy: default-src 'self'; script-src 'self'; connect-src 'self' https://e-com-backend-cxjb.onrender.com; img-src 'self' https://pub-a1315453a27146d2a04dd2e171650f8c.r2.dev data:; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+-Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+-X-Content-Type-Options: nosniff
+-Referrer-Policy: strict-origin-when-cross-origin
+-Permissions-Policy: camera=(), microphone=(), geolocation=()
+-```
+-
+-(Start CSP in report-only mode and tighten from observed violations.)
+-
+-### F3 — Wildcard CORS with all methods — **Low** (Medium if/when cookies are adopted)
+-
+-`OPTIONS` to the API answers:
+-
+-```
+-access-control-allow-origin: *
+-access-control-allow-methods: GET,HEAD,PUT,PATCH,POST,DELETE
+-```
+-
+-Today this mainly lets any website read the public catalog from a victim's browser context — low impact. **However**, the moment auth moves to cookies (the F1 fix), wildcard CORS + cross-site requests becomes a credential exposure vector unless `Access-Control-Allow-Credentials` is carefully avoided and origins are allow-listed.
+-
+-**Remediation:** Allow-list the frontend origin(s) only; echo credentials only for those origins. Restrict allowed methods to what the API actually implements per route.
+-
+-### F4 — Public over-exposure of inventory data — **Low**
+-
+-`GET /products/{id}` returns, per variant, the exact `stockQuantity` (e.g. `89`, `40`) and internal SKUs (`ORG-SOAP-100`). Competitors and scrapers can track sell-through in real time; SKU enumeration aids price-comparison scraping.
+-
+-**Remediation:** Return an availability status (`in_stock` / `low_stock` / `out_of_stock`) or a banded quantity instead of exact counts on the public endpoint; keep exact stock in admin-only responses.
+-
+-### F5 — Login brute-force protection unverified — **Info (verify)**
+-
+-`POST /auth/login` and `/auth/admin/login` were not exercised (would require sending credentials = write/active beyond the agreed read-only scope). The API does send `ratelimit-limit: 100` per minute globally, which helps, but dedicated per-IP/per-account limits and lockout on `/auth/admin/login` should be confirmed by the owner (e.g., ensure `express-rate-limit` with stricter windows on auth routes, plus exponential backoff).
+-
+-### F6 — Refresh-token lifecycle unverified — **Info (verify)**
+-
+-`GET /auth/refresh` → 404 (route is likely POST-only, which is correct). Whether refresh tokens are rotated on use, have server-side revocation (logout-all, password change), and reuse detection could not be confirmed read-only. Owner should verify — this directly limits the blast radius of F1.
+-
+-### F7 — Housekeeping — **Info**
+-
+-- No `robots.txt` on the frontend (404) — cosmetic, but add one.
+-- No `/.well-known/security.txt` — recommended so researchers can report safely.
+-
+----
+-
+-## What was tested and is solid ✅
+-
+-- **Auth middleware:** every `/admin/*`, `/orders`, `/cart`, `/returns/me`, `/reviews/me`, `/auth/me` route returns a uniform `401 {"success":false,"message":"Unauthorized"}` — no leaks, no differing errors, no accidental public access found via GET.
+-- **Forged/malformed tokens** (`garbage`, tampered JWT with `role: admin`): rejected with identical messages; no oracle, no stack traces, no debug output.
+-- **Input validation:** `page`, `limit`, `sort`, `minPrice` all validated (Zod-style) with structured `400` responses; `999999`, `-1`, `abc`, `1e309`, and SQL-looking strings all handled cleanly.
+-- **Secret hygiene:** no API keys/JWTs/AWS/Google/Razorpay keys in the bundle; no `.map` sourcemaps; no `/.env`, `/.git/config`, backup files; runtime `/env-config.js` contains no secrets.
+-- **XSS sinks:** no application use of `dangerouslySetInnerHTML`/`innerHTML` in the bundle (all matches are React internals).
+-- **API headers:** helmet-style set present (`nosniff`, `X-Frame-Options`, COOP/CORP, HSTS, referrer-policy) plus rate limiting.
+-- **Public data shapes:** products/categories/hero responses are lean; IDs are UUIDs (non-enumerable); no PII in public responses.
+-
+----
+-
+-## Limitations of this assessment
+-
+-- Read-only scope per authorization: no account creation, so **IDOR, privilege escalation, order/payment manipulation, review abuse, and upload flaws could not be tested**. These need an authenticated throwaway account (see suggested next step).
+-- Payment flow untested (no purchases); client bundle references Razorpay only as an asset, so integration appears server-side — owner should confirm server-side signature verification of `razorpay_signature` before `paid` state transitions.
+-- Single-page crawl depth; deeper SPA route exploration and larger wordlists were deliberately skipped to stay low-noise.
+-
+----
+-
+-## Recommended priority
+-
+-1. **Now:** add CSP + missing headers (F2) — cheap, immediately blunts F1.
+-2. **Now:** allow-list CORS origins (F3).
+-3. **Next release:** move refresh tokens to httpOnly cookies with rotation (F1).
+-4. **Next release:** band public stock quantities (F4).
+-5. **Verify:** per-route rate limits/lockout on login (F5); refresh rotation/revocation (F6).
+-6. **Then:** authorize an authenticated non-destructive pass (throwaway account) to close the IDOR/authz gap this scope could not cover.
+diff --git a/seed.json b/seed.json
+index 76f2c31..84c0d7f 100644
+--- a/seed.json
++++ b/seed.json
+@@ -233,7 +233,7 @@
+     "heroBadge": "B.E. CSE (Cybersecurity) — Class of 2028",
+     "resumeUrl": null,
+     "email": "prasanthselvaraj1511@gmail.com",
+-    "linkedin": "https://linkedin.com/in/prasanth-selva-1810aa315",
++    "linkedin": "https://linkedin.com/in/prasanth-selva-1511ps",
+     "github": "https://github.com/prasanth-selva",
+     "phone": null,
+     "seoTitle": "Prasanth Selva — Cybersecurity Engineer",
+diff --git a/src/app/layout.tsx b/src/app/layout.tsx
+index 1aecc73..72094a3 100644
+--- a/src/app/layout.tsx
++++ b/src/app/layout.tsx
+@@ -98,7 +98,7 @@ export default async function RootLayout({
+                 "Web security",
+               ],
+               sameAs: [
+-                settings?.linkedin ?? "https://linkedin.com/in/prasanth-selva-1810aa315",
++                settings?.linkedin ?? "https://linkedin.com/in/prasanth-selva-1511ps",
+                 settings?.github ?? "https://github.com/prasanth-selva",
+               ].filter(Boolean),
+             }),
+diff --git a/src/app/opengraph-image.tsx b/src/app/opengraph-image.tsx
+index 29c6382..b7495a2 100644
+--- a/src/app/opengraph-image.tsx
++++ b/src/app/opengraph-image.tsx
+@@ -63,7 +63,7 @@ export default async function OpengraphImage() {
+           }}
+         >
+           <span>CYBERSECURITY · SOC · WEB SECURITY</span>
+-          <span>B.E. CSE — CLASS OF 2027</span>
++          <span>B.E. CSE — CLASS OF 2028</span>
+         </div>
+       </div>
+     ),
+diff --git a/src/components/layout/TerminalEasterEgg.tsx b/src/components/layout/TerminalEasterEgg.tsx
+index 3da5863..260d22e 100644
+--- a/src/components/layout/TerminalEasterEgg.tsx
++++ b/src/components/layout/TerminalEasterEgg.tsx
+@@ -46,7 +46,7 @@ export default function TerminalEasterEgg() {
+           break;
+         case "whoami":
+           print([
+-            { text: "prasanth selva — b.e. cse (cybersecurity), class of 2027", tone: "out" },
++            { text: "prasanth selva — b.e. cse (cybersecurity), class of 2028", tone: "out" },
+             { text: "aspiring cybersecurity engineer | VYUGAM president | CTF player", tone: "out" },
+             { text: "motto: i break things to secure them.", tone: "ok" },
+           ]);
+diff --git a/src/lib/seed-data.ts b/src/lib/seed-data.ts
+index ac58c95..9a8a88c 100644
+--- a/src/lib/seed-data.ts
++++ b/src/lib/seed-data.ts
+@@ -17,7 +17,7 @@ export const SEED_SETTINGS = {
+   heroBadge: "B.E. CSE (Cybersecurity) — Class of 2028",
+   resumeUrl: null as string | null,
+   email: "prasanthselvaraj1511@gmail.com",
+-  linkedin: "https://linkedin.com/in/prasanth-selva-1810aa315",
++  linkedin: "https://linkedin.com/in/prasanth-selva-1511ps",
+   github: "https://github.com/prasanth-selva",
+   phone: null as string | null,
+   seoTitle: "Prasanth Selva — Cybersecurity Engineer",
+@@ -27,7 +27,7 @@ export const SEED_SETTINGS = {
+ 
+ export const SEED_ABOUT = {
+   bio: [
+-    "I'm Prasanth Selva, a third-year B.E. Computer Science & Engineering (Cybersecurity) student at KGISL Institute of Technology, Coimbatore, graduating May 2027. I break things to secure them — from SOC dashboards to web apps, I obsess over how systems fail and how to make that failure boring.",
++    "I'm Prasanth Selva, a third-year B.E. Computer Science & Engineering (Cybersecurity) student at KGISL Institute of Technology, Coimbatore, graduating in 2028. I break things to secure them — from SOC dashboards to web apps, I obsess over how systems fail and how to make that failure boring.",
+     "As President of VYUGAM, the Cyber Department Association, I lead a community of builders and breakers: running workshops, capture-the-flag events and security bootcamps for 300+ students. My internships span a SOC floor, a cybercrime police station and a product startup — rare context for an undergraduate, and the reason I think in incidents, not just vulnerabilities.",
+     "The goal is a cybersecurity engineering career with an international trajectory: AI-driven detection engineering, offensive tooling, and secure systems that ordinary people can trust.",
+   ],
+diff --git a/supabase/migrations/0001_init.sql b/supabase/migrations/0001_init.sql
+index 9d54e67..fa30ab8 100644
+--- a/supabase/migrations/0001_init.sql
++++ b/supabase/migrations/0001_init.sql
+@@ -1,6 +1,6 @@
+ -- ============================================================================
+ -- Prasanth Selva portfolio — initial schema
+--- Run in Supabase SQL editor (or `supabase db push`).
++-- Run in Supabase SQL editor (or `supabase db push`). Safe to re-run.
+ -- Public: read published rows. Admin: full write (service role bypasses RLS).
+ -- ============================================================================
+ 
+@@ -128,52 +128,69 @@ alter table public.messages enable row level security;
+ alter table public.settings enable row level security;
+ 
+ -- Public read on published content
++drop policy if exists "public read published projects" on public.projects;
+ create policy "public read published projects"
+   on public.projects for select using (published = true);
++drop policy if exists "public read published experiences" on public.experiences;
+ create policy "public read published experiences"
+   on public.experiences for select using (published = true);
++drop policy if exists "public read published certifications" on public.certifications;
+ create policy "public read published certifications"
+   on public.certifications for select using (published = true);
++drop policy if exists "public read published achievements" on public.achievements;
+ create policy "public read published achievements"
+   on public.achievements for select using (published = true);
++drop policy if exists "public read published skills" on public.skills;
+ create policy "public read published skills"
+   on public.skills for select using (published = true);
++drop policy if exists "public read published posts" on public.posts;
+ create policy "public read published posts"
+   on public.posts for select using (published = true);
+ 
+ -- Messages: insert by anyone (contact form), no public read/update/delete
++drop policy if exists "public can submit messages" on public.messages;
+ create policy "public can submit messages"
+   on public.messages for insert with check (true);
+ 
+ -- Settings: public read
++drop policy if exists "public read settings" on public.settings;
+ create policy "public read settings"
+   on public.settings for select using (true);
+ 
+ -- Admin writes: authenticated role only (NextAuth session is app-level;
+ -- the admin UI mutates via the service-role server actions, which bypass RLS).
+ -- These policies exist so a future Supabase-Auth admin can write directly.
++drop policy if exists "admin write projects" on public.projects;
+ create policy "admin write projects"
+   on public.projects for all using (auth.role() = 'authenticated')
+   with check (auth.role() = 'authenticated');
++drop policy if exists "admin write experiences" on public.experiences;
+ create policy "admin write experiences"
+   on public.experiences for all using (auth.role() = 'authenticated')
+   with check (auth.role() = 'authenticated');
++drop policy if exists "admin write certifications" on public.certifications;
+ create policy "admin write certifications"
+   on public.certifications for all using (auth.role() = 'authenticated')
+   with check (auth.role() = 'authenticated');
++drop policy if exists "admin write achievements" on public.achievements;
+ create policy "admin write achievements"
+   on public.achievements for all using (auth.role() = 'authenticated')
+   with check (auth.role() = 'authenticated');
++drop policy if exists "admin write skills" on public.skills;
+ create policy "admin write skills"
+   on public.skills for all using (auth.role() = 'authenticated')
+   with check (auth.role() = 'authenticated');
++drop policy if exists "admin write posts" on public.posts;
+ create policy "admin write posts"
+   on public.posts for all using (auth.role() = 'authenticated')
+   with check (auth.role() = 'authenticated');
++drop policy if exists "admin manage messages" on public.messages;
+ create policy "admin manage messages"
+   on public.messages for update using (auth.role() = 'authenticated');
++drop policy if exists "admin delete messages" on public.messages;
+ create policy "admin delete messages"
+   on public.messages for delete using (auth.role() = 'authenticated');
++drop policy if exists "admin write settings" on public.settings;
+ create policy "admin write settings"
+   on public.settings for all using (auth.role() = 'authenticated')
+   with check (auth.role() = 'authenticated');
+@@ -183,17 +200,21 @@ insert into storage.buckets (id, name, public)
+ values ('media', 'media', true)
+ on conflict (id) do nothing;
+ 
++drop policy if exists "public read media" on storage.objects;
+ create policy "public read media"
+   on storage.objects for select using (bucket_id = 'media');
+ 
++drop policy if exists "admin upload media" on storage.objects;
+ create policy "admin upload media"
+   on storage.objects for insert
+   with check (bucket_id = 'media' and auth.role() = 'authenticated');
+ 
++drop policy if exists "admin update media" on storage.objects;
+ create policy "admin update media"
+   on storage.objects for update
+   using (bucket_id = 'media' and auth.role() = 'authenticated');
+ 
++drop policy if exists "admin delete media" on storage.objects;
+ create policy "admin delete media"
+   on storage.objects for delete
+   using (bucket_id = 'media' and auth.role() = 'authenticated');
+diff --git a/supabase/migrations/0003_hardening.sql b/supabase/migrations/0003_hardening.sql
+new file mode 100644
+index 0000000..b870aa7
+--- /dev/null
++++ b/supabase/migrations/0003_hardening.sql
+@@ -0,0 +1,11 @@
++-- Hardening: the contact form writes through the server (/api/contact) with the
++-- service-role key, after validation, honeypot and rate limiting. Remove the
++-- anonymous INSERT policy so nobody can bypass those checks by calling the
++-- Supabase REST API directly with the public anon key.
++drop policy if exists "public can submit messages" on public.messages;
++
++-- Defence in depth: the browser never needs write access to content tables.
++revoke insert, update, delete on
++  public.projects, public.experiences, public.certifications,
++  public.achievements, public.skills, public.posts, public.settings, public.messages
++from anon;
+-- 
+2.43.0
+

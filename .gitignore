@@ -35,3 +35,4 @@ next-env.d.ts
 
 # raw hero frames (optimize -> public/sequence via `npm run optimize:frames`)
 /hero
+vercel-env.txt
