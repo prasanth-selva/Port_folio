@@ -29,5 +29,11 @@ jobs:
         run: npm run typecheck
       - name: Lint
         run: npm run lint
+      - name: Validate Vercel deployment config
+        run: |
+          node --check scripts/vercel-preflight.mjs
+          node -e 'JSON.parse(require("node:fs").readFileSync("vercel.json", "utf8"))'
       - name: Build
         run: npm run build
+      - name: Audit production dependencies
+        run: npm audit --omit=dev

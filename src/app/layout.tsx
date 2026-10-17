@@ -5,11 +5,14 @@ import { GeistSans } from "geist/font/sans";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import CustomCursor from "@/components/ui/CustomCursor";
 import { getSettings } from "@/lib/data";
+import { getSiteUrl } from "@/lib/site-url";
 
 import "./globals.css";
 
+const siteUrl = getSiteUrl();
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Prasanth Selva — Cybersecurity Engineer",
     template: "%s — Prasanth Selva",
@@ -80,7 +83,7 @@ export default async function RootLayout({
               name: "Prasanth Selva",
               jobTitle: "Cybersecurity Engineer (aspiring)",
               email: `mailto:${settings?.email ?? "prasanthselvaraj1511@gmail.com"}`,
-              url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+              url: siteUrl,
               alumniOf: {
                 "@type": "CollegeOrUniversity",
                 name: "KGiSL Institute of Technology, Coimbatore",

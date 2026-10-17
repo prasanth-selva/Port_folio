@@ -171,26 +171,45 @@ database-backed throttling (with an in-memory fallback), honeypot + bounded
 contact request body, strict production security headers (CSP without
 `unsafe-eval`,
 X-Frame-Options, Referrer-Policy, HSTS, nosniff) in
-[`next.config.mts`](next.config.mts).
+[`next.config.ts`](next.config.ts).
 
 ---
 
 ## ☁️ Deploy to Vercel
 
-1. **Import** the GitHub repo in Vercel; framework preset: Next.js (zero config).
-3. Add all env vars from `.env.example` in **Project → Settings → Environment Variables**.
-   - `NEXTAUTH_URL` → your production URL
-   - `NEXT_PUBLIC_SITE_URL` → same
-4. In Supabase **Authentication → URL Configuration**, add
-   `https://your-domain.com/admin/login` as a redirect target if you ever
-   enable Supabase-side auth flows (not required for NextAuth credentials).
-5. Deploy. On-demand revalidation and OG image generation work out of the box.
-   The `/api/health` endpoint checks application/database availability without
-   returning raw database errors. Verify the deployment after applying the
-   migrations and configuring the production environment variables.
+1. Import this GitHub repository into Vercel and use the repository root as the
+   project root. The included [`vercel.json`](vercel.json) selects Next.js,
+   runs `npm ci`, and invokes `npm run vercel-build`.
+2. Enable **Access to System Environment Variables** in Vercel project settings.
+   The app uses `VERCEL_ENV` and `VERCEL_URL` for readiness checks and preview
+   canonical URLs.
+3. Apply `supabase/migrations/0001_init.sql` and
+   `supabase/migrations/0002_analytics.sql` to the production Supabase project.
+   Run `npm run seed` if you want the included starter portfolio content.
+4. In **Project → Settings → Environment Variables**, add these for Production:
+   `NEXTAUTH_SECRET` (generate with `openssl rand -base64 32`), `ADMIN_EMAIL`,
+   `ADMIN_PASSWORD_HASH` (bcrypt preferred), `NEXT_PUBLIC_SUPABASE_URL`,
+   `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and
+   `NEXT_PUBLIC_SITE_URL` set to the real `https://` public domain. Never expose
+   `SUPABASE_SERVICE_ROLE_KEY` with a `NEXT_PUBLIC_` prefix. `RESEND_API_KEY`,
+   `CONTACT_NOTIFY_EMAIL`, and `RESEND_FROM` are optional; contact submissions
+   are still stored in Supabase without email notifications.
+5. Do not set `NEXTAUTH_URL` on Vercel unless you deliberately need an override;
+   NextAuth infers the deployment URL there. If you do set it, it must not be a
+   localhost URL. Add the Supabase and admin variables to the Preview scope too,
+   or preview builds will intentionally fail the full-stack preflight. Preview
+   canonical URLs are derived from their deployment URL.
+6. Deploy. The Vercel build preflight validates the required environment values
+   and checks database tables, public RLS reads, and media storage before
+   Next.js builds. `/api/health` performs the same runtime readiness checks and
+   verifies admin auth configuration without returning secrets or raw database
+   errors.
 
-GitHub Actions runs `npm ci`, typecheck, lint, and the production build for
-pushes to `main` and pull requests (`.github/workflows/ci.yml`).
+Vercel's [project configuration](https://vercel.com/docs/project-configuration/vercel-json)
+and [system environment variables](https://vercel.com/docs/environment-variables/system-environment-variables)
+documentation explain the configuration used here. GitHub Actions also runs
+`npm ci`, typecheck, lint, and the production build on pushes to `main` and pull
+requests (`.github/workflows/ci.yml`).
 
 ---
 
@@ -200,6 +219,7 @@ pushes to `main` and pull requests (`.github/workflows/ci.yml`).
 | --- | --- |
 | `npm run dev` | Dev server |
 | `npm run build` | Production build |
+| `npm run vercel-build` | Vercel preflight + production build |
 | `npm run typecheck` | Strict TypeScript check |
 | `npm run lint` | ESLint (next/core-web-vitals) |
 | `npm run seed` | Seed Supabase with canonical content |
