@@ -3,7 +3,7 @@ import { timingSafeEqual } from "crypto";
 import type { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
-import { rateLimit } from "@/lib/rate-limit";
+import { distributedRateLimit } from "@/lib/rate-limit";
 
 /**
  * Single-admin credentials auth. Admin credentials come from env:
@@ -55,7 +55,7 @@ export const authOptions: NextAuthOptions = {
           headerOf(req, "x-real-ip") ||
           forwarded.split(",")[0]?.trim() ||
           "unknown";
-        const rl = rateLimit(`login:${ip}`, 5, 10 * 60 * 1000);
+        const rl = await distributedRateLimit(`login:${ip}`, 5, 10 * 60 * 1000);
         if (!rl.ok) return null;
 
         const email = credentials?.email?.trim().toLowerCase() ?? "";

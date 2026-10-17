@@ -6,7 +6,7 @@ A cinematic, Awwwards-style portfolio with a **sticky canvas scrollytelling hero
 `/admin` for managing every piece of content without touching code.
 
 ```
-Next.js 14 (App Router) · TypeScript (strict) · Tailwind CSS
+Next.js 15 (App Router) · TypeScript (strict) · Tailwind CSS
 Framer Motion · Lenis · React Three Fiber + drei · three
 Supabase · NextAuth (credentials) · Zod · react-hook-form
 ```
@@ -25,8 +25,10 @@ Supabase · NextAuth (credentials) · Zod · react-hook-form
 - About with animated stat counters · scroll-drawn experience timeline
 - 3D tilt/parallax project cards + detail pages (`/projects/[slug]`)
 - Interactive 3D skill orbit (R3F) with graceful 2D fallback on mobile/reduced-motion
-- Achievements, certifications, contact form (honeypot + rate limit + Zod),
-  MDX writeups with syntax highlighting
+- Achievements, certifications, contact form (honeypot + shared rate limit + Zod),
+  Markdown writeups with syntax highlighting
+- Aggregate homepage views for the admin dashboard; no visitor ID or IP address
+  is stored, and the public client records at most one view per tab per day
 - Terminal easter egg: press **`` ` ``** anywhere → `whoami`, `ls projects`,
   `skills`, `goto <section>`, `sudo` (nice try), and more
 - Custom cursor, magnetic buttons, film grain, glassmorphism, active-section
@@ -35,7 +37,7 @@ Supabase · NextAuth (credentials) · Zod · react-hook-form
 **Admin (`/admin`)**
 
 - Single-admin credentials auth (env-based), JWT httpOnly cookies,
-  middleware-protected routes, per-IP login rate limiting (5 / 10 min)
+  middleware-protected routes, shared per-IP login throttling (5 / 10 min)
 - Full CRUD + drag-to-reorder + publish/draft for: Projects, Experience,
   Certifications, Achievements, Skills, Writeups
 - MDX editor with live preview; direct image uploads for project covers and
@@ -44,7 +46,7 @@ Supabase · NextAuth (credentials) · Zod · react-hook-form
   bypassing serverless request-body limits; resume PDF upload; site settings
   (hero badge, socials, SEO, phone)
 - Contact inbox: unread badge, read/unread toggle, delete, reply-by-mailto
-- Dashboard: content counts, recent messages, 14-day visit analytics
+- Dashboard: content counts, recent messages, and real 14-day aggregate visit analytics
 - On-demand ISR: every save revalidates affected public pages instantly
 
 ---
@@ -64,7 +66,10 @@ npm run dev            # http://localhost:3000
 ```
 
 The site works **out of the box** with seed data — Supabase is optional for
-browsing; it becomes required for the admin CRUD and contact inbox.
+browsing; it is required for admin CRUD, inbox persistence, analytics, and
+shared production rate limits. If neither the database nor email delivery is
+configured, the contact form returns an actionable unavailable response
+instead of silently discarding a message. Use Node.js 20.9 or newer.
 
 ### Environment variables
 
@@ -92,10 +97,12 @@ node -e "console.log(require('bcryptjs').hashSync('YOUR_PASSWORD', 12))"
 ## 🗄️ Database setup (Supabase)
 
 1. Create a project at [supabase.com](https://supabase.com).
-2. Open **SQL Editor** → paste and run [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql).
+2. Open **SQL Editor** and run [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql), followed by [`supabase/migrations/0002_analytics.sql`](supabase/migrations/0002_analytics.sql).
    This creates all 8 tables, indexes, **Row Level Security** policies
    (public read on published rows, insert-only messages) and the public
-   `media` storage bucket.
+   `media` storage bucket. The second migration adds a private daily aggregate
+   counter and a shared serverless rate-limit store. Both are inaccessible to
+   public/anon roles; only server-side service-role calls can use them.
 3. Copy `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and
    `SUPABASE_SERVICE_ROLE_KEY` from **Project Settings → API** into `.env.local`.
 4. Seed canonical content:
@@ -107,10 +114,10 @@ npm run seed
 ### Data model
 
 `projects`, `experiences`, `certifications`, `achievements`, `skills`,
-`posts`, `messages`, `settings` — see
+`posts`, `messages`, `settings`, and private aggregate `analytics_daily` / rate-limit
+tables — see
 [`src/lib/types.ts`](src/lib/types.ts) for row shapes and
-[`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) for
-constraints and policies.
+[`supabase/migrations/`](supabase/migrations/) for constraints and policies.
 
 ---
 
@@ -147,7 +154,7 @@ Until frames exist, the site automatically renders the **procedural fallback**
 
 ## 🛠️ Admin dashboard
 
-1. Fill admin env vars (above) and visit `/admin/login`.
+1. Apply both database migrations, then fill the admin env vars (above) and visit `/admin/login`.
 2. Sign in — sessions are JWT httpOnly cookies, 12h expiry.
 3. Manage content: each section supports create/edit/delete, drag-to-reorder
    (saved automatically) and publish/draft toggles.
@@ -159,8 +166,10 @@ Until frames exist, the site automatically renders the **procedural fallback**
    unlisted. Bookmark it.
 
 Security posture: middleware route protection + server-session checks in every
-server action, Zod validation on all payloads, per-IP login rate limiting,
-honeypot + rate-limited contact endpoint, strict security headers (CSP,
+server action, Zod validation on all payloads, shared HMAC-pseudonymized
+database-backed throttling (with an in-memory fallback), honeypot + bounded
+contact request body, strict production security headers (CSP without
+`unsafe-eval`,
 X-Frame-Options, Referrer-Policy, HSTS, nosniff) in
 [`next.config.mts`](next.config.mts).
 
@@ -168,8 +177,7 @@ X-Frame-Options, Referrer-Policy, HSTS, nosniff) in
 
 ## ☁️ Deploy to Vercel
 
-1. Push the repo to GitHub.
-2. **Import** it in Vercel; framework preset: Next.js (zero config).
+1. **Import** the GitHub repo in Vercel; framework preset: Next.js (zero config).
 3. Add all env vars from `.env.example` in **Project → Settings → Environment Variables**.
    - `NEXTAUTH_URL` → your production URL
    - `NEXT_PUBLIC_SITE_URL` → same
@@ -177,6 +185,12 @@ X-Frame-Options, Referrer-Policy, HSTS, nosniff) in
    `https://your-domain.com/admin/login` as a redirect target if you ever
    enable Supabase-side auth flows (not required for NextAuth credentials).
 5. Deploy. On-demand revalidation and OG image generation work out of the box.
+   The `/api/health` endpoint checks application/database availability without
+   returning raw database errors. Verify the deployment after applying the
+   migrations and configuring the production environment variables.
+
+GitHub Actions runs `npm ci`, typecheck, lint, and the production build for
+pushes to `main` and pull requests (`.github/workflows/ci.yml`).
 
 ---
 

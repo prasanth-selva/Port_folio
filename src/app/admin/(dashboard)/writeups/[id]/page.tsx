@@ -9,10 +9,11 @@ export const dynamic = "force-dynamic";
 export default async function EditWriteupPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const sb = supabaseAdmin();
-  const { data } = await sb.from("posts").select("*").eq("id", params.id).single();
+  const { data } = await sb.from("posts").select("*").eq("id", id).single();
   if (!data) notFound();
 
   return (

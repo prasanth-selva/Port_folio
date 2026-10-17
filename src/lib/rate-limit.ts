@@ -1,8 +1,8 @@
-/**
- * Minimal in-memory sliding-window rate limiter.
- * Good enough for a single-instance deployment; on serverless each warm
- * instance keeps its own map, which still blunts credential stuffing.
- */
+import { createHmac } from "node:crypto";
+
+import { supabaseAdmin } from "@/lib/supabase";
+
+/** In-memory fallback for local development or a temporary database outage. */
 
 type Bucket = { hits: number[] };
 
@@ -40,6 +40,54 @@ export function rateLimit(
     }
   }
   return { ok: true, remaining: limit - bucket.hits.length, retryAfterSec: 0 };
+}
+
+/**
+ * Shared limiter for serverless deployments. The database stores only a
+ * short-lived HMAC pseudonym, never the source IP. Migration 0002 installs
+ * the atomic RPC; if it is unavailable, this falls back to the local limiter.
+ */
+export async function distributedRateLimit(
+  key: string,
+  limit: number,
+  windowMs: number
+): Promise<RateLimitResult> {
+  const secret = process.env.NEXTAUTH_SECRET;
+  if (
+    !secret ||
+    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    !process.env.SUPABASE_SERVICE_ROLE_KEY
+  ) {
+    return rateLimit(key, limit, windowMs);
+  }
+
+  const separator = key.indexOf(":");
+  const namespace = separator < 0 ? "request" : key.slice(0, separator);
+  const source = separator < 0 ? key : key.slice(separator + 1);
+  const bucketKey = `${namespace}:${createHmac("sha256", secret).update(source).digest("hex")}`;
+
+  try {
+    const { data, error } = await supabaseAdmin()
+      .rpc("consume_rate_limit", {
+        p_bucket_key: bucketKey,
+        p_limit: limit,
+        p_window_seconds: Math.max(1, Math.ceil(windowMs / 1000)),
+      })
+      .maybeSingle();
+    if (error || !data) return rateLimit(key, limit, windowMs);
+    const result = data as {
+      allowed: boolean;
+      remaining: number;
+      retry_after_seconds: number;
+    };
+    return {
+      ok: Boolean(result.allowed),
+      remaining: Number(result.remaining) || 0,
+      retryAfterSec: Number(result.retry_after_seconds) || 0,
+    };
+  } catch {
+    return rateLimit(key, limit, windowMs);
+  }
 }
 
 export function clientIp(headers: Headers): string {

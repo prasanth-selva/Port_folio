@@ -4,21 +4,30 @@ import { supabaseAdmin } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
-type TableStats = { projects: number; experiences: number; certifications: number; skills: number; posts: number };
+type TableStats = {
+  projects: number;
+  experiences: number;
+  certifications: number;
+  skills: number;
+  posts: number;
+};
+type Visit = { day: string; views: number };
 
 async function loadDashboard() {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
     return null;
   }
+
   const sb = supabaseAdmin();
-  const [projects, experiences, certifications, skills, posts, messages, visits] = await Promise.all([
-    sb.from("projects").select("*", { count: "exact", head: true }),
-    sb.from("experiences").select("*", { count: "exact", head: true }),
-    sb.from("certifications").select("*", { count: "exact", head: true }),
-    sb.from("skills").select("*", { count: "exact", head: true }),
-    sb.from("posts").select("*", { count: "exact", head: true }),
-    sb.from("messages").select("*").order("created_at", { ascending: false }).limit(5),
-    sb.from("settings").select("key, value").like("key", "visits:%").order("key", { ascending: false }).limit(14),
+  const startDay = new Date(Date.now() - 13 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const [projects, experiences, certifications, skills, posts, messages, visitRows] = await Promise.all([
+    sb.from("projects").select("id", { count: "exact", head: true }),
+    sb.from("experiences").select("id", { count: "exact", head: true }),
+    sb.from("certifications").select("id", { count: "exact", head: true }),
+    sb.from("skills").select("id", { count: "exact", head: true }),
+    sb.from("posts").select("id", { count: "exact", head: true }),
+    sb.from("messages").select("id, name, subject, read, created_at").order("created_at", { ascending: false }).limit(5),
+    sb.from("analytics_daily").select("day, views").gte("day", startDay).order("day", { ascending: true }).limit(14),
   ]);
 
   const stats: TableStats = {
@@ -28,7 +37,21 @@ async function loadDashboard() {
     skills: skills.count ?? 0,
     posts: posts.count ?? 0,
   };
-  return { stats, messages: messages.data ?? [], visits: (visits.data ?? []) as { key: string; value: unknown }[] };
+  const byDay = new Map(
+    (visitRows.data ?? []).map((row) => [String(row.day), Number(row.views) || 0])
+  );
+  const visits: Visit[] = Array.from({ length: 14 }, (_, index) => {
+    const date = new Date(Date.now() - (13 - index) * 24 * 60 * 60 * 1000);
+    const day = date.toISOString().slice(0, 10);
+    return { day, views: byDay.get(day) ?? 0 };
+  });
+
+  return {
+    stats,
+    messages: messages.data ?? [],
+    visits,
+    analyticsAvailable: !visitRows.error,
+  };
 }
 
 export default async function AdminDashboard() {
@@ -47,7 +70,7 @@ export default async function AdminDashboard() {
     );
   }
 
-  const { stats, messages, visits } = data;
+  const { stats, messages, visits, analyticsAvailable } = data;
   const cards: { label: string; value: number; href: string }[] = [
     { label: "Projects", value: stats.projects, href: "/admin/projects" },
     { label: "Experience", value: stats.experiences, href: "/admin/experience" },
@@ -55,20 +78,21 @@ export default async function AdminDashboard() {
     { label: "Skills", value: stats.skills, href: "/admin/skills" },
     { label: "Writeups", value: stats.posts, href: "/admin/writeups" },
   ];
-  const maxVisits = Math.max(1, ...visits.map((v) => (typeof v.value === "number" ? v.value : 0)));
+  const maxVisits = Math.max(1, ...visits.map((visit) => visit.views));
+  const hasVisits = visits.some((visit) => visit.views > 0);
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-white/90">Dashboard</h1>
-        <p className="mt-1 font-mono text-xs text-white/40">SYSTEM STATUS: ALL CONTENT CHANNELS NOMINAL</p>
+        <p className="mt-1 font-mono text-xs text-white/40">SYSTEM STATUS: CONTENT CHANNELS ONLINE</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
-        {cards.map((c) => (
-          <Link key={c.href} href={c.href} className="glass rounded-2xl p-5 transition-colors hover:border-accent-cyan/30">
-            <p className="text-3xl font-semibold tabular-nums text-white/90">{c.value}</p>
-            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">{c.label}</p>
+        {cards.map((card) => (
+          <Link key={card.href} href={card.href} className="glass rounded-2xl p-5 transition-colors hover:border-accent-cyan/30">
+            <p className="text-3xl font-semibold tabular-nums text-white/90">{card.value}</p>
+            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">{card.label}</p>
           </Link>
         ))}
       </div>
@@ -82,13 +106,13 @@ export default async function AdminDashboard() {
             </Link>
           </div>
           <ul className="mt-4 space-y-3">
-            {messages.map((m) => (
-              <li key={m.id} className="rounded-xl border border-white/8 p-3">
+            {messages.map((message) => (
+              <li key={message.id} className="rounded-xl border border-white/8 p-3">
                 <div className="flex items-center justify-between gap-2">
-                  <p className="truncate text-sm font-medium text-white/85">{m.name}</p>
-                  {!m.read && <span className="h-2 w-2 shrink-0 rounded-full bg-accent-cyan" aria-label="unread" />}
+                  <p className="truncate text-sm font-medium text-white/85">{message.name}</p>
+                  {!message.read && <span className="h-2 w-2 shrink-0 rounded-full bg-accent-cyan" aria-label="unread" />}
                 </div>
-                <p className="mt-0.5 truncate font-mono text-[11px] text-white/40">{m.subject ?? "(no subject)"}</p>
+                <p className="mt-0.5 truncate font-mono text-[11px] text-white/40">{message.subject ?? "(no subject)"}</p>
               </li>
             ))}
             {messages.length === 0 && (
@@ -100,24 +124,25 @@ export default async function AdminDashboard() {
         </div>
 
         <div className="glass rounded-2xl p-6">
-          <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-white/50">Visits — last 14 days</h2>
-          {visits.length === 0 ? (
+          <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-white/50">Homepage views — last 14 days</h2>
+          {!analyticsAvailable ? (
+            <p className="mt-4 rounded-xl border border-amber-400/25 bg-amber-400/[0.06] p-4 font-mono text-xs text-amber-300">
+              Analytics storage is not ready. Apply migration `0002_analytics.sql` to enable this chart.
+            </p>
+          ) : !hasVisits ? (
             <p className="mt-4 rounded-xl border border-dashed border-white/10 p-6 text-center font-mono text-xs text-white/30">
-              No analytics yet (requires Supabase).
+              No homepage visits recorded yet.
             </p>
           ) : (
-            <div className="mt-6 flex h-32 items-end gap-1.5">
-              {[...visits].reverse().map((v) => {
-                const n = typeof v.value === "number" ? v.value : 0;
-                return (
-                  <div key={v.key} className="group relative flex-1" title={`${v.key.slice(7)}: ${n}`}>
-                    <div
-                      className="w-full rounded-t bg-gradient-to-t from-accent-cyan/30 to-accent-cyan/80 transition-all group-hover:to-accent-cyan"
-                      style={{ height: `${Math.max(4, (n / maxVisits) * 100)}%` }}
-                    />
-                  </div>
-                );
-              })}
+            <div className="mt-6 flex h-32 items-end gap-1.5" role="img" aria-label="Homepage views over the last 14 days">
+              {visits.map((visit) => (
+                <div key={visit.day} className="group relative flex-1" title={`${visit.day}: ${visit.views} views`}>
+                  <div
+                    className="w-full rounded-t bg-gradient-to-t from-accent-cyan/30 to-accent-cyan/80 transition-all group-hover:to-accent-cyan"
+                    style={{ height: `${Math.max(visit.views ? 4 : 1, (visit.views / maxVisits) * 100)}%` }}
+                  />
+                </div>
+              ))}
             </div>
           )}
         </div>

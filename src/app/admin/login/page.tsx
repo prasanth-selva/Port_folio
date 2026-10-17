@@ -1,6 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 
@@ -77,9 +78,9 @@ function LoginForm() {
           </button>
         </form>
 
-        <a href="/" className="mt-6 block text-center font-mono text-[11px] tracking-[0.2em] text-white/30 transition-colors hover:text-white/60">
+        <Link href="/" className="mt-6 block text-center font-mono text-[11px] tracking-[0.2em] text-white/30 transition-colors hover:text-white/60">
           ← BACK TO SITE
-        </a>
+        </Link>
       </div>
     </div>
   );

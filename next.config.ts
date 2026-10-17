@@ -1,14 +1,14 @@
 import type { NextConfig } from "next";
 
 /**
- * Security headers.
- * `content` directive is computed so Vercel preview URLs and Supabase Storage
- * hosts can be injected via env without editing code.
+ * Security headers. Supabase and image hosts are configured through env so
+ * production deployments do not need code changes when using another project.
  */
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseOrigin = supabaseUrl ? new URL(supabaseUrl).origin : null;
 const extraImageHosts = (process.env.NEXT_PUBLIC_IMAGE_HOSTS ?? "")
   .split(",")
-  .map((s) => s.trim())
+  .map((host) => host.trim())
   .filter(Boolean);
 
 const imgSrc = [
@@ -18,16 +18,27 @@ const imgSrc = [
   ...(supabaseUrl ? [supabaseUrl] : []),
   ...extraImageHosts,
 ].join(" ");
+const scriptSrc = [
+  "'self'",
+  "'unsafe-inline'",
+  ...(process.env.NODE_ENV === "development" ? ["'unsafe-eval'"] : []),
+].join(" ");
+const connectSrc = [
+  "'self'",
+  "https://*.supabase.co",
+  "wss://*.supabase.co",
+  ...(supabaseOrigin ? [supabaseOrigin] : []),
+].join(" ");
 
 const csp = [
   "default-src 'self'",
   `img-src ${imgSrc}`,
   "media-src 'self' data: blob:",
-  // Next.js requires inline/eval for its runtime; styles need inline for styled-jsx/sw-tailwind.
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  // Next.js app-router hydration uses inline scripts; eval is development-only.
+  `script-src ${scriptSrc}`,
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self' data:",
-  "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+  `connect-src ${connectSrc}`,
   "worker-src 'self' blob:",
   "frame-ancestors 'none'",
   "base-uri 'self'",
@@ -49,7 +60,6 @@ const securityHeaders = [
   },
 ];
 
-/** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {

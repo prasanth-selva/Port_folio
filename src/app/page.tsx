@@ -1,5 +1,5 @@
-import dynamic from "next/dynamic";
-
+import PortfolioPageView from "@/components/analytics/PortfolioPageView";
+import CyberCoreScroll from "@/components/hero/CyberCoreScrollClient";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import TerminalEasterEgg from "@/components/layout/TerminalEasterEgg";
@@ -20,11 +20,6 @@ import {
   getSkills,
 } from "@/lib/data";
 
-// 3D-heavy hero: client-only, never blocks server render.
-const CyberCoreScroll = dynamic(() => import("@/components/hero/CyberCoreScroll"), {
-  ssr: false,
-});
-
 export default async function HomePage() {
   const [settings, projects, experience, skills, achievements, certifications] =
     await Promise.all([
@@ -38,6 +33,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <PortfolioPageView />
       <Navbar />
       <main id="top" className="relative">
         <SectionShell kind="hero">

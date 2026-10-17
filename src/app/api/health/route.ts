@@ -13,8 +13,8 @@ export async function GET() {
 
   if (!url || !serviceKey) {
     return NextResponse.json(
-      { ok: true, db: "unconfigured", note: "Site runs on seed data; admin CRUD disabled." },
-      { status: 200 }
+      { ok: true, db: "unconfigured", note: "The public site is using seed content; admin CRUD is disabled." },
+      { status: 200, headers: { "Cache-Control": "no-store" } }
     );
   }
 
@@ -26,16 +26,21 @@ export async function GET() {
     });
     const { error } = await sb.from("settings").select("key").limit(1);
     if (error) {
+      console.error("[health] Supabase check failed:", error.code ?? "unknown");
       return NextResponse.json(
-        { ok: false, db: "down", error: error.message, latencyMs: Date.now() - started },
-        { status: 503 }
+        { ok: false, db: "down", error: "Database health check failed", latencyMs: Date.now() - started },
+        { status: 503, headers: { "Cache-Control": "no-store" } }
       );
     }
-    return NextResponse.json({ ok: true, db: "up", latencyMs: Date.now() - started });
-  } catch (err) {
     return NextResponse.json(
-      { ok: false, db: "down", error: (err as Error).message, latencyMs: Date.now() - started },
-      { status: 503 }
+      { ok: true, db: "up", latencyMs: Date.now() - started },
+      { headers: { "Cache-Control": "no-store" } }
+    );
+  } catch {
+    console.error("[health] Supabase check unavailable");
+    return NextResponse.json(
+      { ok: false, db: "down", error: "Database health check failed", latencyMs: Date.now() - started },
+      { status: 503, headers: { "Cache-Control": "no-store" } }
     );
   }
 }
