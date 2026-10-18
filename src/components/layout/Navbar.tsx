@@ -47,12 +47,12 @@ export default function Navbar() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled ? "glass shadow-lg shadow-black/20" : "bg-transparent"
+        scrolled ? "border-b border-[#36332e] bg-[#111111]" : "bg-transparent"
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6" aria-label="Primary">
         <a href="#top" className="font-mono text-sm font-semibold tracking-tight text-white/90">
-          <span className="text-accent-cyan">&gt;_</span> prasanth.selva
+          <span className="text-accent-amber">&gt;_</span> prasanth.selva
         </a>
 
         <ul className="hidden items-center gap-1 md:flex">
@@ -61,18 +61,11 @@ export default function Navbar() {
               <a
                 href={l.href}
                 aria-current={active === l.href ? "true" : undefined}
-                className={`relative rounded-full px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.18em] transition-colors ${
-                  active === l.href ? "text-accent-cyan" : "text-white/55 hover:text-white/90"
+                className={`relative border-b-2 px-3.5 py-1.5 font-sans text-[11px] uppercase tracking-[0.14em] transition-colors ${
+                  active === l.href ? "border-accent-amber text-accent-amber" : "border-transparent text-white/55 hover:text-white/90"
                 }`}
               >
-                {active === l.href && (
-                  <motion.span
-                    layoutId="nav-pill"
-                    className="absolute inset-0 rounded-full border border-accent-cyan/30 bg-accent-cyan/[0.07]"
-                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                  />
-                )}
-                <span className="relative">{l.label}</span>
+                {l.label}
               </a>
             </li>
           ))}
@@ -94,15 +87,15 @@ export default function Navbar() {
         <motion.ul
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass mx-4 mb-4 grid gap-1 rounded-2xl p-3 md:hidden"
+          className="surface mx-4 mb-4 grid gap-1 border-x-0 border-b md:hidden"
         >
           {LINKS.map((l) => (
             <li key={l.href}>
               <a
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className={`block rounded-xl px-4 py-2.5 font-mono text-xs uppercase tracking-[0.2em] ${
-                  active === l.href ? "bg-accent-cyan/10 text-accent-cyan" : "text-white/60"
+                className={`block border-l-2 px-4 py-2.5 font-sans text-xs uppercase tracking-[0.16em] ${
+                  active === l.href ? "border-accent-amber text-accent-amber" : "border-transparent text-white/60"
                 }`}
               >
                 {l.label}
@@ -115,7 +108,7 @@ export default function Navbar() {
       {/* Scroll progress hairline */}
       <motion.div
         style={{ scaleX: progress }}
-        className="h-px origin-left bg-gradient-to-r from-accent-cyan via-accent-cyan/60 to-accent-violet"
+        className="h-0.5 origin-left bg-accent-amber"
         aria-hidden="true"
       />
     </header>

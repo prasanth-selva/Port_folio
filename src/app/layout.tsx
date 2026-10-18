@@ -1,9 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
 import SmoothScroll from "@/components/providers/SmoothScroll";
-import CustomCursor from "@/components/ui/CustomCursor";
 import { getSettings } from "@/lib/data";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -18,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s — Prasanth Selva",
   },
   description:
-    "Portfolio of Prasanth Selva, third-year B.E. CSE (Cybersecurity) student and aspiring cybersecurity engineer: SOC operations, AI-driven threat monitoring, web security and secure systems engineering.",
+    "Portfolio of Prasanth Selva, a cybersecurity student working with SOC operations, web security, Python, Linux, and security tools.",
   keywords: [
     "Prasanth Selva",
     "cybersecurity",
@@ -35,12 +33,12 @@ export const metadata: Metadata = {
     siteName: "Prasanth Selva",
     title: "Prasanth Selva — Cybersecurity Engineer",
     description:
-      "I break things to secure them. SOC operations, AI-driven threat monitoring, web security.",
+      "Cybersecurity student projects, internships, certificates, and contact details.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Prasanth Selva — Cybersecurity Engineer",
-    description: "I break things to secure them.",
+    description: "Cybersecurity projects, work history, and certificates.",
   },
   robots: { index: true, follow: true },
   icons: {
@@ -49,7 +47,7 @@ export const metadata: Metadata = {
         url:
           "data:image/svg+xml," +
           encodeURIComponent(
-            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#080D12"/><path d="M16 6l8 3v7c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V9l8-3z" fill="none" stroke="#73E0BE" stroke-width="2"/><circle cx="16" cy="15" r="2.4" fill="#73E0BE"/></svg>`
+            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#111111"/><path d="M16 6l8 3v7c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V9l8-3z" fill="none" stroke="#E3AE62" stroke-width="2"/><circle cx="16" cy="15" r="2.4" fill="#E3AE62"/></svg>`
           ),
         type: "image/svg+xml",
       },
@@ -58,7 +56,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#080D12",
+  themeColor: "#111111",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -69,10 +67,9 @@ export default async function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const settings = await getSettings().catch(() => null);
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
-      <body className="grain cursor-none-fine min-h-screen bg-base font-sans">
+    <html lang="en" className={GeistSans.variable}>
+      <body className="min-h-screen bg-base font-sans">
         <SmoothScroll>{children}</SmoothScroll>
-        <CustomCursor />
         {/* JSON-LD Person schema */}
         <script
           type="application/ld+json"

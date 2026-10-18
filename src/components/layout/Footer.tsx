@@ -7,7 +7,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="font-mono text-sm font-semibold tracking-tight text-white/90">
-            <span className="text-accent-cyan">&gt;_</span> prasanth.selva
+            <span className="text-accent-amber">&gt;_</span> prasanth.selva
           </p>
           <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/50">
             Aspiring cybersecurity engineer. Breaking things responsibly since
@@ -16,14 +16,14 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
         </div>
 
         <div className="flex flex-col gap-2 font-mono text-xs text-white/50">
-          <a href={`mailto:${settings.email}`} className="transition-colors hover:text-accent-cyan">
+          <a href={`mailto:${settings.email}`} className="transition-colors hover:text-accent-amber">
             {settings.email}
           </a>
           <a
             href={settings.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-accent-cyan"
+            className="transition-colors hover:text-accent-amber"
           >
             linkedin/in/prasanth-selva
           </a>
@@ -31,7 +31,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
             href={settings.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-accent-cyan"
+            className="transition-colors hover:text-accent-amber"
           >
             github/prasanth-selva
           </a>

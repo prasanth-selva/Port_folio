@@ -30,13 +30,13 @@ export default function AdminNav({ unread, compact }: { unread: number; compact?
             href={item.href}
             className={`flex items-center justify-between rounded-xl px-4 py-2 font-mono text-xs uppercase tracking-[0.15em] transition-colors ${
               active
-                ? "border border-accent-cyan/30 bg-accent-cyan/[0.07] text-accent-cyan"
+                ? "border border-accent-amber/30 bg-accent-amber/[0.07] text-accent-amber"
                 : "text-white/50 hover:bg-white/[0.04] hover:text-white/85"
             }`}
           >
             {item.label}
             {item.href === "/admin/inbox" && unread > 0 && (
-              <span className="rounded-full bg-accent-cyan px-2 py-0.5 text-[10px] font-bold text-black">
+              <span className="rounded-full bg-accent-amber px-2 py-0.5 text-[10px] font-bold text-black">
                 {unread}
               </span>
             )}

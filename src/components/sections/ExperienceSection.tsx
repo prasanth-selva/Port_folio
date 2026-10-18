@@ -24,7 +24,7 @@ function TimelineItem({ item, index }: { item: Experience; index: number }) {
             index % 2 === 0 ? "md:order-1 md:text-right" : "md:order-3 md:text-left"
           }`}
         >
-          <p className="font-mono text-xs tracking-[0.18em] text-accent-cyan/90">
+          <p className="font-mono text-xs tracking-[0.18em] text-accent-amber/90">
             {item.start_date} — {item.current ? "PRESENT" : item.end_date}
           </p>
           <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-white/30">
@@ -35,15 +35,15 @@ function TimelineItem({ item, index }: { item: Experience; index: number }) {
         {/* Node */}
         <div className="absolute left-[7px] top-1.5 md:relative md:left-0 md:order-2 md:flex md:justify-center">
           <span className="relative block h-3 w-3">
-            <span className="relative inline-flex h-3 w-3 rounded-full border-2 border-base bg-accent-cyan" />
+            <span className="relative inline-flex h-3 w-3 rounded-full border-2 border-base bg-accent-amber" />
           </span>
         </div>
 
         {/* Card */}
         <div className={index % 2 === 0 ? "md:order-3" : "md:order-1"}>
-          <div className="glass rounded-2xl p-6 transition-colors hover:border-accent-cyan/25">
+          <div className="border border-[#36332e] bg-[#191919] p-6 transition-colors hover:border-accent-amber">
             <h3 className="text-lg font-semibold tracking-tight text-white/90">{item.role}</h3>
-            <p className="mt-0.5 font-mono text-xs text-accent-cyan/80">{item.org}</p>
+            <p className="mt-0.5 font-mono text-xs text-accent-amber/80">{item.org}</p>
             <p className="mt-3 text-sm leading-relaxed text-white/55">{item.description}</p>
             {item.tech.length > 0 && (
               <ul className="mt-4 flex flex-wrap gap-1.5" aria-label="Technologies">
@@ -74,14 +74,14 @@ export default function ExperienceSection({ items }: { items: Experience[] }) {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">
-      <SectionHeading index="02" label="EXPERIENCE" title={<>Field log.</>} />
+      <SectionHeading index="02" label="EXPERIENCE" title={<>Work history.</>} />
 
       <div ref={lineRef} className="relative mt-14">
         {/* Rail */}
         <div className="absolute bottom-0 left-[13px] top-0 w-px bg-white/8 md:left-1/2" aria-hidden="true" />
         <motion.div
           style={{ scaleY }}
-          className="absolute bottom-0 left-[13px] top-0 w-px origin-top bg-gradient-to-b from-accent-cyan via-accent-cyan/60 to-accent-violet/70 md:left-1/2"
+          className="absolute bottom-0 left-[13px] top-0 w-px origin-top bg-accent-amber md:left-1/2"
           aria-hidden="true"
         />
 

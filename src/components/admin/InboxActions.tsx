@@ -22,7 +22,7 @@ export function InboxActions({
 
   return (
     <div className="flex shrink-0 gap-2">
-      <a href={replyMailto} className={`${btn} hover:border-accent-cyan/40 hover:text-accent-cyan`}>
+      <a href={replyMailto} className={`${btn} hover:border-accent-amber/40 hover:text-accent-amber`}>
         Reply
       </a>
       <button

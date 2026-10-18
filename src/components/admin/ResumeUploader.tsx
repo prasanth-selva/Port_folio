@@ -47,7 +47,7 @@ export function ResumeUploader({ currentUrl }: { currentUrl: string | null }) {
         Served from Supabase Storage. Max 8 MB, PDF only.
       </p>
 
-      <div className="glass mt-6 rounded-2xl p-6">
+      <div className="surface mt-6 rounded-2xl p-6">
         <input
           ref={inputRef}
           type="file"
@@ -59,7 +59,7 @@ export function ResumeUploader({ currentUrl }: { currentUrl: string | null }) {
           type="button"
           onClick={onPick}
           disabled={pending}
-          className="rounded-xl bg-accent-cyan px-6 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.15em] text-black transition-shadow hover:shadow-glow-sm disabled:opacity-50"
+          className="rounded-xl bg-accent-amber px-6 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.15em] text-black transition-shadow hover:shadow-none disabled:opacity-50"
         >
           {pending ? "Uploading…" : "Upload PDF"}
         </button>
@@ -77,7 +77,7 @@ export function ResumeUploader({ currentUrl }: { currentUrl: string | null }) {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-1 block break-all font-mono text-xs text-accent-cyan hover:underline"
+              className="mt-1 block break-all font-mono text-xs text-accent-amber hover:underline"
             >
               {url}
             </a>

@@ -1,40 +1,42 @@
-# Portfolio refresh plan
+# Portfolio cleanup plan
 
 ## Direction
 
-Three candidate visual directions were considered: **Midnight editorial** (0.05), **Warm terminal brutalism** (0.08), and **Soft neon glass** (0.03). The selected direction is **Midnight editorial**: a security portfolio that feels like a printed field journal over a dark operations console, with amber signal accents instead of the previous mint/lilac default.
+Three candidate directions were considered: **Flat field notes** (0.08), **Warm terminal brutalism** (0.05), and **Soft editorial paper** (0.03). The selected direction is **Flat field notes**: a dark, readable security portfolio with one amber accent, hard-edged surfaces, and evidence before decoration.
 
 ### Design system
 
-- **Design movement:** cinematic editorial interface with cyber-operations instrumentation.
-- **Core principles:** high-contrast hierarchy, tactile surfaces, short readable copy, and motion that supports scanning rather than decoration.
-- **Color philosophy:** ink navy and graphite create a calm command-center base; amber marks attention and evidence; muted blue-violet and coral provide restrained secondary signals.
-- **Layout paradigm:** full-width atmospheric bands with narrow editorial rails, offset content blocks, and certificate/achievement galleries that break the centered grid.
-- **Signature elements:** amber hairline rules, corner metadata labels, layered radial light, and document-like media frames.
-- **Interaction philosophy:** hover states feel like revealing metadata; certificate images open into a focused viewer; reduced-motion users get the same information without animation.
-- **Animation:** preserve the hero scrollytelling, use short reveal/hover transitions elsewhere, and never make content depend on motion.
-- **Typography:** Geist for interface copy and a restrained serif display treatment for section titles, with monospace only for labels, dates, and technical metadata.
-- **Brand essence:** an early-career security builder who turns failure modes into useful systems; curious, precise, grounded.
-- **Brand voice:** direct and evidence-led. Example lines: “Proof, not posturing.” and “Open a secure channel.”
-- **Wordmark:** the existing `>_ prasanth.selva` mark is retained, with an amber signal dot and a quieter operations-console treatment.
+- **Design movement:** flat editorial documentation with a practical operations-console feel.
+- **Core principles:** plain language, strong spacing, readable line length, honest evidence, and no decorative effects that compete with the work.
+- **Color philosophy:** near-black background, off-white text, muted gray borders, and one signal-amber accent. No purple/blue pairings.
+- **Layout paradigm:** simple vertical sections, two-column evidence blocks, and project pages that prioritize screenshots, links, and measurable facts when available.
+- **Signature elements:** thin amber rules, square corners, small metadata labels, and visible evidence states for missing uploads.
+- **Interaction philosophy:** interactions reveal links or details; they do not add fake depth, glow, or visual noise.
+- **Animation:** keep only useful scroll transitions and the existing real hero sequence; remove floating orbit visuals, cursor tricks, glow effects, and decorative background motion.
+- **Typography:** one Geist Sans family for headings, body copy, labels, and metadata. Use weight and spacing instead of a second font.
+- **Brand essence:** a cybersecurity student who documents what he built, tested, and learned; direct, practical, credible.
+- **Brand voice:** short, factual, and plain. Example lines: “Here is what I built.” and “Contact me about security work.”
+- **Wordmark:** retain the existing text mark without pill treatments or decorative status effects.
 - **Signature brand color:** signal amber `#E3AE62`.
 
 ## Implementation
 
-- Retheme the shared Tailwind/CSS tokens and navigation so the whole site shares the midnight editorial system.
-- Add descriptive content fields to the public types and seed data, plus a forward-compatible Supabase migration for certification/achievement/skill descriptions and achievement metadata.
-- Add resilient certificate/achievement media frames that display `/certs/*.webp` when the supplied scans are present and never show broken-image chrome when an asset is absent.
-- Upgrade certifications into a document gallery with issuer/date metadata and click-to-enlarge viewing; upgrade achievements into proof cards with result badges and readable descriptions.
-- Make skills feel like a capability map with grouped descriptions and a non-clipping 2D fallback while preserving the guarded 3D orbit.
-- Add Certifications to the public navigation and keep `/manus-routes.json` synchronized with the existing route set.
-- Keep the repository deployable without Supabase or certificate assets by using the existing fallback data path.
+- Replace gradients, glassmorphism, backdrop blur, glow shadows, grid masks, and purple/blue tokens with flat backgrounds, borders, and one amber token.
+- Use Geist Sans as the only font family and remove public-facing monospace/serif styling.
+- Rewrite hero, about, experience, projects, skills, achievements, certifications, and contact copy in plain English; remove inflated or template-like phrases.
+- Remove the 3D skill orbit and 2D orbit fallback; render grouped skills as readable lists with descriptions and levels.
+- Remove fake project image grids and generic mission language; show real cover/gallery media when available and use an honest “Screenshot not uploaded” state otherwise.
+- Keep the certificate and achievement evidence frames, but style them as flat document panels without blur, gradients, or decorative overlays.
+- Simplify navigation, buttons, forms, project detail pages, writeups, and 404/admin surfaces so the flat system is consistent across the app.
+- Keep real numbers already present in the data visible: CGPA, internships, CTF rankings, certifications, team size, and project facts. Do not invent new metrics.
+- Preserve the route manifest, fallback data path, Supabase integration, admin editing, and deployed project behavior.
 
 ## Project structure
 
 - `src/app`: Next.js routes, metadata, and global styles.
-- `src/components/hero`: scroll-driven hero experience.
-- `src/components/sections`: public portfolio sections and content presentation.
-- `src/components/ui`: shared motion, navigation, and interaction primitives.
+- `src/components/hero`: real scroll-driven hero sequence and plain overlay copy.
+- `src/components/sections`: public portfolio sections and evidence-first presentation.
+- `src/components/ui`: shared motion, media, and link primitives.
 - `src/lib`: types, fallback content, data access, validation, and server actions.
-- `public/certs`: expected web-ready certificate scans supplied by the owner.
+- `public/certs`: expected web-ready certificate and achievement scans supplied by the owner.
 - `supabase/migrations`: reproducible database schema changes.

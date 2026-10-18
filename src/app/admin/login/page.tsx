@@ -39,12 +39,11 @@ function LoginForm() {
   };
 
   const inputCls =
-    "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 placeholder:text-white/25 outline-none transition-colors focus:border-accent-cyan/50";
+    "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 placeholder:text-white/25 outline-none transition-colors focus:border-accent-amber/50";
 
   return (
     <div className="grid min-h-screen place-items-center bg-base px-6">
-      <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden="true" />
-      <div className="glass relative w-full max-w-sm rounded-2xl p-8">
+      <div className="surface relative w-full max-w-sm rounded-2xl p-8">
         <p className="mono-label mb-2">/ RESTRICTED AREA</p>
         <h1 className="text-2xl font-semibold tracking-tight text-white/90">
           Admin access
@@ -72,7 +71,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-accent-cyan px-6 py-3 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-black transition-all hover:shadow-glow-sm disabled:opacity-50"
+            className="w-full rounded-xl bg-accent-amber px-6 py-3 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-black transition-all hover:shadow-none disabled:opacity-50"
           >
             {loading ? "AUTHENTICATING…" : "AUTHENTICATE →"}
           </button>

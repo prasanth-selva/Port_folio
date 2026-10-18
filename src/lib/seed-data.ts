@@ -22,14 +22,14 @@ export const SEED_SETTINGS = {
   phone: null as string | null,
   seoTitle: "Prasanth Selva — Cybersecurity Engineer",
   seoDescription:
-    "Portfolio of Prasanth Selva, third-year B.E. CSE (Cybersecurity) student and aspiring cybersecurity engineer: SOC operations, AI-driven threat monitoring, web security and secure systems engineering.",
+    "Portfolio of Prasanth Selva, a cybersecurity student working with SOC operations, web security, Python, Linux, and security tools.",
 };
 
 export const SEED_ABOUT = {
   bio: [
-    "I'm Prasanth Selva, a third-year B.E. Computer Science & Engineering (Cybersecurity) student at KGISL Institute of Technology, Coimbatore, graduating May 2027. I break things to secure them — from SOC dashboards to web apps, I obsess over how systems fail and how to make that failure boring.",
-    "As President of VYUGAM, the Cyber Department Association, I lead a community of builders and breakers: running workshops, capture-the-flag events and security bootcamps for 300+ students. My internships span a SOC floor, a cybercrime police station and a product startup — rare context for an undergraduate, and the reason I think in incidents, not just vulnerabilities.",
-    "The goal is a cybersecurity engineering career with an international trajectory: AI-driven detection engineering, offensive tooling, and secure systems that ordinary people can trust.",
+    "I'm Prasanth Selva, a third-year B.E. Computer Science and Engineering (Cybersecurity) student at KGISL Institute of Technology in Coimbatore. I graduate in May 2027 and work on SOC operations, web security, and security-focused software.",
+    "I am President of VYUGAM, the Cyber Department Association. I help run workshops, CTFs, and training for more than 300 students. I have also worked in a SOC, a cybercrime police station, and a product startup.",
+    "I am looking for cybersecurity engineering work where I can improve detection, test applications, and build useful internal tools.",
   ],
   photo: null as string | null,
   stats: [
@@ -45,9 +45,9 @@ export const SEED_PROJECTS: Project[] = [
     id: "seed-cyberthozhan",
     slug: "cyberthozhan",
     title: "CyberThozhan",
-    tagline: "AI-powered cyber safety platform for Tamil-speaking users",
+    tagline: "Cyber safety app for Tamil-speaking users",
     description:
-      "CyberThozhan is an AI-powered cyber safety platform that teaches safe internet habits and triages scam reports in Tamil and English. It combines a fine-tuned RAG assistant over curated safety corpora with a reporting pipeline that classifies scam screenshots (OTP fraud, phishing, UPI scams) and routes high-risk cases with actionable guidance. Built with Next.js, FastAPI and Ollama; deployed as a PWA for low-bandwidth access.",
+      "CyberThozhan teaches safe internet habits and helps classify scam reports in Tamil and English. It accepts scam screenshots, identifies common cases such as OTP fraud, phishing, and UPI scams, and gives next-step guidance. Built with Next.js, FastAPI, Ollama, and a PWA interface.",
     tech: ["Next.js", "FastAPI", "Ollama", "RAG", "PWA", "Tailwind"],
     cover_image: null,
     gallery: [],
@@ -62,9 +62,9 @@ export const SEED_PROJECTS: Project[] = [
     id: "seed-edumentorai",
     slug: "edumentor-ai",
     title: "EduMentorAI",
-    tagline: "Offline-first AI tutor for rural Tamil Nadu students",
+    tagline: "Local AI tutor for students in rural Tamil Nadu",
     description:
-      "EduMentorAI is an offline-capable AI tutor built for students in rural Tamil Nadu with unreliable connectivity. A FastAPI backend serves a fully local Ollama model; FAISS powers retrieval-augmented answers over the Tamil Nadu state syllabus, and a PWA shell caches lessons for zero-network study sessions. Teachers curate the corpus; students ask in Tamil or English and get syllabus-grounded explanations with citations.",
+      "EduMentorAI is a local AI tutor for students with unreliable internet access. A FastAPI backend serves an Ollama model, and FAISS retrieves answers from the Tamil Nadu state syllabus. The PWA can cache lessons for offline study in Tamil or English.",
     tech: ["FastAPI", "Ollama", "FAISS", "RAG", "PWA", "React"],
     cover_image: null,
     gallery: [],
@@ -79,9 +79,9 @@ export const SEED_PROJECTS: Project[] = [
     id: "seed-hackastorm",
     slug: "hackastorm",
     title: "HACKASTORM",
-    tagline: "AI worker-safety monitoring system — Team Cyberbots",
+    tagline: "Worker-safety monitoring system — Team Cyberbots",
     description:
-      "HACKASTORM is an AI worker-safety monitoring system built with Team Cyberbots for industrial floors. Computer-vision models on edge cameras detect missing PPE, unsafe proximity to machinery and fall events in real time, raising tiered alerts with on-site siren and supervisor notification. The stack pairs YOLO-based detection with a FastAPI control plane and an operator dashboard for shift analytics.",
+      "HACKASTORM is a worker-safety monitoring system built with Team Cyberbots. Edge cameras detect missing PPE, unsafe proximity to machinery, and falls. The system sends alerts through a FastAPI control plane and an operator dashboard.",
     tech: ["Python", "YOLO", "Computer Vision", "FastAPI", "Edge AI"],
     cover_image: null,
     gallery: [],
@@ -96,9 +96,9 @@ export const SEED_PROJECTS: Project[] = [
     id: "seed-isc-realtors",
     slug: "isc-realtors",
     title: "ISC Realtors",
-    tagline: "3D-animated luxury real-estate experience",
+    tagline: "Real-estate website for ISC PropCare",
     description:
-      "ISC Realtors is a 3D-animated luxury real-estate website for ISC PropCare. Cinematic scroll-driven scenes, property showcases with interactive floor plans and a lead pipeline are built on Next.js with WebGL-accented motion. Shipped live at iscpropcare.in with perfect Lighthouse accessibility scores.",
+      "ISC Realtors is a real-estate website for ISC PropCare. It includes property pages, interactive floor plans, and a lead pipeline. Built with Next.js and Three.js and available at iscpropcare.in.",
     tech: ["Next.js", "Three.js", "GSAP", "Tailwind", "Framer Motion"],
     cover_image: null,
     gallery: [],
@@ -121,7 +121,7 @@ export const SEED_EXPERIENCE: Experience[] = [
     end_date: "Jul 2026",
     current: false,
     description:
-      "Engineered detection rules and ran monitoring rotations on the SOC floor. Built automated triage playbooks that cut analyst response time, hardened Linux endpoints, and produced internal threat reports adopted by the engineering team.",
+      "Created detection rules, took part in SOC monitoring rotations, and wrote triage playbooks. Worked on Linux hardening and internal threat reports.",
     tech: ["SIEM", "IDS/IPS", "Linux", "Python"],
     sort_order: 1,
     published: true,
@@ -136,7 +136,7 @@ export const SEED_EXPERIENCE: Experience[] = [
     end_date: "19 Jun 2026",
     current: false,
     description:
-      "Assisted investigations into online fraud and social-media offences: evidence preservation, digital-trace analysis and victim interviews. Witnessed first-hand how cybercrime impacts real people — the reason I treat security as a public good.",
+      "Assisted investigations into online fraud and social-media offences. Work included evidence preservation, digital-trace analysis, and victim interviews.",
     tech: ["Digital Forensics", "OSINT", "Incident Reporting"],
     sort_order: 2,
     published: true,
@@ -151,7 +151,7 @@ export const SEED_EXPERIENCE: Experience[] = [
     end_date: "Apr 2026",
     current: false,
     description:
-      "Split my time between the SOC and the product team: AI-based threat monitoring pipelines, network-security reviews and hardening, plus full-stack development of internal tools. Owned alert-quality metrics end to end — from rule tuning to analyst feedback loops.",
+      "Worked with the SOC and product teams on threat monitoring, network-security reviews, hardening, and internal tools. Helped tune alerts and review analyst feedback.",
     tech: ["SOC Operations", "AI Threat Monitoring", "Network Security", "Next.js", "FastAPI"],
     sort_order: 3,
     published: true,
@@ -166,7 +166,7 @@ export const SEED_EXPERIENCE: Experience[] = [
     end_date: null,
     current: true,
     description:
-      "Leading the cyber department association: curating workshops, CTFs and speaker sessions for 300+ students, managing a 12-member core team, and partnering with industry mentors for hands-on security training.",
+      "Lead workshops, CTFs, and speaker sessions for more than 300 students. Manage a 12-member core team and coordinate security training with industry mentors.",
     tech: ["Leadership", "Community", "Event Operations"],
     sort_order: 4,
     published: true,

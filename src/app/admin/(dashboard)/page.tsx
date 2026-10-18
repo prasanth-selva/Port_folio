@@ -59,7 +59,7 @@ export default async function AdminDashboard() {
 
   if (!data) {
     return (
-      <div className="glass rounded-2xl p-8">
+      <div className="surface rounded-2xl p-8">
         <h1 className="text-2xl font-semibold tracking-tight text-white/90">Dashboard</h1>
         <p className="mt-4 rounded-xl border border-amber-400/25 bg-amber-400/[0.06] px-4 py-3 font-mono text-xs text-amber-300">
           Supabase is not configured. The public site runs on seed data; the
@@ -90,7 +90,7 @@ export default async function AdminDashboard() {
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         {cards.map((card) => (
-          <Link key={card.href} href={card.href} className="glass rounded-2xl p-5 transition-colors hover:border-accent-cyan/30">
+          <Link key={card.href} href={card.href} className="surface rounded-2xl p-5 transition-colors hover:border-accent-amber/30">
             <p className="text-3xl font-semibold tabular-nums text-white/90">{card.value}</p>
             <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">{card.label}</p>
           </Link>
@@ -98,10 +98,10 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="glass rounded-2xl p-6">
+        <div className="surface rounded-2xl p-6">
           <div className="flex items-center justify-between">
             <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-white/50">Recent messages</h2>
-            <Link href="/admin/inbox" className="font-mono text-[11px] text-accent-cyan hover:underline">
+            <Link href="/admin/inbox" className="font-mono text-[11px] text-accent-amber hover:underline">
               Inbox →
             </Link>
           </div>
@@ -110,7 +110,7 @@ export default async function AdminDashboard() {
               <li key={message.id} className="rounded-xl border border-white/8 p-3">
                 <div className="flex items-center justify-between gap-2">
                   <p className="truncate text-sm font-medium text-white/85">{message.name}</p>
-                  {!message.read && <span className="h-2 w-2 shrink-0 rounded-full bg-accent-cyan" aria-label="unread" />}
+                  {!message.read && <span className="h-2 w-2 shrink-0 rounded-full bg-accent-amber" aria-label="unread" />}
                 </div>
                 <p className="mt-0.5 truncate font-mono text-[11px] text-white/40">{message.subject ?? "(no subject)"}</p>
               </li>
@@ -123,7 +123,7 @@ export default async function AdminDashboard() {
           </ul>
         </div>
 
-        <div className="glass rounded-2xl p-6">
+        <div className="surface rounded-2xl p-6">
           <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-white/50">Homepage views — last 14 days</h2>
           {!analyticsAvailable ? (
             <p className="mt-4 rounded-xl border border-amber-400/25 bg-amber-400/[0.06] p-4 font-mono text-xs text-amber-300">
@@ -138,7 +138,7 @@ export default async function AdminDashboard() {
               {visits.map((visit) => (
                 <div key={visit.day} className="group relative flex-1" title={`${visit.day}: ${visit.views} views`}>
                   <div
-                    className="w-full rounded-t bg-gradient-to-t from-accent-cyan/30 to-accent-cyan/80 transition-all group-hover:to-accent-cyan"
+                    className="w-full rounded-t bg-accent-amber transition-all"
                     style={{ height: `${Math.max(visit.views ? 4 : 1, (visit.views / maxVisits) * 100)}%` }}
                   />
                 </div>

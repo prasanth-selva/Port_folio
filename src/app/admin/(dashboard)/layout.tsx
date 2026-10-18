@@ -38,7 +38,7 @@ export default async function AdminDashboardLayout({
       <div className="mx-auto flex max-w-7xl gap-8 px-6 py-8">
         <aside className="sticky top-8 hidden h-fit w-56 shrink-0 md:block">
           <p className="font-mono text-sm font-semibold tracking-tight text-white/90">
-            <span className="text-accent-cyan">&gt;_</span> admin
+            <span className="text-accent-amber">&gt;_</span> admin
           </p>
           <AdminNav unread={unread} />
           <form action="/api/admin/signout" method="post">
@@ -54,7 +54,7 @@ export default async function AdminDashboardLayout({
           {/* Mobile nav */}
           <div className="mb-6 md:hidden">
             <p className="font-mono text-sm font-semibold tracking-tight text-white/90">
-              <span className="text-accent-cyan">&gt;_</span> admin
+              <span className="text-accent-amber">&gt;_</span> admin
             </p>
             <AdminNav unread={unread} compact />
           </div>

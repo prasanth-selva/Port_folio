@@ -122,7 +122,7 @@ export function CrudTable({
         <button
           type="button"
           onClick={openNew}
-          className="rounded-xl bg-accent-cyan px-4 py-2 font-mono text-xs font-semibold uppercase tracking-[0.15em] text-black transition-shadow hover:shadow-glow-sm"
+          className="rounded-xl bg-accent-amber px-4 py-2 font-mono text-xs font-semibold uppercase tracking-[0.15em] text-black transition-shadow hover:shadow-none"
         >
           + New
         </button>
@@ -142,7 +142,7 @@ export function CrudTable({
             onDragStart={() => onDragStart(row.id)}
             onDragOver={(e) => onDragOver(e, row.id)}
             onDragEnd={onDragEnd}
-            className={`glass flex items-center justify-between gap-4 rounded-xl px-4 py-3 ${
+            className={`surface flex items-center justify-between gap-4 rounded-xl px-4 py-3 ${
               dragId === row.id ? "opacity-50" : ""
             } ${reorderAction ? "cursor-grab active:cursor-grabbing" : ""}`}
           >
@@ -164,7 +164,7 @@ export function CrudTable({
               <button
                 type="button"
                 onClick={() => openEdit(row)}
-                className="rounded-lg border border-white/10 px-3 py-1.5 font-mono text-[11px] text-white/60 transition-colors hover:border-accent-cyan/40 hover:text-accent-cyan"
+                className="rounded-lg border border-white/10 px-3 py-1.5 font-mono text-[11px] text-white/60 transition-colors hover:border-accent-amber/40 hover:text-accent-amber"
               >
                 Edit
               </button>
@@ -197,14 +197,14 @@ export function CrudTable({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4 "
             onClick={() => setEditing(null)}
           >
             <motion.div
               initial={{ opacity: 0, y: 16, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 16, scale: 0.98 }}
-              className="glass max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl p-6"
+              className="surface max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl p-6"
               onClick={(e) => e.stopPropagation()}
             >
               <h2 className="text-lg font-semibold tracking-tight text-white/90">
@@ -224,7 +224,7 @@ export function CrudTable({
                           type="checkbox"
                           name={f.name}
                           defaultChecked={checked}
-                          className="h-4 w-4 rounded border-white/20 bg-white/5 accent-accent-cyan"
+                          className="h-4 w-4 rounded border-white/20 bg-white/5 accent-accent-amber"
                         />
                         {f.label}
                       </label>
@@ -260,7 +260,7 @@ export function CrudTable({
                           rows={5}
                           placeholder={f.placeholder}
                           defaultValue={defaultVal}
-                          className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 outline-none transition-colors focus:border-accent-cyan/50"
+                          className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 outline-none transition-colors focus:border-accent-amber/50"
                         />
                       ) : (
                         <input
@@ -269,7 +269,7 @@ export function CrudTable({
                           type={f.type ?? "text"}
                           placeholder={f.placeholder}
                           defaultValue={defaultVal}
-                          className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 outline-none transition-colors focus:border-accent-cyan/50"
+                          className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 outline-none transition-colors focus:border-accent-amber/50"
                         />
                       )}
                     </div>
@@ -287,7 +287,7 @@ export function CrudTable({
                   <button
                     type="submit"
                     disabled={pending}
-                    className="rounded-xl bg-accent-cyan px-6 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.15em] text-black disabled:opacity-50"
+                    className="rounded-xl bg-accent-amber px-6 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.15em] text-black disabled:opacity-50"
                   >
                     {pending ? "Saving…" : "Save"}
                   </button>

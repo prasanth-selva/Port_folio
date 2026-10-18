@@ -16,10 +16,10 @@ export default function AchievementsSection({ items }: { items: Achievement[] })
   return (
     <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">
       <div className="grid gap-8 md:grid-cols-[1fr_260px] md:items-end">
-        <SectionHeading index="05" label="ACHIEVEMENTS & CTFS" title={<>Proof of work.</>} />
+        <SectionHeading index="05" label="ACHIEVEMENTS & CTFS" title={<>Results and events.</>} />
         <Reveal delay={0.12}>
-          <p className="border-l border-accent-coral/50 pl-4 text-sm leading-relaxed text-white/50">
-            Competition results, community leadership, and the moments where theory had to survive a clock.
+          <p className="border-l border-accent-amber/50 pl-4 text-sm leading-relaxed text-white/50">
+            Competition results, community work, and other documented outcomes.
           </p>
         </Reveal>
       </div>
@@ -35,13 +35,13 @@ export default function AchievementsSection({ items }: { items: Achievement[] })
                   label={`PROOF ${String(i + 1).padStart(2, "0")}`}
                   compact
                 />
-                <span className="absolute left-3 top-3 border border-accent-coral/45 bg-[#17131a]/85 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-accent-coral">
+                <span className="absolute left-3 top-3 border border-accent-amber/45 bg-[#17131a]/85 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-accent-amber">
                   {resultLabel(item)}
                 </span>
               </div>
               <div className="relative p-5 md:p-6">
                 <div className="flex items-center justify-between gap-4">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent-cyan/80">{item.occurred_on ?? "UNDATED"}</p>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent-amber/80">{item.occurred_on ?? "UNDATED"}</p>
                   <span className="font-mono text-[10px] text-white/25">{String(i + 1).padStart(2, "0")}</span>
                 </div>
                 <h3 className="mt-4 text-xl font-medium leading-tight tracking-tight text-white/95">{item.title}</h3>

@@ -21,7 +21,7 @@ export default function WriteupsList({ posts }: { posts: PostRow[] }) {
   return (
     <ul className="space-y-2">
       {posts.map((p) => (
-        <li key={p.id} className="glass flex items-center justify-between gap-4 rounded-xl px-4 py-3">
+        <li key={p.id} className="surface flex items-center justify-between gap-4 rounded-xl px-4 py-3">
           <div className="min-w-0">
             <p className="truncate font-medium text-white/85">{p.title}</p>
             <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.18em]">
@@ -37,7 +37,7 @@ export default function WriteupsList({ posts }: { posts: PostRow[] }) {
             <button
               type="button"
               onClick={() => router.push(`/admin/writeups/${p.id}`)}
-              className="rounded-lg border border-white/10 px-3 py-1.5 font-mono text-[11px] text-white/60 transition-colors hover:border-accent-cyan/40 hover:text-accent-cyan"
+              className="rounded-lg border border-white/10 px-3 py-1.5 font-mono text-[11px] text-white/60 transition-colors hover:border-accent-amber/40 hover:text-accent-amber"
             >
               Edit
             </button>

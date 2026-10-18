@@ -26,7 +26,7 @@ export function MagneticLink({
       className={
         muted
           ? "inline-flex items-center gap-2 rounded-full border border-white/15 px-7 py-3 font-mono text-xs uppercase tracking-[0.2em] text-white/70 transition-colors hover:border-white/40 hover:text-white"
-          : "inline-flex items-center gap-2 rounded-full bg-accent-cyan px-7 py-3 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-black shadow-glow transition-shadow hover:shadow-glow-sm"
+          : "inline-flex items-center gap-2 rounded-full bg-accent-amber px-7 py-3 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-black shadow-none transition-shadow hover:shadow-none"
       }
     >
       {children}

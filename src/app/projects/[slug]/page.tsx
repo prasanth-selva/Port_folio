@@ -43,13 +43,12 @@ export default async function ProjectPage({
 
   return (
     <main className="relative min-h-screen">
-      <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden="true" />
       <div className="relative mx-auto max-w-5xl px-6 pt-28 md:pt-36">
         <Link
           href="/#projects"
-          className="font-mono text-xs tracking-[0.2em] text-white/40 transition-colors hover:text-accent-cyan"
+          className="font-mono text-xs tracking-[0.2em] text-white/40 transition-colors hover:text-accent-amber"
         >
-          ← BACK TO PROJECTS
+          ← Back to projects
         </Link>
 
         <header className="mt-8">
@@ -65,7 +64,7 @@ export default async function ProjectPage({
                 href={project.live_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-accent-cyan px-5 py-2 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-black shadow-glow transition-shadow hover:shadow-glow-sm"
+                className="inline-flex items-center gap-2 border border-accent-amber bg-accent-amber px-5 py-2 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-black"
               >
                 Live Site <span aria-hidden="true">↗</span>
               </a>
@@ -75,7 +74,7 @@ export default async function ProjectPage({
                 href={project.github_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 font-mono text-xs uppercase tracking-[0.18em] text-white/70 transition-colors hover:border-accent-cyan/40 hover:text-white"
+                className="inline-flex items-center gap-2 border border-white/20 px-5 py-2 font-sans text-xs uppercase tracking-[0.14em] text-white/70 transition-colors hover:border-accent-amber hover:text-white"
               >
                 Source <span aria-hidden="true">↗</span>
               </a>
@@ -98,14 +97,14 @@ export default async function ProjectPage({
 
         <div className="mt-12 grid gap-10 md:grid-cols-[1.6fr_1fr]">
           <div>
-            <p className="mono-label mb-4">/ BRIEFING</p>
+            <p className="mono-label mb-4">DESCRIPTION</p>
             <p className="whitespace-pre-line leading-relaxed text-white/60 md:text-lg">
               {project.description}
             </p>
 
             {project.gallery.length > 0 && (
               <>
-                <p className="mono-label mb-4 mt-12">/ GALLERY</p>
+                <p className="mono-label mb-4 mt-12">SCREENSHOTS</p>
                 <div className="grid gap-4 sm:grid-cols-2">
                   {project.gallery.map((src, i) => (
                     <div
@@ -127,12 +126,12 @@ export default async function ProjectPage({
           </div>
 
           <aside>
-            <p className="mono-label mb-4">/ STACK</p>
+            <p className="mono-label mb-4">TOOLS</p>
             <ul className="flex flex-wrap gap-2">
               {project.tech.map((t) => (
                 <li
                   key={t}
-                  className="rounded-full border border-accent-cyan/20 bg-accent-cyan/[0.06] px-3 py-1 font-mono text-xs text-accent-cyan/90"
+                  className="rounded-full border border-accent-amber/20 bg-accent-amber/[0.06] px-3 py-1 font-mono text-xs text-accent-amber/90"
                 >
                   {t}
                 </li>
@@ -143,15 +142,15 @@ export default async function ProjectPage({
 
         {others.length > 0 && (
           <footer className="mt-20 border-t border-white/8 pb-24 pt-10">
-            <p className="mono-label mb-6">/ NEXT MISSIONS</p>
+            <p className="mono-label mb-6">OTHER PROJECTS</p>
             <div className="grid gap-4 sm:grid-cols-3">
               {others.map((p) => (
                 <Link
                   key={p.id}
                   href={`/projects/${p.slug}`}
-                  className="glass group rounded-2xl p-5 transition-colors hover:border-accent-cyan/30"
+                  className="surface group rounded-2xl p-5 transition-colors hover:border-accent-amber/30"
                 >
-                  <p className="font-semibold tracking-tight text-white/90 group-hover:text-accent-cyan">
+                  <p className="font-semibold tracking-tight text-white/90 group-hover:text-accent-amber">
                     {p.title}
                   </p>
                   <p className="mt-1 line-clamp-2 text-sm text-white/45">{p.tagline}</p>

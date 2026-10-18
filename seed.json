@@ -3,8 +3,8 @@
     {
       "slug": "cyberthozhan",
       "title": "CyberThozhan",
-      "tagline": "AI-powered cyber safety platform for Tamil-speaking users",
-      "description": "CyberThozhan is an AI-powered cyber safety platform that teaches safe internet habits and triages scam reports in Tamil and English. It combines a fine-tuned RAG assistant over curated safety corpora with a reporting pipeline that classifies scam screenshots (OTP fraud, phishing, UPI scams) and routes high-risk cases with actionable guidance. Built with Next.js, FastAPI and Ollama; deployed as a PWA for low-bandwidth access.",
+      "tagline": "Cyber safety app for Tamil-speaking users",
+      "description": "CyberThozhan teaches safe internet habits and helps classify scam reports in Tamil and English. It accepts scam screenshots, identifies common cases such as OTP fraud, phishing, and UPI scams, and gives next-step guidance. Built with Next.js, FastAPI, Ollama, and a PWA interface.",
       "tech": [
         "Next.js",
         "FastAPI",
@@ -24,7 +24,7 @@
     {
       "slug": "edumentor-ai",
       "title": "EduMentorAI",
-      "tagline": "Offline-first AI tutor for rural Tamil Nadu students",
+      "tagline": "Local AI tutor for students in rural Tamil Nadu",
       "description": "EduMentorAI is an offline-capable AI tutor built for students in rural Tamil Nadu with unreliable connectivity. A FastAPI backend serves a fully local Ollama model; FAISS powers retrieval-augmented answers over the Tamil Nadu state syllabus, and a PWA shell caches lessons for zero-network study sessions. Teachers curate the corpus; students ask in Tamil or English and get syllabus-grounded explanations with citations.",
       "tech": [
         "FastAPI",
@@ -65,8 +65,8 @@
     {
       "slug": "isc-realtors",
       "title": "ISC Realtors",
-      "tagline": "3D-animated luxury real-estate experience",
-      "description": "ISC Realtors is a 3D-animated luxury real-estate website for ISC PropCare. Cinematic scroll-driven scenes, property showcases with interactive floor plans and a lead pipeline are built on Next.js with WebGL-accented motion. Shipped live at iscpropcare.in with perfect Lighthouse accessibility scores.",
+      "tagline": "Real-estate website for ISC PropCare",
+      "description": "ISC Realtors is a real-estate website for ISC PropCare. It includes property pages, interactive floor plans, and a lead pipeline. Built with Next.js and Three.js and available at iscpropcare.in.",
       "tech": [
         "Next.js",
         "Three.js",
@@ -110,7 +110,7 @@
       "start_date": "5 Jun 2026",
       "end_date": "19 Jun 2026",
       "current": false,
-      "description": "Assisted investigations into online fraud and social-media offences: evidence preservation, digital-trace analysis and victim interviews. Witnessed first-hand how cybercrime impacts real people — the reason I treat security as a public good.",
+      "description": "Assisted investigations into online fraud and social-media offences. Work included evidence preservation, digital-trace analysis, and victim interviews.",
       "tech": [
         "Digital Forensics",
         "OSINT",

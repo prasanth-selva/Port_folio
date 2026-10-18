@@ -63,11 +63,10 @@ export default async function WriteupPage({
 
   return (
     <main className="relative min-h-screen">
-      <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden="true" />
       <article className="relative mx-auto max-w-3xl px-6 pb-24 pt-28 md:pt-36">
         <Link
           href="/writeups"
-          className="font-mono text-xs tracking-[0.2em] text-white/40 transition-colors hover:text-accent-cyan"
+          className="font-mono text-xs tracking-[0.2em] text-white/40 transition-colors hover:text-accent-amber"
         >
           ← ALL WRITEUPS
         </Link>
@@ -85,7 +84,7 @@ export default async function WriteupPage({
             {post.tags.map((t) => (
               <li
                 key={t}
-                className="rounded-full border border-accent-cyan/20 bg-accent-cyan/[0.06] px-2.5 py-0.5 font-mono text-[10px] text-accent-cyan/90"
+                className="rounded-full border border-accent-amber/20 bg-accent-amber/[0.06] px-2.5 py-0.5 font-mono text-[10px] text-accent-amber/90"
               >
                 #{t}
               </li>

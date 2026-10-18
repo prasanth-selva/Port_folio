@@ -16,15 +16,13 @@ export default async function WriteupsPage() {
 
   return (
     <main className="relative min-h-screen">
-      <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden="true" />
       <div className="relative mx-auto max-w-4xl px-6 pt-28 md:pt-36">
-        <p className="mono-label mb-3">/ FIELD NOTES</p>
+        <p className="mono-label mb-3">FIELD NOTES</p>
         <h1 className="text-balance text-4xl font-semibold tracking-tight text-white/90 md:text-6xl">
           Writeups.
         </h1>
         <p className="mt-4 max-w-xl leading-relaxed text-white/55 md:text-lg">
-          CTF debriefs, application-security notes and lessons from breaking
-          (then fixing) real systems.
+          CTF notes, application-security notes, and practical lessons from projects.
         </p>
 
         {tags.length > 0 && (
@@ -45,14 +43,14 @@ export default async function WriteupsPage() {
             <Link
               key={post.id}
               href={`/writeups/${post.slug}`}
-              className="glass group block rounded-2xl p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent-cyan/30"
+              className="surface group block rounded-2xl p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent-amber/30"
             >
               <div className="flex flex-wrap items-center gap-3 font-mono text-[11px] tracking-[0.15em] text-white/35">
                 <span>{formatDate(post.published_at ?? post.created_at)}</span>
                 <span aria-hidden="true">·</span>
                 <span>{post.reading_minutes} MIN READ</span>
               </div>
-              <h2 className="mt-2 text-xl font-semibold tracking-tight text-white/90 transition-colors group-hover:text-accent-cyan">
+              <h2 className="mt-2 text-xl font-semibold tracking-tight text-white/90 transition-colors group-hover:text-accent-amber">
                 {post.title}
               </h2>
               {post.excerpt && (
@@ -62,7 +60,7 @@ export default async function WriteupsPage() {
                 {post.tags.map((t) => (
                   <li
                     key={t}
-                    className="rounded-full border border-accent-cyan/15 bg-accent-cyan/[0.05] px-2.5 py-0.5 font-mono text-[10px] text-accent-cyan/80"
+                    className="rounded-full border border-accent-amber/15 bg-accent-amber/[0.05] px-2.5 py-0.5 font-mono text-[10px] text-accent-amber/80"
                   >
                     #{t}
                   </li>

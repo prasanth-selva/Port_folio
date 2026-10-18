@@ -193,7 +193,7 @@ export default function CyberCoreScroll({ badge, resumeUrl }: Props) {
     };
   }, [manifest, ready, scrollYProgress]);
 
-  // --- Fallback painter loop (procedural cyber-core) -------------------------
+  // --- Fallback painter loop for installations without the frame sequence ---
   useEffect(() => {
     if (!useFallback) return;
     const canvas = canvasRef.current;
@@ -213,21 +213,6 @@ export default function CyberCoreScroll({ badge, resumeUrl }: Props) {
           aria-hidden="true"
         />
 
-        {/* Cinematic vignette to blend frame edges into the page */}
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(8,13,18,0.55) 82%, #080D12 100%)",
-          }}
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-40"
-          style={{ background: "linear-gradient(to bottom, transparent, #080D12)" }}
-          aria-hidden="true"
-        />
-
         {!useFallback && (
           <HeroOverlay
             scrollYProgress={scrollYProgress}
@@ -240,16 +225,12 @@ export default function CyberCoreScroll({ badge, resumeUrl }: Props) {
         {!ready && !useFallback && (
           <div className="absolute inset-0 z-20 grid place-items-center bg-base">
             <div className="flex flex-col items-center gap-5">
-              <div className="relative h-16 w-16">
-                <div className="absolute inset-0 animate-spin rounded-full border border-white/10 border-t-accent-cyan [animation-duration:1.1s]" />
-                <div className="absolute inset-2 animate-spin rounded-full border border-white/5 border-b-accent-violet/70 [animation-duration:1.8s] [animation-direction:reverse]" />
-              </div>
-              <div className="font-mono text-xs tracking-[0.3em] text-white/50">
-                LOADING SEQUENCE {String(Math.round(progress * 100)).padStart(3, "0")}%
+              <div className="text-sm font-semibold uppercase tracking-[0.14em] text-accent-amber">
+                Loading {String(Math.round(progress * 100)).padStart(3, "0")} %
               </div>
               <div className="h-px w-48 overflow-hidden bg-white/10">
                 <div
-                  className="h-full bg-accent-cyan transition-[width] duration-150 ease-out"
+                  className="h-full bg-accent-amber transition-[width] duration-150 ease-out"
                   style={{ width: `${Math.round(progress * 100)}%` }}
                 />
               </div>

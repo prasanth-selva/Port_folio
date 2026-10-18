@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 /**
- * Consistent vertical rhythm + optional faint-grid backdrop for sections.
+ * Consistent vertical rhythm and simple section separators.
  * `kind="hero"` renders children without padding (scrollytelling manages its own).
  */
 export default function SectionShell({
@@ -17,9 +17,8 @@ export default function SectionShell({
     return <div id={id}>{children}</div>;
   }
   return (
-    <section id={id} className="section-wash relative scroll-mt-20">
-      {kind === "grid" && <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden="true" />}
-      <div className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">{children}</div>
+    <section id={id} className="scroll-mt-20 border-t border-[#292722]">
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">{children}</div>
     </section>
   );
 }

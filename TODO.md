@@ -1,8 +1,9 @@
-# Portfolio refresh TODO
+# Portfolio cleanup TODO
 
-- [x] **Certificate gallery:** Certifications render descriptive copy, issuer/date metadata, verification links, and the supplied `/certs/*.webp` scans when present; missing media uses a designed fallback instead of a broken image. The scans themselves are still awaiting re-upload because they were not present in this checkout.
-- [x] **Achievement proof:** Achievements render descriptive detail, date, result/placement metadata, and supplied images in a distinct proof-of-work layout; missing media is handled by the same fallback.
-- [x] **Capability map:** Skills render grouped descriptions and a readable fallback orbit whose labels do not clip; the guarded 3D orbit remains optional.
-- [x] **Navigation and routes:** Public navigation includes Certifications and the route manifest remains valid for the existing page routes.
-- [x] **Visual redesign:** Replace the flat mint/lilac treatment with the midnight editorial palette, layered background, richer surfaces, document-like cards, and consistent typography/motion.
-- [x] **Verification:** Typecheck, lint, and production build pass; the app remains usable with no Supabase environment and no certificate assets in the checkout.
+- [x] **Flat visual system:** Removed gradients, glassmorphism, backdrop blur, glow shadows, grid masks, and purple/blue combinations. The site now uses flat colors, borders, readable spacing, and one amber accent.
+- [x] **Plain English copy:** Rewrote public headings, descriptions, CTAs, metadata, and status messages in direct language and removed hype and cyber-drama wording.
+- [x] **Evidence-first projects:** Project cards now show real cover/gallery media when available, live/source facts, and an honest “Screenshot not uploaded” state instead of fake graphics.
+- [x] **Typography and spacing:** The public app now uses one Geist Sans family with a simpler type scale, comfortable line height, and consistent section/card spacing.
+- [x] **Remove fake elements:** Removed the floating skill orbit, decorative cursor, terminal easter egg, glow effects, and unused decorative UI while preserving real project, certification, achievement, and contact functionality.
+- [x] **Preserve behavior:** Public routes, route manifest, admin editing, Supabase fallback behavior, certificate evidence viewer, and the real hero frame sequence remain available.
+- [x] **Verification and ship:** Typecheck, lint, production build, JSON validation, and diff checks pass. GitHub push and hosted deployment follow after the final commit.

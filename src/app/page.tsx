@@ -2,7 +2,6 @@ import PortfolioPageView from "@/components/analytics/PortfolioPageView";
 import CyberCoreScroll from "@/components/hero/CyberCoreScrollClient";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
-import TerminalEasterEgg from "@/components/layout/TerminalEasterEgg";
 import AboutSection from "@/components/sections/AboutSection";
 import AchievementsSection from "@/components/sections/AchievementsSection";
 import CertificationsSection from "@/components/sections/CertificationsSection";
@@ -62,7 +61,6 @@ export default async function HomePage() {
         </SectionShell>
       </main>
       <Footer settings={settings} />
-      <TerminalEasterEgg />
     </>
   );
 }

@@ -68,7 +68,7 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
   };
 
   const inputCls =
-    "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 outline-none transition-colors focus:border-accent-cyan/50";
+    "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 outline-none transition-colors focus:border-accent-amber/50";
 
   return (
     <div>
@@ -79,7 +79,7 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
         <button
           type="button"
           onClick={() => setShowPreview((v) => !v)}
-          className="rounded-xl border border-white/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.15em] text-white/60 transition-colors hover:border-accent-cyan/40 hover:text-accent-cyan"
+          className="rounded-xl border border-white/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.15em] text-white/60 transition-colors hover:border-accent-amber/40 hover:text-accent-amber"
         >
           {showPreview ? "Hide preview" : "Live preview"}
         </button>
@@ -126,7 +126,7 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
         {showPreview && (
           <div className="md:col-span-2">
             <p className="mono-label mb-2">LIVE PREVIEW</p>
-            <div className="mdx glass max-h-[60vh] overflow-y-auto rounded-2xl p-6">
+            <div className="mdx surface max-h-[60vh] overflow-y-auto rounded-2xl p-6">
               {preview ? (
                 preview.html.map((html, i) => (
                   <div key={i} dangerouslySetInnerHTML={{ __html: html }} />
@@ -155,7 +155,7 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
         </div>
         <div className="flex items-end">
           <label className="flex items-center gap-3 font-mono text-xs text-white/60">
-            <input type="checkbox" name="published" defaultChecked={post?.published ?? true} className="h-4 w-4 rounded border-white/20 bg-white/5 accent-accent-cyan" />
+            <input type="checkbox" name="published" defaultChecked={post?.published ?? true} className="h-4 w-4 rounded border-white/20 bg-white/5 accent-accent-amber" />
             Published
           </label>
         </div>
@@ -183,7 +183,7 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
           <button
             type="submit"
             disabled={pending}
-            className="rounded-xl bg-accent-cyan px-6 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.15em] text-black transition-shadow hover:shadow-glow-sm disabled:opacity-50"
+            className="rounded-xl bg-accent-amber px-6 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.15em] text-black transition-shadow hover:shadow-none disabled:opacity-50"
           >
             {pending ? "Saving…" : "Save writeup"}
           </button>

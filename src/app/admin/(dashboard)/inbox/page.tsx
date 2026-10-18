@@ -13,7 +13,7 @@ export default async function AdminInboxPage() {
 
   if (!hasSupabase) {
     return (
-      <div className="glass rounded-2xl p-8">
+      <div className="surface rounded-2xl p-8">
         <h1 className="text-2xl font-semibold tracking-tight text-white/90">Inbox</h1>
         <p className="mt-4 rounded-xl border border-amber-400/25 bg-amber-400/[0.06] px-4 py-3 font-mono text-xs text-amber-300">
           Supabase not configured — messages cannot be stored or listed.
@@ -39,7 +39,7 @@ export default async function AdminInboxPage() {
         {(messages ?? []).map((m) => (
           <li
             key={m.id}
-            className={`glass rounded-2xl p-5 ${m.read ? "" : "border-accent-cyan/25"}`}
+            className={`surface rounded-2xl p-5 ${m.read ? "" : "border-accent-amber/25"}`}
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0">
@@ -47,7 +47,7 @@ export default async function AdminInboxPage() {
                   {m.name}{" "}
                   <a
                     href={`mailto:${m.email}`}
-                    className="font-mono text-xs text-accent-cyan/80 hover:underline"
+                    className="font-mono text-xs text-accent-amber/80 hover:underline"
                   >
                     {m.email}
                   </a>
@@ -71,7 +71,7 @@ export default async function AdminInboxPage() {
       </ul>
 
       <p className="mt-6 font-mono text-[10px] tracking-[0.2em] text-white/25">
-        RETURN TO <Link href="/admin" className="text-accent-cyan/70 hover:underline">DASHBOARD</Link>
+        RETURN TO <Link href="/admin" className="text-accent-amber/70 hover:underline">DASHBOARD</Link>
       </p>
     </div>
   );

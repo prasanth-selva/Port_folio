@@ -37,7 +37,7 @@ export default function ProofMedia({
             alt={alt}
             fill
             sizes="(max-width: 768px) 100vw, 560px"
-            className="object-cover transition duration-500 group-hover:scale-[1.03]"
+            className="object-cover"
             onError={() => setFailed(true)}
           />
           <span className="absolute bottom-3 right-3 bg-black/65 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.18em] text-white/75 opacity-0 transition-opacity group-hover:opacity-100">
@@ -45,19 +45,9 @@ export default function ProofMedia({
           </span>
         </button>
       ) : (
-        <div className="flex h-full flex-col justify-between p-4 font-mono text-white/40">
-          <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.2em]">
-            <span>Evidence file</span>
-            <span className="text-accent-cyan/80">{label}</span>
-          </div>
-          <div className="space-y-2">
-            <div className="h-px w-3/4 bg-white/20" />
-            <div className="h-px w-1/2 bg-white/10" />
-            <div className="h-px w-2/3 bg-white/10" />
-          </div>
-          <p className="max-w-[18rem] text-[10px] leading-relaxed text-white/30">
-            Scan pending — add the supplied web-ready image to <span className="text-accent-cyan/70">/public/certs</span>.
-          </p>
+        <div className="flex h-full flex-col justify-end p-4 text-white/45">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent-amber">{label}</p>
+          <p className="mt-2 max-w-[18rem] text-sm leading-5">Evidence image not uploaded.</p>
         </div>
       )}
     </div>
