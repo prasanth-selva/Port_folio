@@ -42,7 +42,7 @@ export function SectionHeading({
   return (
     <Reveal className={className}>
       <div className="flex items-start gap-4">
-        <span className="font-mono text-xs tracking-[0.2em] text-accent-amber/80">{index}</span>
+        <span className="font-sans text-xs tracking-[0.2em] text-accent-metal/80">{index}</span>
         <div className="min-w-0 flex-1">
           <p className="mono-label mb-3">{label}</p>
           <div className="editorial-rule mb-5 max-w-2xl" aria-hidden="true" />

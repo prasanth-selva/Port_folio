@@ -37,14 +37,14 @@ export default async function AdminDashboardLayout({
     <div className="min-h-screen bg-base">
       <div className="mx-auto flex max-w-7xl gap-8 px-6 py-8">
         <aside className="sticky top-8 hidden h-fit w-56 shrink-0 md:block">
-          <p className="font-mono text-sm font-semibold tracking-tight text-white/90">
-            <span className="text-accent-amber">&gt;_</span> admin
+          <p className="font-sans text-sm font-semibold tracking-tight text-white/90">
+            <span className="text-accent-metal">&gt;_</span> admin
           </p>
           <AdminNav unread={unread} />
           <form action="/api/admin/signout" method="post">
             <button
               type="submit"
-              className="mt-6 w-full rounded-xl border border-white/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-white/50 transition-colors hover:border-red-400/40 hover:text-red-400"
+              className="mt-6 w-full rounded-md border border-white/10 px-4 py-2 font-sans text-[11px] uppercase tracking-[0.2em] text-[#9CA3AF] transition-colors hover:border-red-400/40 hover:text-red-400"
             >
               Sign out
             </button>
@@ -53,8 +53,8 @@ export default async function AdminDashboardLayout({
         <main className="min-w-0 flex-1">
           {/* Mobile nav */}
           <div className="mb-6 md:hidden">
-            <p className="font-mono text-sm font-semibold tracking-tight text-white/90">
-              <span className="text-accent-amber">&gt;_</span> admin
+            <p className="font-sans text-sm font-semibold tracking-tight text-white/90">
+              <span className="text-accent-metal">&gt;_</span> admin
             </p>
             <AdminNav unread={unread} compact />
           </div>

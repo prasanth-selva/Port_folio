@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { GeistSans } from "geist/font/sans";
+import "@fontsource/poppins/400.css";
+import "@fontsource/poppins/500.css";
+import "@fontsource/poppins/600.css";
+import "@fontsource/poppins/700.css";
 
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import { getSettings } from "@/lib/data";
@@ -47,7 +50,7 @@ export const metadata: Metadata = {
         url:
           "data:image/svg+xml," +
           encodeURIComponent(
-            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#111111"/><path d="M16 6l8 3v7c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V9l8-3z" fill="none" stroke="#E3AE62" stroke-width="2"/><circle cx="16" cy="15" r="2.4" fill="#E3AE62"/></svg>`
+            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#050505"/><path d="M16 6l8 3v7c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V9l8-3z" fill="none" stroke="#ECEFF3" stroke-width="2"/><circle cx="16" cy="15" r="2.4" fill="#ECEFF3"/></svg>`
           ),
         type: "image/svg+xml",
       },
@@ -56,7 +59,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#111111",
+  themeColor: "#050505",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -67,7 +70,7 @@ export default async function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const settings = await getSettings().catch(() => null);
   return (
-    <html lang="en" className={GeistSans.variable}>
+    <html lang="en">
       <body className="min-h-screen bg-base font-sans">
         <SmoothScroll>{children}</SmoothScroll>
         {/* JSON-LD Person schema */}
@@ -87,7 +90,7 @@ export default async function RootLayout({
               },
               knowsAbout: [
                 "SOC operations",
-                "AI-driven threat monitoring",
+                "threat monitoring",
                 "Linux",
                 "Python",
                 "SIEM",

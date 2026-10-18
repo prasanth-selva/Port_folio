@@ -17,7 +17,7 @@ export default function SectionShell({
     return <div id={id}>{children}</div>;
   }
   return (
-    <section id={id} className="scroll-mt-20 border-t border-[#292722]">
+    <section id={id} className="scroll-mt-20 border-t border-[#202228]">
       <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">{children}</div>
     </section>
   );

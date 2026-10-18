@@ -59,18 +59,18 @@ export function SettingsForm({ settings }: { settings: Settings }) {
   };
 
   const inputCls =
-    "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 outline-none transition-colors focus:border-accent-amber/50";
+    "w-full rounded-md border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 outline-none transition-colors focus:border-accent-metal/50";
 
   return (
     <form action={onSubmit} className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-white/90">Site settings</h1>
-        <p className="mt-1 font-mono text-xs text-white/40">
+        <p className="mt-1 font-sans text-xs text-white/40">
           PUBLIC IDENTITY, SOCIALS, SEO DEFAULTS, RESUME
         </p>
       </div>
 
-      <div className="surface grid gap-4 rounded-2xl p-6 sm:grid-cols-2">
+      <div className="surface grid gap-4 rounded-md p-6 sm:grid-cols-2">
         <div className="sm:col-span-2">
           <label className="mono-label mb-2 block" htmlFor="heroBadge">Hero badge</label>
           <input id="heroBadge" name="heroBadge" defaultValue={settings.heroBadge} className={inputCls} />
@@ -93,7 +93,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
         </div>
         <div className="sm:col-span-2">
           <label className="mono-label mb-2 block" htmlFor="resumeUrl">Resume URL (or upload on the Resume page)</label>
-          <input id="resumeUrl" name="resumeUrl" defaultValue={settings.resumeUrl ?? ""} className={`${inputCls} font-mono text-xs`} />
+          <input id="resumeUrl" name="resumeUrl" defaultValue={settings.resumeUrl ?? ""} className={`${inputCls} font-sans text-xs`} />
         </div>
         <div className="sm:col-span-2">
           <label className="mono-label mb-2 block" htmlFor="aboutPhoto">About photo URL</label>
@@ -104,12 +104,12 @@ export function SettingsForm({ settings }: { settings: Settings }) {
             value={photoUrl ?? ""}
             onChange={(e) => setPhotoUrl(e.target.value)}
             placeholder="Upload a photo below or paste an image URL"
-            className={`${inputCls} font-mono text-xs`}
+            className={`${inputCls} font-sans text-xs`}
           />
         </div>
       </div>
 
-      <div className="surface grid gap-4 rounded-2xl p-6 sm:grid-cols-2">
+      <div className="surface grid gap-4 rounded-md p-6 sm:grid-cols-2">
         <div className="sm:col-span-2">
           <p className="mono-label mb-3">SEO DEFAULTS</p>
         </div>
@@ -123,7 +123,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
         </div>
       </div>
 
-      <div className="surface grid gap-4 rounded-2xl p-6 sm:grid-cols-2">
+      <div className="surface grid gap-4 rounded-md p-6 sm:grid-cols-2">
         <div className="sm:col-span-2">
           <p className="mono-label mb-3">ABOUT PHOTO</p>
           <input
@@ -137,13 +137,13 @@ export function SettingsForm({ settings }: { settings: Settings }) {
             type="button"
             onClick={() => photoRef.current?.click()}
             disabled={photoUploading}
-            className="rounded-xl border border-white/15 px-5 py-2.5 font-mono text-xs uppercase tracking-[0.15em] text-white/70 transition-colors hover:border-accent-amber/40 hover:text-accent-amber disabled:opacity-50"
+            className="rounded-md border border-white/15 px-5 py-2.5 font-sans text-xs uppercase tracking-[0.15em] text-white/70 transition-colors hover:border-accent-metal/40 hover:text-accent-metal disabled:opacity-50"
           >
             {photoUploading ? "Uploading…" : "Upload photo"}
           </button>
-          <p className="mt-2 font-mono text-[10px] text-white/35">PNG, JPG, WebP, AVIF or GIF · Max 8 MB</p>
+          <p className="mt-2 font-sans text-[10px] text-white/35">PNG, JPG, WebP, AVIF or GIF · Max 8 MB</p>
           {photoUrl && (
-            <p className="mt-3 break-all font-mono text-xs text-accent-amber">
+            <p className="mt-3 break-all font-sans text-xs text-accent-metal">
               {photoUrl} — save settings to publish this as your profile photo.
             </p>
           )}
@@ -151,12 +151,12 @@ export function SettingsForm({ settings }: { settings: Settings }) {
       </div>
 
       {error && (
-        <p className="rounded-xl border border-red-400/25 bg-red-400/[0.06] px-4 py-3 font-mono text-xs text-red-400" role="alert">
+        <p className="rounded-md border border-red-400/25 bg-red-400/[0.06] px-4 py-3 font-sans text-xs text-red-400" role="alert">
           {error}
         </p>
       )}
       {ok && (
-        <p className="rounded-xl border border-emerald-400/25 bg-emerald-400/[0.06] px-4 py-3 font-mono text-xs text-emerald-300" role="status">
+        <p className="rounded-md border border-emerald-400/25 bg-emerald-400/[0.06] px-4 py-3 font-sans text-xs text-emerald-300" role="status">
           ✓ Settings saved — public pages revalidated.
         </p>
       )}
@@ -164,7 +164,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
       <button
         type="submit"
         disabled={pending}
-        className="rounded-xl bg-accent-amber px-6 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.15em] text-black transition-shadow hover:shadow-none disabled:opacity-50"
+        className="rounded-md bg-accent-metal px-6 py-2.5 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-black transition-shadow hover:shadow-none disabled:opacity-50"
       >
         {pending ? "Saving…" : "Save settings"}
       </button>

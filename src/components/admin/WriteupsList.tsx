@@ -21,14 +21,14 @@ export default function WriteupsList({ posts }: { posts: PostRow[] }) {
   return (
     <ul className="space-y-2">
       {posts.map((p) => (
-        <li key={p.id} className="surface flex items-center justify-between gap-4 rounded-xl px-4 py-3">
+        <li key={p.id} className="surface flex items-center justify-between gap-4 rounded-md px-4 py-3">
           <div className="min-w-0">
             <p className="truncate font-medium text-white/85">{p.title}</p>
-            <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.18em]">
+            <p className="mt-0.5 font-sans text-[10px] uppercase tracking-[0.18em]">
               {p.published ? (
                 <span className="text-emerald-400/80">● published</span>
               ) : (
-                <span className="text-amber-400/80">● draft</span>
+                <span className="text-[#D4D6DB]">● draft</span>
               )}{" "}
               <span className="text-white/30">/writeups/{p.slug}</span>
             </p>
@@ -37,7 +37,7 @@ export default function WriteupsList({ posts }: { posts: PostRow[] }) {
             <button
               type="button"
               onClick={() => router.push(`/admin/writeups/${p.id}`)}
-              className="rounded-lg border border-white/10 px-3 py-1.5 font-mono text-[11px] text-white/60 transition-colors hover:border-accent-amber/40 hover:text-accent-amber"
+              className="rounded-md border border-white/10 px-3 py-1.5 font-sans text-[11px] text-white/60 transition-colors hover:border-accent-metal/40 hover:text-accent-metal"
             >
               Edit
             </button>
@@ -52,7 +52,7 @@ export default function WriteupsList({ posts }: { posts: PostRow[] }) {
                   });
                 }
               }}
-              className="rounded-lg border border-white/10 px-3 py-1.5 font-mono text-[11px] text-white/60 transition-colors hover:border-red-400/40 hover:text-red-400 disabled:opacity-50"
+              className="rounded-md border border-white/10 px-3 py-1.5 font-sans text-[11px] text-white/60 transition-colors hover:border-red-400/40 hover:text-red-400 disabled:opacity-50"
             >
               Delete
             </button>
@@ -60,7 +60,7 @@ export default function WriteupsList({ posts }: { posts: PostRow[] }) {
         </li>
       ))}
       {posts.length === 0 && (
-        <li className="rounded-xl border border-dashed border-white/10 px-4 py-10 text-center font-mono text-xs text-white/30">
+        <li className="rounded-md border border-dashed border-white/10 px-4 py-10 text-center font-sans text-xs text-white/30">
           No writeups yet.
         </li>
       )}

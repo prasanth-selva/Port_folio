@@ -225,12 +225,12 @@ export default function CyberCoreScroll({ badge, resumeUrl }: Props) {
         {!ready && !useFallback && (
           <div className="absolute inset-0 z-20 grid place-items-center bg-base">
             <div className="flex flex-col items-center gap-5">
-              <div className="text-sm font-semibold uppercase tracking-[0.14em] text-accent-amber">
+              <div className="text-sm font-semibold uppercase tracking-[0.14em] text-accent-metal">
                 Loading {String(Math.round(progress * 100)).padStart(3, "0")} %
               </div>
               <div className="h-px w-48 overflow-hidden bg-white/10">
                 <div
-                  className="h-full bg-accent-amber transition-[width] duration-150 ease-out"
+                  className="h-full bg-accent-metal transition-[width] duration-150 ease-out"
                   style={{ width: `${Math.round(progress * 100)}%` }}
                 />
               </div>

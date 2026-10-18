@@ -22,7 +22,7 @@ export function paintFallbackFrame(
       canvas.height = Math.round(h * dpr);
     }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = "#111111";
+    ctx.fillStyle = "#0B0B0C";
     ctx.fillRect(0, 0, w, h);
 
     const explode = Math.sin(progress.get() * Math.PI);
@@ -32,8 +32,8 @@ export function paintFallbackFrame(
 
     ctx.save();
     ctx.translate(cx, cy);
-    ctx.strokeStyle = "#E3AE62";
-    ctx.fillStyle = "#E3AE62";
+    ctx.strokeStyle = "#ECEFF3";
+    ctx.fillStyle = "#ECEFF3";
     ctx.lineWidth = 2;
     ctx.lineJoin = "miter";
 
@@ -60,7 +60,7 @@ export function paintFallbackFrame(
       ctx.stroke();
     }
 
-    ctx.fillStyle = "#E3AE62";
+    ctx.fillStyle = "#ECEFF3";
     ctx.fillRect(-2, -2, 4, 4);
     ctx.restore();
 

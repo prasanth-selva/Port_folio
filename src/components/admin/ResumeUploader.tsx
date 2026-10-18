@@ -43,11 +43,11 @@ export function ResumeUploader({ currentUrl }: { currentUrl: string | null }) {
   return (
     <div>
       <h1 className="text-2xl font-semibold tracking-tight text-white/90">Resume</h1>
-      <p className="mt-1 font-mono text-xs text-white/40">
+      <p className="mt-1 font-sans text-xs text-white/40">
         Served from Supabase Storage. Max 8 MB, PDF only.
       </p>
 
-      <div className="surface mt-6 rounded-2xl p-6">
+      <div className="surface mt-6 rounded-md p-6">
         <input
           ref={inputRef}
           type="file"
@@ -59,32 +59,32 @@ export function ResumeUploader({ currentUrl }: { currentUrl: string | null }) {
           type="button"
           onClick={onPick}
           disabled={pending}
-          className="rounded-xl bg-accent-amber px-6 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.15em] text-black transition-shadow hover:shadow-none disabled:opacity-50"
+          className="rounded-md bg-accent-metal px-6 py-2.5 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-black transition-shadow hover:shadow-none disabled:opacity-50"
         >
           {pending ? "Uploading…" : "Upload PDF"}
         </button>
 
         {error && (
-          <p className="mt-4 rounded-xl border border-red-400/25 bg-red-400/[0.06] px-4 py-3 font-mono text-xs text-red-400" role="alert">
+          <p className="mt-4 rounded-md border border-red-400/25 bg-red-400/[0.06] px-4 py-3 font-sans text-xs text-red-400" role="alert">
             {error}
           </p>
         )}
 
         {url && (
           <div className="mt-4">
-            <p className="font-mono text-[11px] text-emerald-400/80">✓ CURRENT RESUME</p>
+            <p className="font-sans text-[11px] text-emerald-400/80">✓ CURRENT RESUME</p>
             <a
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-1 block break-all font-mono text-xs text-accent-amber hover:underline"
+              className="mt-1 block break-all font-sans text-xs text-accent-metal hover:underline"
             >
               {url}
             </a>
           </div>
         )}
         {!url && !error && (
-          <p className="mt-4 font-mono text-xs text-white/30">
+          <p className="mt-4 font-sans text-xs text-white/30">
             No resume uploaded yet — the “Download Resume” buttons stay hidden until one exists.
           </p>
         )}

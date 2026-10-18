@@ -44,7 +44,7 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.8 }}
-          className="border-b-2 border-accent-amber px-1 py-1 font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-amber"
+          className="border-b-2 border-accent-metal px-1 py-1 font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-metal"
         >
           {badge}
         </motion.span>
@@ -56,8 +56,8 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
         className="absolute inset-x-0 bottom-8 flex flex-col items-center gap-2"
         aria-hidden="true"
       >
-        <span className="font-mono text-[10px] tracking-[0.35em] text-white/35">SCROLL</span>
-        <span className="block h-8 w-px bg-accent-amber" />
+        <span className="font-sans text-[10px] tracking-[0.35em] text-white/35">SCROLL</span>
+        <span className="block h-8 w-px bg-accent-metal" />
       </motion.div>
 
       {/* 0% — intro, centered */}
@@ -70,7 +70,7 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
             Prasanth Selva.
           </h1>
           <p className="mt-4 text-lg text-white/60 md:text-2xl">
-            I build and test security tools.
+            Security work, built precisely.
           </p>
         </div>
       </motion.div>
@@ -81,11 +81,11 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
         className="absolute inset-0 flex items-center px-6 md:px-16 lg:px-24"
       >
         <div className="max-w-md">
-          <p className="mono-label mb-3">01 — WHAT I DO</p>
+          <p className="mono-label mb-3">01 — SECURITY</p>
           <p className="text-3xl font-semibold leading-tight tracking-tight text-white/90 md:text-5xl">
             SOC operations.
             <br />
-            <span className="text-white/50">Threat monitoring and triage.</span>
+            <span className="text-[#9CA3AF]">Threat monitoring and triage.</span>
           </p>
         </div>
       </motion.div>
@@ -96,11 +96,11 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
         className="absolute inset-0 flex items-center justify-end px-6 text-right md:px-16 lg:px-24"
       >
         <div className="max-w-md">
-          <p className="mono-label mb-3">02 — TOOLS</p>
+          <p className="mono-label mb-3">02 — PRECISION</p>
           <p className="text-3xl font-semibold leading-tight tracking-tight text-white/90 md:text-5xl">
             Linux. Python. SIEM.
             <br />
-            IDS/IPS. <span className="text-white/50">Web security.</span>
+            IDS/IPS. <span className="text-[#9CA3AF]">Web security.</span>
           </p>
         </div>
       </motion.div>
@@ -110,7 +110,7 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
         style={{ opacity: outroOpacity, y: outroY }}
         className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
       >
-        <p className="mono-label mb-4">03 — NEXT</p>
+        <p className="mono-label mb-4">03 — INNOVATION</p>
         <p className="text-3xl font-semibold tracking-tight text-white/90 md:text-5xl">
           Need security work?
         </p>

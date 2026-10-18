@@ -47,12 +47,12 @@ export default function Navbar() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled ? "border-b border-[#36332e] bg-[#111111]" : "bg-transparent"
+        scrolled ? "border-b border-[#2E3238] bg-[#050505]" : "bg-transparent"
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6" aria-label="Primary">
-        <a href="#top" className="font-mono text-sm font-semibold tracking-tight text-white/90">
-          <span className="text-accent-amber">&gt;_</span> prasanth.selva
+        <a href="#top" className="font-sans text-sm font-semibold tracking-tight text-white/90">
+          <span className="text-accent-metal">&gt;_</span> prasanth.selva
         </a>
 
         <ul className="hidden items-center gap-1 md:flex">
@@ -62,7 +62,7 @@ export default function Navbar() {
                 href={l.href}
                 aria-current={active === l.href ? "true" : undefined}
                 className={`relative border-b-2 px-3.5 py-1.5 font-sans text-[11px] uppercase tracking-[0.14em] transition-colors ${
-                  active === l.href ? "border-accent-amber text-accent-amber" : "border-transparent text-white/55 hover:text-white/90"
+                  active === l.href ? "border-accent-metal text-accent-metal" : "border-transparent text-[#9CA3AF] hover:text-white/90"
                 }`}
               >
                 {l.label}
@@ -95,7 +95,7 @@ export default function Navbar() {
                 href={l.href}
                 onClick={() => setOpen(false)}
                 className={`block border-l-2 px-4 py-2.5 font-sans text-xs uppercase tracking-[0.16em] ${
-                  active === l.href ? "border-accent-amber text-accent-amber" : "border-transparent text-white/60"
+                  active === l.href ? "border-accent-metal text-accent-metal" : "border-transparent text-white/60"
                 }`}
               >
                 {l.label}
@@ -108,7 +108,7 @@ export default function Navbar() {
       {/* Scroll progress hairline */}
       <motion.div
         style={{ scaleX: progress }}
-        className="h-0.5 origin-left bg-accent-amber"
+        className="h-0.5 origin-left bg-accent-metal"
         aria-hidden="true"
       />
     </header>

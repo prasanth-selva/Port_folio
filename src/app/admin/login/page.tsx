@@ -39,16 +39,16 @@ function LoginForm() {
   };
 
   const inputCls =
-    "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 placeholder:text-white/25 outline-none transition-colors focus:border-accent-amber/50";
+    "w-full rounded-md border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 placeholder:text-white/25 outline-none transition-colors focus:border-accent-metal/50";
 
   return (
     <div className="grid min-h-screen place-items-center bg-base px-6">
-      <div className="surface relative w-full max-w-sm rounded-2xl p-8">
+      <div className="surface relative w-full max-w-sm rounded-md p-8">
         <p className="mono-label mb-2">/ RESTRICTED AREA</p>
         <h1 className="text-2xl font-semibold tracking-tight text-white/90">
           Admin access
         </h1>
-        <p className="mt-1.5 font-mono text-xs text-white/40">
+        <p className="mt-1.5 font-sans text-xs text-white/40">
           Single-operator access. Sign-in attempts are rate-limited.
         </p>
 
@@ -63,7 +63,7 @@ function LoginForm() {
           </div>
 
           {error && (
-            <p className="rounded-xl border border-red-400/25 bg-red-400/[0.06] px-4 py-3 font-mono text-xs text-red-400" role="alert">
+            <p className="rounded-md border border-red-400/25 bg-red-400/[0.06] px-4 py-3 font-sans text-xs text-red-400" role="alert">
               {error}
             </p>
           )}
@@ -71,13 +71,13 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-accent-amber px-6 py-3 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-black transition-all hover:shadow-none disabled:opacity-50"
+            className="w-full rounded-md bg-accent-metal px-6 py-3 font-sans text-xs font-semibold uppercase tracking-[0.2em] text-black transition-all hover:shadow-none disabled:opacity-50"
           >
             {loading ? "AUTHENTICATING…" : "AUTHENTICATE →"}
           </button>
         </form>
 
-        <Link href="/" className="mt-6 block text-center font-mono text-[11px] tracking-[0.2em] text-white/30 transition-colors hover:text-white/60">
+        <Link href="/" className="mt-6 block text-center font-sans text-[11px] tracking-[0.2em] text-white/30 transition-colors hover:text-white/60">
           ← BACK TO SITE
         </Link>
       </div>

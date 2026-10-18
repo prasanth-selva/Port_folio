@@ -38,7 +38,7 @@ export default function AboutSection({ photoUrl }: Props) {
       <div className="mt-12 grid gap-12 md:grid-cols-[240px_1fr] md:gap-16">
         <Reveal delay={0.1}>
           <div>
-            <div className="relative aspect-[4/5] overflow-hidden border border-[#36332e] bg-[#191919]">
+            <div className="relative aspect-[4/5] overflow-hidden border border-[#2E3238] bg-[#18191D]">
               {photo ? (
                 <Image src={photo} alt="Portrait of Prasanth Selva" fill sizes="(max-width: 768px) 100vw, 240px" className="object-cover" />
               ) : (
@@ -56,10 +56,10 @@ export default function AboutSection({ photoUrl }: Props) {
             </Reveal>
           ))}
 
-          <div className="mt-10 grid grid-cols-2 gap-px border border-[#36332e] bg-[#36332e] sm:grid-cols-4">
+          <div className="mt-10 grid grid-cols-2 gap-px border border-[#2E3238] bg-[#2E3238] sm:grid-cols-4">
             {content.stats.map((stat: StatItem, i: number) => (
               <Reveal key={stat.label} delay={0.2 + i * 0.07}>
-                <div className="bg-[#191919] p-5">
+                <div className="bg-[#18191D] p-5">
                   <p className="text-3xl font-semibold tracking-tight text-white/95 md:text-4xl"><Counter value={stat.value} suffix={stat.suffix} /></p>
                   <p className="mt-2 text-xs uppercase tracking-[0.12em] text-white/45">{stat.label}</p>
                 </div>

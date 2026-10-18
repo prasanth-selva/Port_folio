@@ -17,7 +17,7 @@ export default function CertificationsSection({ items }: { items: Certification[
       <div className="grid gap-8 md:grid-cols-[1fr_260px] md:items-end">
         <SectionHeading index="06" label="CERTIFICATIONS" title={<>Certificates.</>} />
         <Reveal delay={0.12}>
-          <p className="border-l border-accent-amber/40 pl-4 text-sm leading-relaxed text-white/50">
+          <p className="border-l border-accent-metal/40 pl-4 text-sm leading-relaxed text-[#9CA3AF]">
             Course certificates and training records. Open a scan when one is available.
           </p>
         </Reveal>
@@ -36,11 +36,11 @@ export default function CertificationsSection({ items }: { items: Certification[
               />
               <div className="relative flex flex-col p-5 md:p-6">
                 <div className="flex items-start justify-between gap-3">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent-amber/80">{cert.issued_on}</span>
-                  <span className="font-mono text-[10px] text-white/25">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-accent-metal/80">{cert.issued_on}</span>
+                  <span className="font-sans text-[10px] text-white/25">{String(i + 1).padStart(2, "0")}</span>
                 </div>
                 <h3 className="mt-5 text-xl font-medium leading-tight tracking-tight text-white/95">{cert.title}</h3>
-                <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.13em] text-white/42">{cert.issuer}</p>
+                <p className="mt-2 font-sans text-[11px] uppercase tracking-[0.13em] text-white/42">{cert.issuer}</p>
                 <p className="mt-4 text-sm leading-relaxed text-white/52">
                   {cert.description ?? "Credential documenting focused security training and practical study."}
                 </p>
@@ -50,12 +50,12 @@ export default function CertificationsSection({ items }: { items: Certification[
                       href={cert.credential_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 border-b border-accent-amber/45 pb-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent-amber transition-colors hover:border-accent-amber hover:text-white"
+                      className="inline-flex items-center gap-2 border-b border-accent-metal/45 pb-1 font-sans text-[10px] uppercase tracking-[0.16em] text-accent-metal transition-colors hover:border-accent-metal hover:text-white"
                     >
                       Verify credential <span aria-hidden="true">↗</span>
                     </a>
                   ) : (
-                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/28">Archive entry</span>
+                    <span className="font-sans text-[10px] uppercase tracking-[0.16em] text-white/28">Archive entry</span>
                   )}
                 </div>
               </div>
@@ -67,7 +67,7 @@ export default function CertificationsSection({ items }: { items: Certification[
       <AnimatePresence>
         {selected && selected.image && (
           <motion.div
-            className="fixed inset-0 z-[70] grid place-items-center bg-[#07090e]/90 p-5 "
+            className="fixed inset-0 z-[70] grid place-items-center bg-[#050505]/90 p-5 "
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -92,8 +92,8 @@ export default function CertificationsSection({ items }: { items: Certification[
                 className="max-h-[78vh] w-full object-contain"
               />
               <div className="flex items-center justify-between gap-4 px-2 pb-1 pt-3">
-                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/55">{selected.title}</p>
-                <button type="button" onClick={() => setSelected(null)} className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent-amber hover:text-white">
+                <p className="font-sans text-[10px] uppercase tracking-[0.16em] text-[#9CA3AF]">{selected.title}</p>
+                <button type="button" onClick={() => setSelected(null)} className="font-sans text-[10px] uppercase tracking-[0.16em] text-accent-metal hover:text-white">
                   Close ×
                 </button>
               </div>

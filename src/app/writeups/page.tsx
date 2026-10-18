@@ -21,7 +21,7 @@ export default async function WriteupsPage() {
         <h1 className="text-balance text-4xl font-semibold tracking-tight text-white/90 md:text-6xl">
           Writeups.
         </h1>
-        <p className="mt-4 max-w-xl leading-relaxed text-white/55 md:text-lg">
+        <p className="mt-4 max-w-xl leading-relaxed text-[#9CA3AF] md:text-lg">
           CTF notes, application-security notes, and practical lessons from projects.
         </p>
 
@@ -30,7 +30,7 @@ export default async function WriteupsPage() {
             {tags.map((t) => (
               <li
                 key={t}
-                className="rounded-full border border-white/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-white/45"
+                className="rounded-md border border-white/10 px-3 py-1 font-sans text-[10px] uppercase tracking-[0.15em] text-white/45"
               >
                 #{t}
               </li>
@@ -43,24 +43,24 @@ export default async function WriteupsPage() {
             <Link
               key={post.id}
               href={`/writeups/${post.slug}`}
-              className="surface group block rounded-2xl p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent-amber/30"
+              className="surface group block rounded-md p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent-metal/30"
             >
-              <div className="flex flex-wrap items-center gap-3 font-mono text-[11px] tracking-[0.15em] text-white/35">
+              <div className="flex flex-wrap items-center gap-3 font-sans text-[11px] tracking-[0.15em] text-white/35">
                 <span>{formatDate(post.published_at ?? post.created_at)}</span>
                 <span aria-hidden="true">·</span>
                 <span>{post.reading_minutes} MIN READ</span>
               </div>
-              <h2 className="mt-2 text-xl font-semibold tracking-tight text-white/90 transition-colors group-hover:text-accent-amber">
+              <h2 className="mt-2 text-xl font-semibold tracking-tight text-white/90 transition-colors group-hover:text-accent-metal">
                 {post.title}
               </h2>
               {post.excerpt && (
-                <p className="mt-2 text-sm leading-relaxed text-white/50">{post.excerpt}</p>
+                <p className="mt-2 text-sm leading-relaxed text-[#9CA3AF]">{post.excerpt}</p>
               )}
               <ul className="mt-3 flex flex-wrap gap-1.5">
                 {post.tags.map((t) => (
                   <li
                     key={t}
-                    className="rounded-full border border-accent-amber/15 bg-accent-amber/[0.05] px-2.5 py-0.5 font-mono text-[10px] text-accent-amber/80"
+                    className="rounded-md border border-accent-metal/15 bg-accent-metal/[0.05] px-2.5 py-0.5 font-sans text-[10px] text-accent-metal/80"
                   >
                     #{t}
                   </li>
@@ -69,7 +69,7 @@ export default async function WriteupsPage() {
             </Link>
           ))}
           {posts.length === 0 && (
-            <div className="rounded-2xl border border-dashed border-white/10 p-12 text-center font-mono text-xs text-white/30">
+            <div className="rounded-md border border-dashed border-white/10 p-12 text-center font-sans text-xs text-white/30">
               No writeups published yet.
             </div>
           )}

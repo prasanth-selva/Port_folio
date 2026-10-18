@@ -16,9 +16,9 @@ export default async function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 72,
-          background: "#111111",
+          background: "#0B0B0C",
           color: "white",
-          fontFamily: "Arial, sans-serif",
+          fontFamily: "Poppins, Arial, sans-serif",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -26,10 +26,10 @@ export default async function OpengraphImage() {
             <path
               d="M16 3l11 4v9c0 7-4.6 11.7-11 14C9.6 27.7 5 23 5 16V7l11-4z"
               fill="none"
-              stroke="#E3AE62"
+              stroke="#ECEFF3"
               strokeWidth="2"
             />
-            <circle cx="16" cy="15" r="3.4" fill="#E3AE62" />
+            <circle cx="16" cy="15" r="3.4" fill="#ECEFF3" />
           </svg>
           <span style={{ fontSize: 24, letterSpacing: "0.2em", color: "rgba(255,255,255,0.6)" }}>
             {"PRASANTH.SELVA"}
@@ -47,7 +47,7 @@ export default async function OpengraphImage() {
           >
             Cybersecurity projects
           </div>
-          <div style={{ fontSize: 76, fontWeight: 700, lineHeight: 1.05, color: "#E3AE62" }}>
+          <div style={{ fontSize: 76, fontWeight: 700, lineHeight: 1.05, color: "#ECEFF3" }}>
             by Prasanth Selva.
           </div>
         </div>

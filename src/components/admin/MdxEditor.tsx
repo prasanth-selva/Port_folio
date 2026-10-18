@@ -68,7 +68,7 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
   };
 
   const inputCls =
-    "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 outline-none transition-colors focus:border-accent-amber/50";
+    "w-full rounded-md border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 outline-none transition-colors focus:border-accent-metal/50";
 
   return (
     <div>
@@ -79,14 +79,14 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
         <button
           type="button"
           onClick={() => setShowPreview((v) => !v)}
-          className="rounded-xl border border-white/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.15em] text-white/60 transition-colors hover:border-accent-amber/40 hover:text-accent-amber"
+          className="rounded-md border border-white/10 px-4 py-2 font-sans text-[11px] uppercase tracking-[0.15em] text-white/60 transition-colors hover:border-accent-metal/40 hover:text-accent-metal"
         >
           {showPreview ? "Hide preview" : "Live preview"}
         </button>
       </div>
 
       {error && (
-        <p className="mt-4 rounded-xl border border-red-400/25 bg-red-400/[0.06] px-4 py-3 font-mono text-xs text-red-400" role="alert">
+        <p className="mt-4 rounded-md border border-red-400/25 bg-red-400/[0.06] px-4 py-3 font-sans text-xs text-red-400" role="alert">
           {error}
         </p>
       )}
@@ -100,7 +100,7 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
         </div>
         <div>
           <label className="mono-label mb-2 block" htmlFor="w-slug">Slug</label>
-          <input id="w-slug" name="slug" defaultValue={post?.slug ?? ""} required pattern="[a-z0-9]+(-[a-z0-9]+)*" className={`${inputCls} font-mono`} />
+          <input id="w-slug" name="slug" defaultValue={post?.slug ?? ""} required pattern="[a-z0-9]+(-[a-z0-9]+)*" className={`${inputCls} font-sans`} />
         </div>
         <div className="md:col-span-2">
           <label className="mono-label mb-2 block" htmlFor="w-excerpt">Excerpt</label>
@@ -118,7 +118,7 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
             rows={20}
             value={content}
             onChange={(e) => onContentChange(e.target.value)}
-            className={`${inputCls} font-mono text-[13px] leading-relaxed`}
+            className={`${inputCls} font-sans text-[13px] leading-relaxed`}
             spellCheck={false}
           />
         </div>
@@ -126,13 +126,13 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
         {showPreview && (
           <div className="md:col-span-2">
             <p className="mono-label mb-2">LIVE PREVIEW</p>
-            <div className="mdx surface max-h-[60vh] overflow-y-auto rounded-2xl p-6">
+            <div className="mdx surface max-h-[60vh] overflow-y-auto rounded-md p-6">
               {preview ? (
                 preview.html.map((html, i) => (
                   <div key={i} dangerouslySetInnerHTML={{ __html: html }} />
                 ))
               ) : (
-                <p className="font-mono text-xs text-white/30">Type to render preview…</p>
+                <p className="font-sans text-xs text-white/30">Type to render preview…</p>
               )}
             </div>
           </div>
@@ -154,8 +154,8 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
           />
         </div>
         <div className="flex items-end">
-          <label className="flex items-center gap-3 font-mono text-xs text-white/60">
-            <input type="checkbox" name="published" defaultChecked={post?.published ?? true} className="h-4 w-4 rounded border-white/20 bg-white/5 accent-accent-amber" />
+          <label className="flex items-center gap-3 font-sans text-xs text-white/60">
+            <input type="checkbox" name="published" defaultChecked={post?.published ?? true} className="h-4 w-4 rounded border-white/20 bg-white/5 accent-accent-metal" />
             Published
           </label>
         </div>
@@ -173,7 +173,7 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
                   });
                 }
               }}
-              className="rounded-xl border border-white/10 px-5 py-2.5 font-mono text-xs uppercase tracking-[0.15em] text-white/50 transition-colors hover:border-red-400/40 hover:text-red-400"
+              className="rounded-md border border-white/10 px-5 py-2.5 font-sans text-xs uppercase tracking-[0.15em] text-[#9CA3AF] transition-colors hover:border-red-400/40 hover:text-red-400"
             >
               Delete
             </button>
@@ -183,7 +183,7 @@ export function MdxEditor({ post, saveAction, deleteAction }: {
           <button
             type="submit"
             disabled={pending}
-            className="rounded-xl bg-accent-amber px-6 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.15em] text-black transition-shadow hover:shadow-none disabled:opacity-50"
+            className="rounded-md bg-accent-metal px-6 py-2.5 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-black transition-shadow hover:shadow-none disabled:opacity-50"
           >
             {pending ? "Saving…" : "Save writeup"}
           </button>

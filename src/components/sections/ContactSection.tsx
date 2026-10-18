@@ -47,8 +47,8 @@ export default function ContactSection({ settings }: { settings: SiteSettings })
   };
 
   const inputCls =
-    "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 placeholder:text-white/25 outline-none transition-colors focus:border-accent-amber/50 focus:bg-white/[0.05]";
-  const errCls = "mt-1.5 font-mono text-[11px] text-red-400/90";
+    "w-full rounded-md border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85 placeholder:text-white/25 outline-none transition-colors focus:border-accent-metal/50 focus:bg-white/[0.05]";
+  const errCls = "mt-1.5 font-sans text-[11px] text-red-400/90";
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">
@@ -57,17 +57,17 @@ export default function ContactSection({ settings }: { settings: SiteSettings })
       <div className="mt-12 grid gap-10 md:grid-cols-[1fr_1.1fr] md:gap-16">
         <Reveal>
           <div className="space-y-4">
-            <p className="leading-relaxed text-white/55 md:text-lg">
+            <p className="leading-relaxed text-[#9CA3AF] md:text-lg">
               Have a security role, project, or bug report? Send me a message and I will reply by email.
             </p>
 
-            <ul className="space-y-3 pt-4 font-mono text-sm">
+            <ul className="space-y-3 pt-4 font-sans text-sm">
               <li>
                 <a
                   href={`mailto:${settings.email}`}
-                  className="group flex items-center gap-3 text-white/60 transition-colors hover:text-accent-amber"
+                  className="group flex items-center gap-3 text-white/60 transition-colors hover:text-accent-metal"
                 >
-                  <span className="text-accent-amber/60">→</span> {settings.email}
+                  <span className="text-accent-metal/60">→</span> {settings.email}
                 </a>
               </li>
               <li>
@@ -75,9 +75,9 @@ export default function ContactSection({ settings }: { settings: SiteSettings })
                   href={settings.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center gap-3 text-white/60 transition-colors hover:text-accent-amber"
+                  className="group flex items-center gap-3 text-white/60 transition-colors hover:text-accent-metal"
                 >
-                  <span className="text-accent-amber/60">→</span> linkedin/in/prasanth-selva
+                  <span className="text-accent-metal/60">→</span> linkedin/in/prasanth-selva
                 </a>
               </li>
               <li>
@@ -85,9 +85,9 @@ export default function ContactSection({ settings }: { settings: SiteSettings })
                   href={settings.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center gap-3 text-white/60 transition-colors hover:text-accent-amber"
+                  className="group flex items-center gap-3 text-white/60 transition-colors hover:text-accent-metal"
                 >
-                  <span className="text-accent-amber/60">→</span> github/prasanth-selva
+                  <span className="text-accent-metal/60">→</span> github/prasanth-selva
                 </a>
               </li>
             </ul>
@@ -97,7 +97,7 @@ export default function ContactSection({ settings }: { settings: SiteSettings })
                 href={settings.resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 inline-flex items-center gap-2 rounded-full bg-accent-amber px-6 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-black shadow-none transition-shadow hover:shadow-none"
+                className="metal-button mt-6 inline-flex items-center gap-2 rounded-md px-6 py-2.5 font-sans text-xs font-semibold uppercase tracking-[0.2em]"
               >
                 Download resume <span aria-hidden="true">↓</span>
               </a>
@@ -106,7 +106,7 @@ export default function ContactSection({ settings }: { settings: SiteSettings })
         </Reveal>
 
         <Reveal delay={0.12}>
-          <form onSubmit={handleSubmit(onSubmit)} className="surface rounded-2xl p-6 md:p-8" noValidate>
+          <form onSubmit={handleSubmit(onSubmit)} className="surface rounded-md p-6 md:p-8" noValidate>
             {/* Honeypot — hidden from humans, catnip for bots */}
             <div className="absolute left-[-9999px] top-[-9999px]" aria-hidden="true">
               <label>
@@ -149,11 +149,11 @@ export default function ContactSection({ settings }: { settings: SiteSettings })
             <button
               type="submit"
               disabled={status === "sending"}
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-accent-amber px-6 py-3 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-black transition-all hover:shadow-none disabled:cursor-not-allowed disabled:opacity-50"
+              className="metal-button mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md px-6 py-3 font-sans text-xs font-semibold uppercase tracking-[0.2em] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {status === "sending" ? (
                 <>
-                  <span className="h-3 w-3 animate-spin rounded-full border-2 border-black/30 border-t-black" />
+                  <span className="h-3 w-3 animate-spin rounded-md border-2 border-black/30 border-t-black" />
                   Sending…
                 </>
               ) : (
@@ -165,14 +165,14 @@ export default function ContactSection({ settings }: { settings: SiteSettings })
               <motion.p
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-4 rounded-xl border border-accent-amber/25 bg-accent-amber/[0.06] px-4 py-3 font-mono text-xs text-accent-amber"
+                className="mt-4 rounded-md border border-accent-metal/25 bg-accent-metal/[0.06] px-4 py-3 font-sans text-xs text-accent-metal"
                 role="status"
               >
                 Message sent. I will reply by email.
               </motion.p>
             )}
             {status === "error" && (
-              <p className="mt-4 rounded-xl border border-red-400/25 bg-red-400/[0.06] px-4 py-3 font-mono text-xs text-red-400" role="alert">
+              <p className="mt-4 rounded-md border border-red-400/25 bg-red-400/[0.06] px-4 py-3 font-sans text-xs text-red-400" role="alert">
                 {serverError ?? "The message could not be sent. Please email me instead."}
               </p>
             )}

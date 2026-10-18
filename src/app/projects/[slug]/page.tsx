@@ -46,7 +46,7 @@ export default async function ProjectPage({
       <div className="relative mx-auto max-w-5xl px-6 pt-28 md:pt-36">
         <Link
           href="/#projects"
-          className="font-mono text-xs tracking-[0.2em] text-white/40 transition-colors hover:text-accent-amber"
+          className="font-sans text-xs tracking-[0.2em] text-white/40 transition-colors hover:text-accent-metal"
         >
           ← Back to projects
         </Link>
@@ -56,7 +56,7 @@ export default async function ProjectPage({
             {project.title}
           </h1>
           {project.tagline && (
-            <p className="mt-3 text-lg text-white/55 md:text-xl">{project.tagline}</p>
+            <p className="mt-3 text-lg text-[#9CA3AF] md:text-xl">{project.tagline}</p>
           )}
           <div className="mt-6 flex flex-wrap items-center gap-3">
             {project.live_url && (
@@ -64,7 +64,7 @@ export default async function ProjectPage({
                 href={project.live_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border border-accent-amber bg-accent-amber px-5 py-2 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-black"
+                className="metal-button inline-flex items-center gap-2 rounded-md px-5 py-2 font-sans text-xs font-semibold uppercase tracking-[0.14em]"
               >
                 Live Site <span aria-hidden="true">↗</span>
               </a>
@@ -74,7 +74,7 @@ export default async function ProjectPage({
                 href={project.github_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border border-white/20 px-5 py-2 font-sans text-xs uppercase tracking-[0.14em] text-white/70 transition-colors hover:border-accent-amber hover:text-white"
+                className="inline-flex items-center gap-2 border border-white/20 px-5 py-2 font-sans text-xs uppercase tracking-[0.14em] text-white/70 transition-colors hover:border-accent-metal hover:text-white"
               >
                 Source <span aria-hidden="true">↗</span>
               </a>
@@ -83,7 +83,7 @@ export default async function ProjectPage({
         </header>
 
         {project.cover_image && (
-          <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-2xl border border-white/8">
+          <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-md border border-white/8">
             <Image
               src={project.cover_image}
               alt={`${project.title} cover`}
@@ -109,7 +109,7 @@ export default async function ProjectPage({
                   {project.gallery.map((src, i) => (
                     <div
                       key={i}
-                      className="relative aspect-[16/10] overflow-hidden rounded-xl border border-white/8"
+                      className="relative aspect-[16/10] overflow-hidden rounded-md border border-white/8"
                     >
                       <Image
                         src={src}
@@ -131,7 +131,7 @@ export default async function ProjectPage({
               {project.tech.map((t) => (
                 <li
                   key={t}
-                  className="rounded-full border border-accent-amber/20 bg-accent-amber/[0.06] px-3 py-1 font-mono text-xs text-accent-amber/90"
+                  className="rounded-md border border-accent-metal/20 bg-accent-metal/[0.06] px-3 py-1 font-sans text-xs text-accent-metal/90"
                 >
                   {t}
                 </li>
@@ -148,9 +148,9 @@ export default async function ProjectPage({
                 <Link
                   key={p.id}
                   href={`/projects/${p.slug}`}
-                  className="surface group rounded-2xl p-5 transition-colors hover:border-accent-amber/30"
+                  className="surface group rounded-md p-5 transition-colors hover:border-accent-metal/30"
                 >
-                  <p className="font-semibold tracking-tight text-white/90 group-hover:text-accent-amber">
+                  <p className="font-semibold tracking-tight text-white/90 group-hover:text-accent-metal">
                     {p.title}
                   </p>
                   <p className="mt-1 line-clamp-2 text-sm text-white/45">{p.tagline}</p>

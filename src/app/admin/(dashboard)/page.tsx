@@ -59,9 +59,9 @@ export default async function AdminDashboard() {
 
   if (!data) {
     return (
-      <div className="surface rounded-2xl p-8">
+      <div className="surface rounded-md p-8">
         <h1 className="text-2xl font-semibold tracking-tight text-white/90">Dashboard</h1>
-        <p className="mt-4 rounded-xl border border-amber-400/25 bg-amber-400/[0.06] px-4 py-3 font-mono text-xs text-amber-300">
+        <p className="mt-4 rounded-md border border-[#2E3238] bg-[#202228] px-4 py-3 font-sans text-xs text-[#D4D6DB]">
           Supabase is not configured. The public site runs on seed data; the
           admin CRUD needs NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY.
           See README → “Database setup”.
@@ -85,52 +85,52 @@ export default async function AdminDashboard() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-white/90">Dashboard</h1>
-        <p className="mt-1 font-mono text-xs text-white/40">SYSTEM STATUS: CONTENT CHANNELS ONLINE</p>
+        <p className="mt-1 font-sans text-xs text-white/40">SYSTEM STATUS: CONTENT CHANNELS ONLINE</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         {cards.map((card) => (
-          <Link key={card.href} href={card.href} className="surface rounded-2xl p-5 transition-colors hover:border-accent-amber/30">
+          <Link key={card.href} href={card.href} className="surface rounded-md p-5 transition-colors hover:border-accent-metal/30">
             <p className="text-3xl font-semibold tabular-nums text-white/90">{card.value}</p>
-            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">{card.label}</p>
+            <p className="mt-1 font-sans text-[10px] uppercase tracking-[0.2em] text-white/40">{card.label}</p>
           </Link>
         ))}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="surface rounded-2xl p-6">
+        <div className="surface rounded-md p-6">
           <div className="flex items-center justify-between">
-            <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-white/50">Recent messages</h2>
-            <Link href="/admin/inbox" className="font-mono text-[11px] text-accent-amber hover:underline">
+            <h2 className="font-sans text-xs uppercase tracking-[0.25em] text-[#9CA3AF]">Recent messages</h2>
+            <Link href="/admin/inbox" className="font-sans text-[11px] text-accent-metal hover:underline">
               Inbox →
             </Link>
           </div>
           <ul className="mt-4 space-y-3">
             {messages.map((message) => (
-              <li key={message.id} className="rounded-xl border border-white/8 p-3">
+              <li key={message.id} className="rounded-md border border-white/8 p-3">
                 <div className="flex items-center justify-between gap-2">
                   <p className="truncate text-sm font-medium text-white/85">{message.name}</p>
-                  {!message.read && <span className="h-2 w-2 shrink-0 rounded-full bg-accent-amber" aria-label="unread" />}
+                  {!message.read && <span className="h-2 w-2 shrink-0 rounded-md bg-accent-metal" aria-label="unread" />}
                 </div>
-                <p className="mt-0.5 truncate font-mono text-[11px] text-white/40">{message.subject ?? "(no subject)"}</p>
+                <p className="mt-0.5 truncate font-sans text-[11px] text-white/40">{message.subject ?? "(no subject)"}</p>
               </li>
             ))}
             {messages.length === 0 && (
-              <li className="rounded-xl border border-dashed border-white/10 p-6 text-center font-mono text-xs text-white/30">
+              <li className="rounded-md border border-dashed border-white/10 p-6 text-center font-sans text-xs text-white/30">
                 Inbox empty.
               </li>
             )}
           </ul>
         </div>
 
-        <div className="surface rounded-2xl p-6">
-          <h2 className="font-mono text-xs uppercase tracking-[0.25em] text-white/50">Homepage views — last 14 days</h2>
+        <div className="surface rounded-md p-6">
+          <h2 className="font-sans text-xs uppercase tracking-[0.25em] text-[#9CA3AF]">Homepage views — last 14 days</h2>
           {!analyticsAvailable ? (
-            <p className="mt-4 rounded-xl border border-amber-400/25 bg-amber-400/[0.06] p-4 font-mono text-xs text-amber-300">
+            <p className="mt-4 rounded-md border border-[#2E3238] bg-[#202228] p-4 font-sans text-xs text-[#D4D6DB]">
               Analytics storage is not ready. Apply migration `0002_analytics.sql` to enable this chart.
             </p>
           ) : !hasVisits ? (
-            <p className="mt-4 rounded-xl border border-dashed border-white/10 p-6 text-center font-mono text-xs text-white/30">
+            <p className="mt-4 rounded-md border border-dashed border-white/10 p-6 text-center font-sans text-xs text-white/30">
               No homepage visits recorded yet.
             </p>
           ) : (
@@ -138,7 +138,7 @@ export default async function AdminDashboard() {
               {visits.map((visit) => (
                 <div key={visit.day} className="group relative flex-1" title={`${visit.day}: ${visit.views} views`}>
                   <div
-                    className="w-full rounded-t bg-accent-amber transition-all"
+                    className="w-full rounded-t bg-accent-metal transition-all"
                     style={{ height: `${Math.max(visit.views ? 4 : 1, (visit.views / maxVisits) * 100)}%` }}
                   />
                 </div>

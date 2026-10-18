@@ -40,13 +40,13 @@ export default function ProofMedia({
             className="object-cover"
             onError={() => setFailed(true)}
           />
-          <span className="absolute bottom-3 right-3 bg-black/65 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.18em] text-white/75 opacity-0 transition-opacity group-hover:opacity-100">
+          <span className="absolute bottom-3 right-3 bg-black/65 px-2 py-1 font-sans text-[9px] uppercase tracking-[0.18em] text-white/75 opacity-0 transition-opacity group-hover:opacity-100">
             View scan ↗
           </span>
         </button>
       ) : (
         <div className="flex h-full flex-col justify-end p-4 text-white/45">
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent-amber">{label}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent-metal">{label}</p>
           <p className="mt-2 max-w-[18rem] text-sm leading-5">Evidence image not uploaded.</p>
         </div>
       )}

@@ -18,11 +18,11 @@ export function InboxActions({
   const [pending, startTransition] = useTransition();
 
   const btn =
-    "rounded-lg border border-white/10 px-3 py-1.5 font-mono text-[11px] text-white/60 transition-colors disabled:opacity-50";
+    "rounded-md border border-white/10 px-3 py-1.5 font-sans text-[11px] text-white/60 transition-colors disabled:opacity-50";
 
   return (
     <div className="flex shrink-0 gap-2">
-      <a href={replyMailto} className={`${btn} hover:border-accent-amber/40 hover:text-accent-amber`}>
+      <a href={replyMailto} className={`${btn} hover:border-accent-metal/40 hover:text-accent-metal`}>
         Reply
       </a>
       <button

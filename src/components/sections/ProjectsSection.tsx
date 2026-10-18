@@ -7,9 +7,9 @@ import type { Project } from "@/lib/types";
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
     <Reveal delay={index * 0.06}>
-      <article className="border border-[#36332e] bg-[#191919]">
+      <article className="border border-[#2E3238] bg-[#18191D]">
         <Link href={`/projects/${project.slug}`} className="group block">
-          <div className="relative aspect-[16/9] overflow-hidden border-b border-[#36332e] bg-[#24221f]">
+          <div className="relative aspect-[16/9] overflow-hidden border-b border-[#2E3238] bg-[#202228]">
             {project.cover_image ? (
               <Image
                 src={project.cover_image}
@@ -27,10 +27,10 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           <div className="p-6">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-accent-amber">Project {String(index + 1).padStart(2, "0")}</p>
-                <h3 className="text-xl font-semibold tracking-tight text-white/95 group-hover:text-accent-amber">{project.title}</h3>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-accent-metal">Project {String(index + 1).padStart(2, "0")}</p>
+                <h3 className="text-xl font-semibold tracking-tight text-white/95 group-hover:text-accent-metal">{project.title}</h3>
               </div>
-              <span className="text-lg text-accent-amber" aria-hidden="true">→</span>
+              <span className="text-lg text-accent-metal" aria-hidden="true">→</span>
             </div>
             <p className="mt-3 text-sm leading-6 text-white/60">{project.tagline}</p>
             <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-xs text-white/45">

@@ -5,15 +5,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        base: "#111111",
+        base: "#050505",
         accent: {
-          amber: "#E3AE62",
-          ink: "#191919",
+          metal: "#ECEFF3",
+          ink: "#18191D",
         },
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
+        sans: ["Poppins", "Arial", "sans-serif"],
+        mono: ["Poppins", "Arial", "sans-serif"],
       },
       animation: {
         "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",

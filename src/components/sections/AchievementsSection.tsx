@@ -18,7 +18,7 @@ export default function AchievementsSection({ items }: { items: Achievement[] })
       <div className="grid gap-8 md:grid-cols-[1fr_260px] md:items-end">
         <SectionHeading index="05" label="ACHIEVEMENTS & CTFS" title={<>Results and events.</>} />
         <Reveal delay={0.12}>
-          <p className="border-l border-accent-amber/50 pl-4 text-sm leading-relaxed text-white/50">
+          <p className="border-l border-accent-metal/50 pl-4 text-sm leading-relaxed text-[#9CA3AF]">
             Competition results, community work, and other documented outcomes.
           </p>
         </Reveal>
@@ -35,17 +35,17 @@ export default function AchievementsSection({ items }: { items: Achievement[] })
                   label={`PROOF ${String(i + 1).padStart(2, "0")}`}
                   compact
                 />
-                <span className="absolute left-3 top-3 border border-accent-amber/45 bg-[#17131a]/85 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-accent-amber">
+                <span className="absolute left-3 top-3 border border-accent-metal/45 bg-[#17131a]/85 px-2 py-1 font-sans text-[9px] uppercase tracking-[0.16em] text-accent-metal">
                   {resultLabel(item)}
                 </span>
               </div>
               <div className="relative p-5 md:p-6">
                 <div className="flex items-center justify-between gap-4">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent-amber/80">{item.occurred_on ?? "UNDATED"}</p>
-                  <span className="font-mono text-[10px] text-white/25">{String(i + 1).padStart(2, "0")}</span>
+                  <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-accent-metal/80">{item.occurred_on ?? "UNDATED"}</p>
+                  <span className="font-sans text-[10px] text-white/25">{String(i + 1).padStart(2, "0")}</span>
                 </div>
                 <h3 className="mt-4 text-xl font-medium leading-tight tracking-tight text-white/95">{item.title}</h3>
-                {item.organizer && <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-white/35">{item.organizer}</p>}
+                {item.organizer && <p className="mt-2 font-sans text-[10px] uppercase tracking-[0.14em] text-white/35">{item.organizer}</p>}
                 {item.detail && <p className="mt-4 text-sm leading-relaxed text-white/52">{item.detail}</p>}
               </div>
             </article>
