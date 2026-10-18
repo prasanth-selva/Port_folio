@@ -54,7 +54,7 @@ export default async function HomePage() {
         <SectionShell kind="grid" id="achievements">
           <AchievementsSection items={achievements} />
         </SectionShell>
-        <SectionShell>
+        <SectionShell id="certifications">
           <CertificationsSection items={certifications} />
         </SectionShell>
         <SectionShell id="contact">

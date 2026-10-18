@@ -5,7 +5,14 @@
       "title": "CyberThozhan",
       "tagline": "AI-powered cyber safety platform for Tamil-speaking users",
       "description": "CyberThozhan is an AI-powered cyber safety platform that teaches safe internet habits and triages scam reports in Tamil and English. It combines a fine-tuned RAG assistant over curated safety corpora with a reporting pipeline that classifies scam screenshots (OTP fraud, phishing, UPI scams) and routes high-risk cases with actionable guidance. Built with Next.js, FastAPI and Ollama; deployed as a PWA for low-bandwidth access.",
-      "tech": ["Next.js", "FastAPI", "Ollama", "RAG", "PWA", "Tailwind"],
+      "tech": [
+        "Next.js",
+        "FastAPI",
+        "Ollama",
+        "RAG",
+        "PWA",
+        "Tailwind"
+      ],
       "cover_image": null,
       "gallery": [],
       "live_url": null,
@@ -19,7 +26,14 @@
       "title": "EduMentorAI",
       "tagline": "Offline-first AI tutor for rural Tamil Nadu students",
       "description": "EduMentorAI is an offline-capable AI tutor built for students in rural Tamil Nadu with unreliable connectivity. A FastAPI backend serves a fully local Ollama model; FAISS powers retrieval-augmented answers over the Tamil Nadu state syllabus, and a PWA shell caches lessons for zero-network study sessions. Teachers curate the corpus; students ask in Tamil or English and get syllabus-grounded explanations with citations.",
-      "tech": ["FastAPI", "Ollama", "FAISS", "RAG", "PWA", "React"],
+      "tech": [
+        "FastAPI",
+        "Ollama",
+        "FAISS",
+        "RAG",
+        "PWA",
+        "React"
+      ],
       "cover_image": null,
       "gallery": [],
       "live_url": null,
@@ -33,7 +47,13 @@
       "title": "HACKASTORM",
       "tagline": "AI worker-safety monitoring system — Team Cyberbots",
       "description": "HACKASTORM is an AI worker-safety monitoring system built with Team Cyberbots for industrial floors. Computer-vision models on edge cameras detect missing PPE, unsafe proximity to machinery and fall events in real time, raising tiered alerts with on-site siren and supervisor notification. The stack pairs YOLO-based detection with a FastAPI control plane and an operator dashboard for shift analytics.",
-      "tech": ["Python", "YOLO", "Computer Vision", "FastAPI", "Edge AI"],
+      "tech": [
+        "Python",
+        "YOLO",
+        "Computer Vision",
+        "FastAPI",
+        "Edge AI"
+      ],
       "cover_image": null,
       "gallery": [],
       "live_url": null,
@@ -47,7 +67,13 @@
       "title": "ISC Realtors",
       "tagline": "3D-animated luxury real-estate experience",
       "description": "ISC Realtors is a 3D-animated luxury real-estate website for ISC PropCare. Cinematic scroll-driven scenes, property showcases with interactive floor plans and a lead pipeline are built on Next.js with WebGL-accented motion. Shipped live at iscpropcare.in with perfect Lighthouse accessibility scores.",
-      "tech": ["Next.js", "Three.js", "GSAP", "Tailwind", "Framer Motion"],
+      "tech": [
+        "Next.js",
+        "Three.js",
+        "GSAP",
+        "Tailwind",
+        "Framer Motion"
+      ],
       "cover_image": null,
       "gallery": [],
       "live_url": "https://iscpropcare.in",
@@ -67,7 +93,12 @@
       "end_date": "Jul 2026",
       "current": false,
       "description": "Engineered detection rules and ran monitoring rotations on the SOC floor. Built automated triage playbooks that cut analyst response time, hardened Linux endpoints, and produced internal threat reports adopted by the engineering team.",
-      "tech": ["SIEM", "IDS/IPS", "Linux", "Python"],
+      "tech": [
+        "SIEM",
+        "IDS/IPS",
+        "Linux",
+        "Python"
+      ],
       "sort_order": 1,
       "published": true
     },
@@ -80,7 +111,11 @@
       "end_date": "19 Jun 2026",
       "current": false,
       "description": "Assisted investigations into online fraud and social-media offences: evidence preservation, digital-trace analysis and victim interviews. Witnessed first-hand how cybercrime impacts real people — the reason I treat security as a public good.",
-      "tech": ["Digital Forensics", "OSINT", "Incident Reporting"],
+      "tech": [
+        "Digital Forensics",
+        "OSINT",
+        "Incident Reporting"
+      ],
       "sort_order": 2,
       "published": true
     },
@@ -93,7 +128,13 @@
       "end_date": "Apr 2026",
       "current": false,
       "description": "Split my time between the SOC and the product team: AI-based threat monitoring pipelines, network-security reviews and hardening, plus full-stack development of internal tools. Owned alert-quality metrics end to end — from rule tuning to analyst feedback loops.",
-      "tech": ["SOC Operations", "AI Threat Monitoring", "Network Security", "Next.js", "FastAPI"],
+      "tech": [
+        "SOC Operations",
+        "AI Threat Monitoring",
+        "Network Security",
+        "Next.js",
+        "FastAPI"
+      ],
       "sort_order": 3,
       "published": true
     },
@@ -106,7 +147,11 @@
       "end_date": null,
       "current": true,
       "description": "Leading the cyber department association: curating workshops, CTFs and speaker sessions for 300+ students, managing a 12-member core team, and partnering with industry mentors for hands-on security training.",
-      "tech": ["Leadership", "Community", "Event Operations"],
+      "tech": [
+        "Leadership",
+        "Community",
+        "Event Operations"
+      ],
       "sort_order": 4,
       "published": true
     }
@@ -118,92 +163,320 @@
       "issuer": "Google / Coursera",
       "issued_on": "2025",
       "credential_url": null,
-      "image": null,
+      "image": "/certs/google-cybersecurity.webp",
+      "description": "Foundational security training across Linux, Python, networks, incident response, and security operations.",
       "sort_order": 1,
       "published": true
     },
     {
       "id": "seed-cert-cisco-eh",
-      "title": "Ethical Hacking (70-hour course)",
+      "title": "Ethical Hacking — 70-hour course",
       "issuer": "Cisco Networking Academy",
       "issued_on": "2025",
       "credential_url": null,
-      "image": null,
+      "image": "/certs/cisco-ethical-hacking.webp",
+      "description": "Structured ethical-hacking coursework covering reconnaissance, testing methodology, and defensive context.",
       "sort_order": 2,
       "published": true
     },
     {
       "id": "seed-cert-metasploit",
       "title": "Metasploit for Beginners",
-      "issuer": "Cisco Networking Academy",
+      "issuer": "Coursera Project Network",
       "issued_on": "2025",
       "credential_url": null,
-      "image": null,
+      "image": "/certs/metasploit.webp",
+      "description": "Hands-on introduction to the Metasploit framework and controlled exploit validation.",
       "sort_order": 3,
+      "published": true
+    },
+    {
+      "id": "seed-cert-learnkarts-advanced",
+      "title": "Advanced Cybersecurity",
+      "issuer": "LearnKartS",
+      "issued_on": "Jan 2025",
+      "credential_url": null,
+      "image": "/certs/learnkarts-advanced-cybersecurity.webp",
+      "description": "Advanced security coursework with a focus on practical attack surfaces and defensive response.",
+      "sort_order": 4,
+      "published": true
+    },
+    {
+      "id": "seed-cert-learnkarts",
+      "title": "Cybersecurity Course",
+      "issuer": "LearnKartS",
+      "issued_on": "2025",
+      "credential_url": null,
+      "image": "/certs/learnkarts-cybersecurity.webp",
+      "description": "A practical course record covering core security concepts and the tools used to explore them.",
+      "sort_order": 5,
+      "published": true
+    },
+    {
+      "id": "seed-cert-cybercrime",
+      "title": "Cybercrime Police Station Internship",
+      "issuer": "Coimbatore Cybercrime Police Station",
+      "issued_on": "Jun 2026",
+      "credential_url": null,
+      "image": "/certs/cybercrime-internship.webp",
+      "description": "Field internship record connected to cybercrime awareness, evidence handling, and investigation support.",
+      "sort_order": 6,
       "published": true
     },
     {
       "id": "seed-cert-risk",
       "title": "Google Cybersecurity: Risk Management",
       "issuer": "Google / Coursera",
-      "issued_on": "2026",
+      "issued_on": "Date to confirm",
       "credential_url": null,
       "image": null,
-      "sort_order": 4,
-      "published": true
-    },
-    {
-      "id": "seed-cert-learnsart",
-      "title": "Advanced Cybersecurity Course",
-      "issuer": "Learnsart",
-      "issued_on": "2026",
-      "credential_url": null,
-      "image": null,
-      "sort_order": 5,
+      "description": "Credential entry retained for verification; the original scan and exact issue date were not available in the supplied files.",
+      "sort_order": 7,
       "published": true
     }
   ],
   "achievements": [
     {
-      "id": "seed-ach-top50",
-      "title": "Top 50 nationally — CTF at Malla Reddy University",
-      "detail": "Ranked among the top 50 teams nationally at the capture-the-flag hosted during the national-level tech fest at Malla Reddy University, March 2026 — web exploitation, forensics and crypto categories.",
-      "occurred_on": "Mar 2026",
-      "image": null,
+      "id": "seed-ach-breach-point",
+      "title": "Breach Point CTF",
+      "detail": "Top 50+ teams were shortlisted for the offline final. A field-tested result across web, forensics, and crypto challenges.",
+      "placement": "Offline finalist",
+      "organizer": "Breach Point",
+      "occurred_on": "2026",
+      "image": "/certs/breach-point.webp",
       "sort_order": 1,
       "published": true
     },
     {
-      "id": "seed-ach-23rd",
-      "title": "23rd of 450+ teams — national CTF",
-      "detail": "Secured 23rd place among 450+ teams in a national capture-the-flag, contributing web and OSINT solves under a 36-hour clock.",
+      "id": "seed-ach-athena",
+      "title": "ATHENA CTF",
+      "detail": "A ranked CTF finish built on collaborative web, OSINT, and problem-solving under a live competition clock.",
+      "placement": "Rank #23",
+      "organizer": "ATHENA",
       "occurred_on": "2026",
-      "image": null,
+      "image": "/certs/athena.webp",
       "sort_order": 2,
+      "published": true
+    },
+    {
+      "id": "seed-ach-freshers",
+      "title": "Freshers CTF",
+      "detail": "Placed 2nd in a 48-team field, contributing across challenge categories and keeping the team moving under time pressure.",
+      "placement": "2nd of 48",
+      "organizer": "Freshers CTF",
+      "occurred_on": "2025",
+      "image": "/certs/freshers-ctf.webp",
+      "sort_order": 3,
+      "published": true
+    },
+    {
+      "id": "seed-ach-trivarna",
+      "title": "Trivarna CTF",
+      "detail": "Competition experience documented through a certificate entry and team-based problem solving.",
+      "placement": "Finalist",
+      "organizer": "Trivarna",
+      "occurred_on": "2025",
+      "image": "/certs/trivarna.webp",
+      "sort_order": 4,
+      "published": true
+    },
+    {
+      "id": "seed-ach-riffhack",
+      "title": "RIFFHACK",
+      "detail": "A hands-on security competition entry focused on practical challenge solving and team coordination.",
+      "placement": "Competition entry",
+      "organizer": "RIFFHACK",
+      "occurred_on": "2025",
+      "image": "/certs/riffhack.webp",
+      "sort_order": 5,
+      "published": true
+    },
+    {
+      "id": "seed-ach-innohack",
+      "title": "INNOHACK",
+      "detail": "Hackathon participation connecting security thinking with rapid prototyping and presentation.",
+      "placement": "Hackathon participant",
+      "organizer": "INNOHACK",
+      "occurred_on": "2025",
+      "image": "/certs/innohack.webp",
+      "sort_order": 6,
       "published": true
     },
     {
       "id": "seed-ach-vyugam",
       "title": "President, VYUGAM Cyber Department Association",
-      "detail": "Elected president of the department's cyber association; grew event participation 3× year-over-year and launched a semester-long security bootcamp.",
-      "occurred_on": "Oct 2025",
+      "detail": "Leading workshops, CTFs, and speaker sessions for the cyber department community while coordinating a student core team.",
+      "placement": "Department leadership",
+      "organizer": "VYUGAM",
+      "occurred_on": "Oct 2025 — Present",
       "image": null,
-      "sort_order": 3,
+      "sort_order": 7,
       "published": true
     }
   ],
   "skills": [
-    { "id": "seed-linux", "name": "Linux", "category": "Core", "level": 90, "sort_order": 1, "published": true },
-    { "id": "seed-python", "name": "Python", "category": "Core", "level": 88, "sort_order": 2, "published": true },
-    { "id": "seed-bash", "name": "Bash", "category": "Core", "level": 82, "sort_order": 3, "published": true },
-    { "id": "seed-siem", "name": "SIEM", "category": "Defense", "level": 84, "sort_order": 4, "published": true },
-    { "id": "seed-ids-ips", "name": "IDS/IPS", "category": "Defense", "level": 80, "sort_order": 5, "published": true },
-    { "id": "seed-websec", "name": "Web Security", "category": "Offense", "level": 86, "sort_order": 6, "published": true },
-    { "id": "seed-burp", "name": "Burp Suite", "category": "Offense", "level": 78, "sort_order": 7, "published": true },
-    { "id": "seed-metasploit", "name": "Metasploit", "category": "Offense", "level": 74, "sort_order": 8, "published": true },
-    { "id": "seed-nextjs", "name": "Next.js", "category": "Build", "level": 85, "sort_order": 9, "published": true },
-    { "id": "seed-fastapi", "name": "FastAPI", "category": "Build", "level": 83, "sort_order": 10, "published": true },
-    { "id": "seed-ollama-rag", "name": "Ollama / RAG", "category": "Build", "level": 80, "sort_order": 11, "published": true }
+    {
+      "id": "seed-linux",
+      "name": "Linux",
+      "category": "Core",
+      "level": 90,
+      "sort_order": 1,
+      "published": true,
+      "description": "Hardening, shell workflows, permissions, and the systems layer behind investigations."
+    },
+    {
+      "id": "seed-python",
+      "name": "Python",
+      "category": "Core",
+      "level": 88,
+      "sort_order": 2,
+      "published": true,
+      "description": "Automation, analysis scripts, API clients, and small tools that remove repetitive analyst work."
+    },
+    {
+      "id": "seed-bash",
+      "name": "Bash",
+      "category": "Core",
+      "level": 82,
+      "sort_order": 3,
+      "published": true,
+      "description": "Fast, composable command-line workflows for triage and repeatable operations."
+    },
+    {
+      "id": "seed-siem",
+      "name": "SIEM",
+      "category": "Defense",
+      "level": 84,
+      "sort_order": 4,
+      "published": true,
+      "description": "Turning large volumes of telemetry into alerts an analyst can actually act on."
+    },
+    {
+      "id": "seed-ids-ips",
+      "name": "IDS/IPS",
+      "category": "Defense",
+      "level": 80,
+      "sort_order": 5,
+      "published": true,
+      "description": "Network signal, detection logic, and the trade-offs between coverage and noise."
+    },
+    {
+      "id": "seed-websec",
+      "name": "Web Security",
+      "category": "Offense",
+      "level": 86,
+      "sort_order": 6,
+      "published": true,
+      "description": "Finding the seams between browser, API, auth, and data layers before attackers do."
+    },
+    {
+      "id": "seed-burp",
+      "name": "Burp Suite",
+      "category": "Offense",
+      "level": 78,
+      "sort_order": 7,
+      "published": true,
+      "description": "Request inspection and repeatable testing for modern web applications."
+    },
+    {
+      "id": "seed-metasploit",
+      "name": "Metasploit",
+      "category": "Offense",
+      "level": 74,
+      "sort_order": 8,
+      "published": true,
+      "description": "Controlled exploitation and validation in authorized lab environments."
+    },
+    {
+      "id": "seed-nextjs",
+      "name": "Next.js",
+      "category": "Build",
+      "level": 85,
+      "sort_order": 9,
+      "published": true,
+      "description": "Production web interfaces with fast iteration, clear routing, and secure defaults."
+    },
+    {
+      "id": "seed-fastapi",
+      "name": "FastAPI",
+      "category": "Build",
+      "level": 83,
+      "sort_order": 10,
+      "published": true,
+      "description": "Typed backend services and focused APIs for tools that need to ship."
+    },
+    {
+      "id": "seed-ollama-rag",
+      "name": "Ollama / RAG",
+      "category": "Build",
+      "level": 80,
+      "sort_order": 11,
+      "published": true,
+      "description": "Local-first AI experiments grounded in a known corpus instead of vague answers."
+    },
+    {
+      "id": "seed-sql",
+      "name": "SQL",
+      "category": "Core",
+      "level": 78,
+      "description": "Querying event data and understanding how applications persist the evidence they create.",
+      "sort_order": 12,
+      "published": true
+    },
+    {
+      "id": "seed-network-security",
+      "name": "Network Security",
+      "category": "Defense",
+      "level": 79,
+      "description": "Traffic-aware thinking across endpoints, services, and the paths between them.",
+      "sort_order": 13,
+      "published": true
+    },
+    {
+      "id": "seed-incident-response",
+      "name": "Incident Response",
+      "category": "Defense",
+      "level": 76,
+      "description": "Containment, timelines, evidence preservation, and calm decisions under pressure.",
+      "sort_order": 14,
+      "published": true
+    },
+    {
+      "id": "seed-risk-management",
+      "name": "Risk Management",
+      "category": "Build",
+      "level": 72,
+      "description": "Connecting technical findings to impact, priority, and the decisions they enable.",
+      "sort_order": 15,
+      "published": true
+    },
+    {
+      "id": "seed-digital-forensics",
+      "name": "Digital Forensics",
+      "category": "Build",
+      "level": 73,
+      "description": "Preserving context and extracting a defensible story from digital traces.",
+      "sort_order": 16,
+      "published": true
+    },
+    {
+      "id": "seed-penetration-testing",
+      "name": "Penetration Testing",
+      "category": "Offense",
+      "level": 75,
+      "description": "A structured attacker perspective that ends in evidence and remediation, not theatrics.",
+      "sort_order": 17,
+      "published": true
+    },
+    {
+      "id": "seed-cryptography",
+      "name": "Cryptography",
+      "category": "Offense",
+      "level": 70,
+      "description": "The practical foundations needed to reason about secrets, protocols, and CTF crypto.",
+      "sort_order": 18,
+      "published": true
+    }
   ],
   "posts": [
     {
@@ -211,7 +484,11 @@
       "title": "Top 50 at Malla Reddy University CTF — full writeup",
       "excerpt": "How our team sliced through web exploitation and forensics challenges to finish top 50 nationally.",
       "content": "---\ntitle: Top 50 at Malla Reddy University CTF\n---\n\n## The setup\n\nA 36-hour clock, eight challenges on the board and a team of three running on filter coffee. Our strategy: split by category — I took web, the forensics specialist took disk images, and our crypto lead brute-solved the RSA warmups.\n\n## Web challenges\n\nThe web track was classic: a `pickle` deserialization chain, a GraphQL introspection leak, and an SQLi behind a WAF that accepted `UNION/**/SELECT`.\n\n```python\n# Serialized payload chain (simplified)\nimport pickle, base64\n\nclass Exploit:\n    def __reduce__(self):\n        return (os.system, ('cat /flag.txt',))\n\nprint(base64.b64encode(pickle.dumps(Exploit())).decode())\n```\n\n## Lessons\n\n- Time-box every challenge; sunk cost kills rankings.\n- `UNION/**/SELECT` still bypasses half the WAFs you'll meet.\n- Write flags to a shared doc immediately — handoffs win events.",
-      "tags": ["ctf", "web-security", "writeup"],
+      "tags": [
+        "ctf",
+        "web-security",
+        "writeup"
+      ],
       "cover_image": null,
       "reading_minutes": 4,
       "published": true,
@@ -222,7 +499,11 @@
       "title": "AppSec notes: five WAF bypass patterns I see every week",
       "excerpt": "Practical patterns from real triage: comment injection, encoding tricks, parser differentials and more.",
       "content": "---\ntitle: AppSec notes — WAF bypass patterns\n---\n\n## 1. Comment injection\n\n```http\nGET /search?q=UNION/**/SELECT/**/password HTTP/1.1\n```\n\n## 2. Parser differentials\n\nWhen the WAF and the origin disagree about request parsing, the origin loses. Send ambiguous requests and watch which side blinks first.\n\n## 3. Overlong UTF-8\n\nLegacy decoders still normalize `%C0%AE` in surprising places.\n\n> Defense: normalize once, validate twice, and never trust the proxy's opinion of your input.",
-      "tags": ["appsec", "waf", "notes"],
+      "tags": [
+        "appsec",
+        "waf",
+        "notes"
+      ],
       "cover_image": null,
       "reading_minutes": 3,
       "published": true,

@@ -17,6 +17,8 @@ export default async function AdminAchievementsPage() {
       fields={[
         { name: "title", label: "Title", full: true },
         { name: "detail", label: "Detail", type: "textarea", full: true },
+        { name: "placement", label: "Result / placement" },
+        { name: "organizer", label: "Organizer" },
         { name: "occurred_on", label: "When (e.g. Mar 2026)" },
         { name: "image", label: "Achievement image", type: "image", full: true },
         { name: "sort_order", label: "Sort order", type: "number" },

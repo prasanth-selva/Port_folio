@@ -17,7 +17,7 @@ export default function SectionShell({
     return <div id={id}>{children}</div>;
   }
   return (
-    <section id={id} className="relative scroll-mt-20">
+    <section id={id} className="section-wash relative scroll-mt-20">
       {kind === "grid" && <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden="true" />}
       <div className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">{children}</div>
     </section>

@@ -97,10 +97,10 @@ node -e "console.log(require('bcryptjs').hashSync('YOUR_PASSWORD', 12))"
 ## 🗄️ Database setup (Supabase)
 
 1. Create a project at [supabase.com](https://supabase.com).
-2. Open **SQL Editor** and run [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql), followed by [`supabase/migrations/0002_analytics.sql`](supabase/migrations/0002_analytics.sql).
+2. Open **SQL Editor** and run [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql), followed by [`supabase/migrations/0002_analytics.sql`](supabase/migrations/0002_analytics.sql) and [`supabase/migrations/0004_proof_metadata.sql`](supabase/migrations/0004_proof_metadata.sql).
    This creates all 8 tables, indexes, **Row Level Security** policies
    (public read on published rows, insert-only messages) and the public
-   `media` storage bucket. The second migration adds a private daily aggregate
+   `media` storage bucket. The analytics migration adds a private daily aggregate
    counter and a shared serverless rate-limit store. Both are inaccessible to
    public/anon roles; only server-side service-role calls can use them.
 3. Copy `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and
@@ -154,7 +154,7 @@ Until frames exist, the site automatically renders the **procedural fallback**
 
 ## 🛠️ Admin dashboard
 
-1. Apply both database migrations, then fill the admin env vars (above) and visit `/admin/login`.
+1. Apply the database migrations, then fill the admin env vars (above) and visit `/admin/login`.
 2. Sign in — sessions are JWT httpOnly cookies, 12h expiry.
 3. Manage content: each section supports create/edit/delete, drag-to-reorder
    (saved automatically) and publish/draft toggles.
@@ -183,8 +183,9 @@ X-Frame-Options, Referrer-Policy, HSTS, nosniff) in
 2. Enable **Access to System Environment Variables** in Vercel project settings.
    The app uses `VERCEL_ENV` and `VERCEL_URL` for readiness checks and preview
    canonical URLs.
-3. Apply `supabase/migrations/0001_init.sql` and
-   `supabase/migrations/0002_analytics.sql` to the production Supabase project.
+3. Apply `supabase/migrations/0001_init.sql`,
+   `supabase/migrations/0002_analytics.sql`,
+   `supabase/migrations/0004_proof_metadata.sql` to the production Supabase project.
    Run `npm run seed` if you want the included starter portfolio content.
 4. In **Project → Settings → Environment Variables**, add these for Production:
    `NEXTAUTH_SECRET` (generate with `openssl rand -base64 32`), `ADMIN_EMAIL`,
@@ -241,6 +242,7 @@ src/
 ├── lib/                    # Data layer, auth, validation, rate limiting, seed
 └── middleware.ts           # /admin protection + login rate limit
 supabase/migrations/        # SQL schema + RLS
+public/certs/                # Owner-supplied certificate and achievement scans
 scripts/                    # Frame optimizer + seed script
 hero/                       # Raw frames (gitignored; optimized into public/)
 ```

@@ -37,6 +37,7 @@ export type Certification = {
   issued_on: string;
   credential_url: string | null;
   image: string | null;
+  description?: string | null;
   sort_order: number;
   published: boolean;
   created_at: string;
@@ -48,6 +49,8 @@ export type Achievement = {
   detail: string | null;
   occurred_on: string | null;
   image: string | null;
+  placement?: string | null;
+  organizer?: string | null;
   sort_order: number;
   published: boolean;
   created_at: string;
@@ -58,6 +61,7 @@ export type Skill = {
   name: string;
   category: string;
   level: number;
+  description?: string | null;
   sort_order: number;
   published: boolean;
   created_at: string;

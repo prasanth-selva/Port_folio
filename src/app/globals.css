@@ -4,169 +4,154 @@
 
 :root {
   color-scheme: dark;
-  --page-bg: #080d12;
-  --accent-mint: #73e0be;
-  --accent-lilac: #b3a0ff;
+  --page-bg: #0c1018;
+  --page-ink: #f3eee5;
+  --accent-amber: #e3ae62;
+  --accent-blue: #9aa8d8;
+  --accent-coral: #d98068;
+  --line: rgba(243, 238, 229, 0.12);
 }
 
 html {
-  scroll-behavior: auto; /* Lenis handles smoothing */
+  scroll-behavior: auto;
 }
 
 body {
   @apply bg-base text-white/70 antialiased selection:bg-accent-cyan/30 selection:text-white;
   overflow-x: clip;
-  background-image: radial-gradient(ellipse at 50% -15%, rgba(115, 224, 190, 0.08), transparent 45%);
+  background-color: var(--page-bg);
+  background-image:
+    radial-gradient(ellipse 80% 55% at 8% -8%, rgba(227, 174, 98, 0.14), transparent 62%),
+    radial-gradient(ellipse 60% 50% at 96% 22%, rgba(154, 168, 216, 0.1), transparent 66%),
+    linear-gradient(115deg, rgba(255, 255, 255, 0.02), transparent 35%, rgba(255, 255, 255, 0.015));
   background-attachment: fixed;
 }
 
-/* ---- Selection / focus ---- */
+::selection { background: rgba(227, 174, 98, 0.3); color: #fff; }
+
 :focus-visible {
-  outline: 2px solid rgba(115, 224, 190, 0.8);
-  outline-offset: 3px;
-  border-radius: 2px;
+  outline: 2px solid rgba(227, 174, 98, 0.85);
+  outline-offset: 4px;
+  border-radius: 3px;
 }
 
-/* ---- Scrollbar ---- */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #080d12;
-}
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #0c1018; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(243, 238, 229, 0.16);
   border-radius: 8px;
-  border: 2px solid #080d12;
+  border: 2px solid #0c1018;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(115, 224, 190, 0.42);
-}
+::-webkit-scrollbar-thumb:hover { background: rgba(227, 174, 98, 0.58); }
 
-/* ---- Custom cursor ---- */
 @media (pointer: fine) {
   .cursor-none-fine,
-  .cursor-none-fine * {
-    cursor: none !important;
-  }
+  .cursor-none-fine * { cursor: none !important; }
 }
 
-/* ---- Glass ---- */
 .glass {
-  background: linear-gradient(145deg, rgba(18, 30, 35, 0.82), rgba(12, 18, 25, 0.74));
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(151, 190, 178, 0.13);
+  background: linear-gradient(145deg, rgba(29, 34, 45, 0.9), rgba(16, 21, 31, 0.78));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(243, 238, 229, 0.12);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.18);
 }
 
-/* ---- Faint grid backdrop ---- */
+.editorial-card {
+  position: relative;
+  background: linear-gradient(140deg, rgba(30, 36, 48, 0.96), rgba(15, 20, 29, 0.9));
+  border: 1px solid rgba(243, 238, 229, 0.12);
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.2);
+}
+
+.editorial-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.48;
+  background: linear-gradient(118deg, rgba(227, 174, 98, 0.07), transparent 32%, transparent 68%, rgba(154, 168, 216, 0.04));
+}
+
+.section-wash::before {
+  content: "";
+  position: absolute;
+  inset: 0 8%;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(227, 174, 98, 0.045), transparent 68%);
+}
+
 .bg-grid {
   background-image:
-    linear-gradient(rgba(151, 190, 178, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(151, 190, 178, 0.045) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 75%);
+    linear-gradient(rgba(243, 238, 229, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(243, 238, 229, 0.035) 1px, transparent 1px);
+  background-size: 76px 76px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 26%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 26%, transparent 78%);
 }
 
-/* ---- Film grain overlay (static texture, zero perf cost) ---- */
 .grain::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.025;
+  opacity: 0.022;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ---- Mono section labels ---- */
 .mono-label {
   @apply font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-accent-cyan/90;
 }
 
-/* ---- Syntax highlighting (rehype-highlight, github-dark palette tuned to brand) ---- */
-.hljs {
-  color: #d4d4d8;
-  background: transparent;
+.display-title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.045em;
 }
-.hljs-comment,
-.hljs-quote {
-  color: #52525b;
-  font-style: italic;
-}
-.hljs-keyword,
-.hljs-selector-tag,
-.hljs-meta-keyword {
-  color: #7c3aed;
-}
-.hljs-string,
-.hljs-doctag,
-.hljs-regexp {
-  color: #00f0ff;
-}
-.hljs-number,
-.hljs-literal {
-  color: #f0abfc;
-}
-.hljs-title,
-.hljs-title.function_,
-.hljs-section {
-  color: #e4e4e7;
-}
-.hljs-attr,
-.hljs-attribute,
-.hljs-variable,
-.hljs-template-variable {
-  color: #67e8f9;
-}
-.hljs-type,
-.hljs-built_in,
-.hljs-builtin-name {
-  color: #a5b4fc;
-}
-.hljs-deletion { color: #f87171; }
-.hljs-addition { color: #4ade80; }
 
-/* ---- MDX prose ---- */
-.mdx {
-  @apply text-white/70 leading-relaxed;
+.editorial-rule {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(227, 174, 98, 0.76), rgba(243, 238, 229, 0.12), transparent);
 }
-.mdx h2 {
-  @apply mt-10 mb-4 text-2xl font-semibold tracking-tight text-white/90;
+
+.certificate-paper {
+  background:
+    linear-gradient(135deg, rgba(249, 239, 218, 0.16), transparent 42%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(19, 24, 34, 0.38));
 }
-.mdx h3 {
-  @apply mt-8 mb-3 text-lg font-semibold tracking-tight text-white/90;
-}
+
+/* Syntax highlighting */
+.hljs { color: #d8d5ce; background: transparent; }
+.hljs-comment, .hljs-quote { color: #687080; font-style: italic; }
+.hljs-keyword, .hljs-selector-tag, .hljs-meta-keyword { color: #b3bde2; }
+.hljs-string, .hljs-doctag, .hljs-regexp { color: #e3ae62; }
+.hljs-number, .hljs-literal { color: #d98068; }
+.hljs-title, .hljs-title.function_, .hljs-section { color: #f3eee5; }
+.hljs-attr, .hljs-attribute, .hljs-variable, .hljs-template-variable { color: #a8d8d1; }
+.hljs-type, .hljs-built_in, .hljs-builtin-name { color: #9aa8d8; }
+.hljs-deletion { color: #f49b8a; }
+.hljs-addition { color: #a8d8d1; }
+
+.mdx { @apply text-white/70 leading-relaxed; }
+.mdx h2 { @apply mt-10 mb-4 text-2xl font-semibold tracking-tight text-white/90; }
+.mdx h3 { @apply mt-8 mb-3 text-lg font-semibold tracking-tight text-white/90; }
 .mdx p { @apply my-4; }
-.mdx a {
-  @apply text-accent-cyan underline decoration-accent-cyan/30 underline-offset-4 hover:decoration-accent-cyan;
-}
+.mdx a { @apply text-accent-cyan underline decoration-accent-cyan/30 underline-offset-4 hover:decoration-accent-cyan; }
 .mdx ul { @apply my-4 list-disc space-y-2 pl-6; }
 .mdx ol { @apply my-4 list-decimal space-y-2 pl-6; }
-.mdx blockquote {
-  @apply my-6 border-l-2 border-accent-cyan/50 pl-4 italic text-white/70;
-}
-.mdx code {
-  @apply rounded bg-white/[0.06] px-1.5 py-0.5 font-mono text-[0.85em] text-accent-cyan;
-}
-.mdx pre {
-  @apply my-6 overflow-x-auto rounded-xl border border-white/10 bg-black/60 p-4 text-[13px] leading-relaxed;
-}
-.mdx pre code {
-  @apply bg-transparent p-0 text-inherit;
-}
+.mdx blockquote { @apply my-6 border-l-2 border-accent-cyan/50 pl-4 italic text-white/70; }
+.mdx code { @apply rounded bg-white/[0.06] px-1.5 py-0.5 font-mono text-[0.85em] text-accent-cyan; }
+.mdx pre { @apply my-6 overflow-x-auto rounded-xl border border-white/10 bg-black/60 p-4 text-[13px] leading-relaxed; }
+.mdx pre code { @apply bg-transparent p-0 text-inherit; }
 .mdx img { @apply my-6 rounded-xl border border-white/10; }
 .mdx hr { @apply my-10 border-white/10; }
 .mdx table { @apply my-6 w-full text-sm; }
 .mdx th { @apply border-b border-white/15 px-3 py-2 text-left font-mono text-xs uppercase tracking-wider text-white/70; }
 .mdx td { @apply border-b border-white/5 px-3 py-2; }
 
-/* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

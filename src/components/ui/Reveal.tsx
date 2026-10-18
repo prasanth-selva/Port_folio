@@ -41,12 +41,16 @@ export function SectionHeading({
 }) {
   return (
     <Reveal className={className}>
-      <p className="mono-label mb-3">
-        / {index} — {label}
-      </p>
-      <h2 className="text-balance text-3xl font-semibold tracking-tight text-white/90 md:text-5xl">
-        {title}
-      </h2>
+      <div className="flex items-start gap-4">
+        <span className="font-mono text-xs tracking-[0.2em] text-accent-cyan/80">{index}</span>
+        <div className="min-w-0 flex-1">
+          <p className="mono-label mb-3">{label}</p>
+          <div className="editorial-rule mb-5 max-w-2xl" aria-hidden="true" />
+          <h2 className="display-title text-balance text-4xl leading-[0.96] text-white/95 md:text-6xl">
+            {title}
+          </h2>
+        </div>
+      </div>
     </Reveal>
   );
 }

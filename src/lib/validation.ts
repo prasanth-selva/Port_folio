@@ -13,9 +13,19 @@ export type ContactInput = z.infer<typeof contactSchema>;
 const urlish = z
   .string()
   .trim()
-  .url("Enter a valid URL")
   .max(500)
-  .or(z.literal(""))
+  .refine((value) => {
+    if (!value) return true;
+    if (value.startsWith("/")) {
+      return !value.startsWith("//") && !value.includes("..") && !/[\u0000-\u001f]/.test(value);
+    }
+    try {
+      const parsed = new URL(value);
+      return parsed.protocol === "http:" || parsed.protocol === "https:";
+    } catch {
+      return false;
+    }
+  }, "Enter a valid https URL or safe local path")
   .transform((v) => (v === "" ? null : v));
 
 export const projectSchema = z.object({
@@ -65,6 +75,7 @@ export const certificationSchema = z.object({
   issued_on: z.string().trim().min(4).max(20),
   credential_url: urlish,
   image: urlish,
+  description: z.string().trim().max(1200).optional().or(z.literal("")),
   sort_order: z.coerce.number().int().min(0).max(9999).default(0),
   published: z.boolean().default(true),
 });
@@ -73,6 +84,8 @@ export type CertificationInput = z.infer<typeof certificationSchema>;
 export const achievementSchema = z.object({
   title: z.string().trim().min(2).max(200),
   detail: z.string().trim().max(2000).optional().or(z.literal("")),
+  placement: z.string().trim().max(120).optional().or(z.literal("")),
+  organizer: z.string().trim().max(160).optional().or(z.literal("")),
   occurred_on: z
     .string()
     .trim()
@@ -90,6 +103,7 @@ export const skillSchema = z.object({
   name: z.string().trim().min(1).max(60),
   category: z.string().trim().min(2).max(60),
   level: z.coerce.number().int().min(1).max(100),
+  description: z.string().trim().max(500).optional().or(z.literal("")),
   sort_order: z.coerce.number().int().min(0).max(9999).default(0),
   published: z.boolean().default(true),
 });

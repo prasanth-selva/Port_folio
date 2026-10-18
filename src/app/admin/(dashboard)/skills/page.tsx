@@ -18,6 +18,7 @@ export default async function AdminSkillsPage() {
         { name: "name", label: "Name" },
         { name: "category", label: "Category (Core/Defense/Offense/Build)" },
         { name: "level", label: "Level (1–100)", type: "number" },
+        { name: "description", label: "Description", type: "textarea", full: true },
         { name: "sort_order", label: "Sort order", type: "number" },
         { name: "published", label: "Published", type: "checkbox" },
       ]}
