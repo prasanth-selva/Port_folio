@@ -9,7 +9,7 @@ import type { Project } from "@/lib/types";
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
-    <Reveal delay={index * 0.06} className="min-w-0 shrink-0 basis-[calc(100vw-2.5rem)] snap-start sm:basis-[70vw] md:basis-[56vw] lg:basis-[42vw] xl:basis-[36vw]">
+    <Reveal delay={index * 0.06} className="min-w-0 shrink-0 basis-[calc(100vw-2.5rem)] snap-start sm:basis-[calc(100vw-4rem)] lg:basis-[calc(100vw-6rem)]">
       <article className="h-full border border-[#2E3238] bg-[#18191D]">
         <Link href={`/projects/${project.slug}`} className="group block">
           <div className="relative aspect-[16/9] overflow-hidden border-b border-[#2E3238] bg-[#202228]">
