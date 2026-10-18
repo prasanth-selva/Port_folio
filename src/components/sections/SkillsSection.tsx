@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { Component, useEffect, useRef, useState, type ReactNode } from "react";
 
 import { SectionHeading } from "@/components/ui/Reveal";
 import type { Skill } from "@/lib/types";
@@ -11,6 +11,24 @@ const SkillOrbit3D = dynamic(() => import("@/components/three/SkillOrbit"), {
   ssr: false,
 });
 
+/**
+ * WebGL can fail for reasons outside our control (blocked GPU, lost context,
+ * failed chunk load). Never let that take the whole page down: fall back to
+ * the 2D orbit instead.
+ */
+class OrbitBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch(error: unknown) {
+    console.warn("[skills] 3D orbit failed, using 2D fallback:", error);
+  }
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
+
 function SkillOrbit2D({ skills }: { skills: Skill[] }) {
   return (
     <div className="glass relative mx-auto aspect-square w-full max-w-[520px] overflow-hidden rounded-full border border-white/8">
@@ -18,7 +36,7 @@ function SkillOrbit2D({ skills }: { skills: Skill[] }) {
       <div className="absolute inset-[34%] rounded-full border border-white/5" aria-hidden="true" />
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
         <p className="font-mono text-[10px] tracking-[0.35em] text-accent-cyan/70">CORE</p>
-        <p className="mt-1 font-mono text-[10px] text-white/30">11 modules</p>
+        <p className="mt-1 font-mono text-[10px] text-white/30">{skills.length} modules</p>
       </div>
       {skills.map((s, i) => {
         const angle = (i / skills.length) * Math.PI * 2 - Math.PI / 2;
@@ -85,7 +103,9 @@ export default function SkillsSection({ skills }: { skills: Skill[] }) {
       <div ref={containerRef} className="mt-14 grid items-center gap-10 md:grid-cols-[1.2fr_1fr]">
         <div className="min-h-[420px]">
           {use3D && inView ? (
-            <SkillOrbit3D skills={skills} />
+            <OrbitBoundary fallback={<SkillOrbit2D skills={skills} />}>
+              <SkillOrbit3D skills={skills} />
+            </OrbitBoundary>
           ) : (
             <SkillOrbit2D skills={skills} />
           )}
