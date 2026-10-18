@@ -52,6 +52,7 @@ body {
 .project-rail {
   scrollbar-color: #3a3e45 transparent;
   scrollbar-width: thin;
+  scroll-behavior: auto;
 }
 
 .project-rail::-webkit-scrollbar { height: 6px; }

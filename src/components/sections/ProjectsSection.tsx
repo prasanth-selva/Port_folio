@@ -1,12 +1,15 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useRef } from "react";
 
 import { Reveal, SectionHeading } from "@/components/ui/Reveal";
 import type { Project } from "@/lib/types";
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
-    <Reveal delay={index * 0.06} className="min-w-0 shrink-0 basis-[88%] snap-start sm:basis-[70%] md:basis-[48%] lg:basis-[34%]">
+    <Reveal delay={index * 0.06} className="min-w-0 shrink-0 basis-[calc(100vw-2.5rem)] snap-start sm:basis-[70vw] md:basis-[56vw] lg:basis-[42vw] xl:basis-[36vw]">
       <article className="h-full border border-[#2E3238] bg-[#18191D]">
         <Link href={`/projects/${project.slug}`} className="group block">
           <div className="relative aspect-[16/9] overflow-hidden border-b border-[#2E3238] bg-[#202228]">
@@ -47,6 +50,27 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
 export default function ProjectsSection({ projects }: { projects: Project[] }) {
   const publishedProjects = projects.filter((p) => p.published);
+  const railRef = useRef<HTMLDivElement | null>(null);
+
+  const handleRailWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    const rail = railRef.current;
+    if (!rail) return;
+
+    const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    if (!delta) return;
+
+    const maxScroll = rail.scrollWidth - rail.clientWidth;
+    const nextScroll = Math.max(0, Math.min(maxScroll, rail.scrollLeft + delta));
+    const canScrollHorizontally = nextScroll !== rail.scrollLeft;
+
+    // Keep normal page scrolling at either end of the rail, but turn the
+    // wheel into horizontal movement while there are cards left to browse.
+    if (canScrollHorizontally) {
+      event.preventDefault();
+      rail.scrollLeft = nextScroll;
+    }
+  };
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
       <div className="flex flex-wrap items-end justify-between gap-6">
@@ -59,7 +83,9 @@ export default function ProjectsSection({ projects }: { projects: Project[] }) {
       </div>
 
       <div
-        className="project-rail mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain pb-5"
+        ref={railRef}
+        onWheel={handleRailWheel}
+        className="project-rail relative left-1/2 mt-12 flex w-screen -translate-x-1/2 snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain px-5 pb-5 touch-pan-x sm:px-8 lg:px-12"
         aria-label="Projects — scroll left to right"
       >
         {publishedProjects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} />)}

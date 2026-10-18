@@ -16,6 +16,8 @@
 - [x] **Mood-board hero:** Applied the supplied obsidian/titanium direction to the hero without adding fake stock imagery or decorative orbs.
 - [x] **Validation and ship:** Typecheck, lint, build, JSON, diff, and live HTTP checks pass. The mood-board pass is pushed and live in production.
 - [x] **Responsive projects rail:** Project cards now scroll left-to-right with touch swipe, snap points, responsive card widths, and a usable desktop scrollbar.
+- [x] **Full-screen project scene:** The Projects rail uses the full viewport width, shows large responsive cards, translates desktop mouse-wheel/trackpad scrolling into left-to-right movement while the pointer is over the rail, and retains native touch swipe on mobile.
+- [x] **Full-screen validation and ship:** Typecheck, lint, build, local HTTP check, GitHub push, and production deployment must pass.
 
 ## About metrics configuration
 
