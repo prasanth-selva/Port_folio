@@ -17,6 +17,7 @@
 - [x] **Validation and ship:** Typecheck, lint, build, JSON, diff, and live HTTP checks pass. The mood-board pass is pushed and live in production.
 - [x] **Projects layout rollback:** Per the latest request, removed the optional/full-screen horizontal experiments and restored the original responsive top-to-bottom project grid.
 - [x] **Rollback validation and ship:** Typecheck, lint, production build, clean local HTTP check, GitHub push, and production deployment pass.
+- [ ] **Achievement certificate viewer:** Clicking an uploaded certificate/evidence image in Achievements must open a large modal viewer with a close control, without affecting cards that have no image.
 
 ## About metrics configuration
 
