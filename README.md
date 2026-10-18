@@ -161,7 +161,9 @@ Until frames exist, the site automatically renders the **procedural fallback**
 4. **Resume** page uploads a PDF to Supabase Storage and wires the
    “Download Resume” buttons automatically.
 5. **Settings** controls the hero badge, email, socials, phone visibility,
-   SEO defaults and the about photo upload.
+   SEO defaults, the about photo upload, and the four About metrics: CGPA,
+   internships, CTF rankings, and certifications. These values can be numbers
+   or short text such as `Top 10` and are rendered on the public About page.
 6. There is **no link to /admin** in the public UI — it is deliberately
    unlisted. Bookmark it.
 

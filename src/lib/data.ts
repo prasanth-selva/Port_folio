@@ -17,6 +17,7 @@ import type {
   Project,
   Skill,
 } from "@/lib/types";
+import type { StatItem } from "@/lib/about";
 
 /**
  * Public data layer. Reads from Supabase when configured; otherwise returns
@@ -96,8 +97,13 @@ export type SiteSettings = {
   linkedin: string;
   github: string;
   phone: string | null;
+  aboutCgpa: string;
+  aboutInternships: string;
+  aboutCtfRankings: string;
+  aboutCertifications: string;
   seoTitle: string;
   seoDescription: string;
+  aboutStats: StatItem[];
 };
 
 const FALLBACK_SETTINGS: SiteSettings = {
@@ -108,8 +114,18 @@ const FALLBACK_SETTINGS: SiteSettings = {
   linkedin: SEED_SETTINGS.linkedin,
   github: SEED_SETTINGS.github,
   phone: SEED_SETTINGS.phone ?? process.env.NEXT_PUBLIC_CONTACT_PHONE ?? null,
+  aboutCgpa: SEED_SETTINGS.aboutCgpa,
+  aboutInternships: SEED_SETTINGS.aboutInternships,
+  aboutCtfRankings: SEED_SETTINGS.aboutCtfRankings,
+  aboutCertifications: SEED_SETTINGS.aboutCertifications,
   seoTitle: SEED_SETTINGS.seoTitle,
   seoDescription: SEED_SETTINGS.seoDescription,
+  aboutStats: [
+    { label: "CGPA", value: SEED_SETTINGS.aboutCgpa, suffix: "" },
+    { label: "Internships", value: SEED_SETTINGS.aboutInternships, suffix: "" },
+    { label: "CTF Rankings", value: SEED_SETTINGS.aboutCtfRankings, suffix: "" },
+    { label: "Certifications", value: SEED_SETTINGS.aboutCertifications, suffix: "" },
+  ],
 };
 
 export async function getSettings(): Promise<SiteSettings> {
@@ -133,8 +149,18 @@ export async function getSettings(): Promise<SiteSettings> {
       linkedin: nstr("linkedin", FALLBACK_SETTINGS.linkedin) ?? FALLBACK_SETTINGS.linkedin,
       github: nstr("github", FALLBACK_SETTINGS.github) ?? FALLBACK_SETTINGS.github,
       phone: nstr("phone", FALLBACK_SETTINGS.phone),
+      aboutCgpa: str("aboutCgpa", FALLBACK_SETTINGS.aboutCgpa),
+      aboutInternships: str("aboutInternships", FALLBACK_SETTINGS.aboutInternships),
+      aboutCtfRankings: str("aboutCtfRankings", FALLBACK_SETTINGS.aboutCtfRankings),
+      aboutCertifications: str("aboutCertifications", FALLBACK_SETTINGS.aboutCertifications),
       seoTitle: str("seoTitle", FALLBACK_SETTINGS.seoTitle),
       seoDescription: str("seoDescription", FALLBACK_SETTINGS.seoDescription),
+      aboutStats: [
+        { label: "CGPA", value: str("aboutCgpa", SEED_SETTINGS.aboutCgpa), suffix: "" },
+        { label: "Internships", value: str("aboutInternships", SEED_SETTINGS.aboutInternships), suffix: "" },
+        { label: "CTF Rankings", value: str("aboutCtfRankings", SEED_SETTINGS.aboutCtfRankings), suffix: "" },
+        { label: "Certifications", value: str("aboutCertifications", SEED_SETTINGS.aboutCertifications), suffix: "" },
+      ],
     };
   } catch (err) {
     if (process.env.NODE_ENV !== "production") {

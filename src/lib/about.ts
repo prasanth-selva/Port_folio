@@ -1,6 +1,6 @@
 import { SEED_ABOUT } from "@/lib/seed-data";
 
-export type StatItem = { label: string; value: number; suffix: string };
+export type StatItem = { label: string; value: number | string; suffix: string };
 
 export type AboutContent = {
   bio: string[];

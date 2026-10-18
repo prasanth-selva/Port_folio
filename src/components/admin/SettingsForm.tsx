@@ -14,6 +14,10 @@ type Settings = {
   linkedin: string;
   github: string;
   phone: string | null;
+  aboutCgpa: string;
+  aboutInternships: string;
+  aboutCtfRankings: string;
+  aboutCertifications: string;
   seoTitle: string;
   seoDescription: string;
 };
@@ -106,6 +110,29 @@ export function SettingsForm({ settings }: { settings: Settings }) {
             placeholder="Upload a photo below or paste an image URL"
             className={`${inputCls} font-sans text-xs`}
           />
+        </div>
+      </div>
+
+      <div className="surface grid gap-4 rounded-md p-6 sm:grid-cols-2">
+        <div className="sm:col-span-2">
+          <p className="mono-label mb-1">ABOUT METRICS</p>
+          <p className="text-xs leading-5 text-white/40">These values appear in the four stat cards on the public About section. You can enter text such as “Top 10” as well as numbers.</p>
+        </div>
+        <div>
+          <label className="mono-label mb-2 block" htmlFor="aboutCgpa">CGPA</label>
+          <input id="aboutCgpa" name="aboutCgpa" defaultValue={settings.aboutCgpa} className={inputCls} />
+        </div>
+        <div>
+          <label className="mono-label mb-2 block" htmlFor="aboutInternships">Internships</label>
+          <input id="aboutInternships" name="aboutInternships" defaultValue={settings.aboutInternships} className={inputCls} />
+        </div>
+        <div>
+          <label className="mono-label mb-2 block" htmlFor="aboutCtfRankings">CTF rankings</label>
+          <input id="aboutCtfRankings" name="aboutCtfRankings" defaultValue={settings.aboutCtfRankings} className={inputCls} />
+        </div>
+        <div>
+          <label className="mono-label mb-2 block" htmlFor="aboutCertifications">Certifications</label>
+          <input id="aboutCertifications" name="aboutCertifications" defaultValue={settings.aboutCertifications} className={inputCls} />
         </div>
       </div>
 

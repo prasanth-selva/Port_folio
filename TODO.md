@@ -15,3 +15,10 @@
 - [x] **Titanium controls:** Restyled navigation, buttons, cards, rules, inputs, media frames, and status elements with cool metallic whites and thin titanium borders.
 - [x] **Mood-board hero:** Applied the supplied obsidian/titanium direction to the hero without adding fake stock imagery or decorative orbs.
 - [x] **Validation and ship:** Typecheck, lint, build, JSON, diff, and live HTTP checks pass. The mood-board pass is pushed and live in production.
+
+## About metrics configuration
+
+- [x] **Admin fields:** `/admin/settings` lets the admin edit CGPA, internships, CTF rankings, and certifications as short values, including text such as `Top 10`.
+- [x] **Public sync:** The About stat cards read those four values from the existing `settings` table and update after saving without hard-coded public values.
+- [x] **Fallback and seed:** Missing settings fall back to the current values (`8.09`, `3`, `2`, `7`) and `seed.json` includes the same keys.
+- [x] **Validation and ship:** Typecheck, lint, build, seed validation, local HTTP checks, GitHub push, and production deployment pass.

@@ -7,15 +7,19 @@ import { useEffect, useRef, useState } from "react";
 import { Reveal, SectionHeading } from "@/components/ui/Reveal";
 import { getAboutContent, type StatItem } from "@/lib/about";
 
-type Props = { photoUrl: string | null };
+type Props = { photoUrl: string | null; stats: StatItem[] };
 
-function Counter({ value, suffix }: { value: number; suffix: string }) {
+function Counter({ value, suffix }: { value: number | string; suffix: string }) {
   const ref = useRef<HTMLSpanElement | null>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const [display, setDisplay] = useState("0");
 
   useEffect(() => {
     if (!inView) return;
+    if (typeof value !== "number") {
+      setDisplay(value);
+      return;
+    }
     const controls = animate(0, value, {
       duration: 1.1,
       ease: "easeOut",
@@ -27,7 +31,7 @@ function Counter({ value, suffix }: { value: number; suffix: string }) {
   return <span ref={ref} className="tabular-nums">{display}{suffix}</span>;
 }
 
-export default function AboutSection({ photoUrl }: Props) {
+export default function AboutSection({ photoUrl, stats }: Props) {
   const content = getAboutContent();
   const photo = photoUrl ?? content.photo;
 
@@ -57,7 +61,7 @@ export default function AboutSection({ photoUrl }: Props) {
           ))}
 
           <div className="mt-10 grid grid-cols-2 gap-px border border-[#2E3238] bg-[#2E3238] sm:grid-cols-4">
-            {content.stats.map((stat: StatItem, i: number) => (
+            {stats.map((stat: StatItem, i: number) => (
               <Reveal key={stat.label} delay={0.2 + i * 0.07}>
                 <div className="bg-[#18191D] p-5">
                   <p className="text-3xl font-semibold tracking-tight text-white/95 md:text-4xl"><Counter value={stat.value} suffix={stat.suffix} /></p>

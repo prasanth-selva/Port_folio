@@ -39,7 +39,7 @@ export default async function HomePage() {
           <CyberCoreScroll badge={settings.heroBadge} resumeUrl={settings.resumeUrl} />
         </SectionShell>
         <SectionShell kind="grid" id="about">
-          <AboutSection photoUrl={settings.aboutPhoto} />
+          <AboutSection photoUrl={settings.aboutPhoto} stats={settings.aboutStats} />
         </SectionShell>
         <SectionShell id="experience">
           <ExperienceSection items={experience} />

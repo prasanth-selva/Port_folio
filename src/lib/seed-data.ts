@@ -20,6 +20,10 @@ export const SEED_SETTINGS = {
   linkedin: "https://linkedin.com/in/prasanth-selva-1810aa315",
   github: "https://github.com/prasanth-selva",
   phone: null as string | null,
+  aboutCgpa: "8.09",
+  aboutInternships: "3",
+  aboutCtfRankings: "2",
+  aboutCertifications: "7",
   seoTitle: "Prasanth Selva — Cybersecurity Engineer",
   seoDescription:
     "Portfolio of Prasanth Selva, a cybersecurity student working with SOC operations, web security, Python, Linux, and security tools.",

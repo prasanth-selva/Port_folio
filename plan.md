@@ -30,6 +30,7 @@ The selected direction is **Obsidian precision**: a dark, premium security portf
 - Simplify navigation, buttons, forms, project detail pages, writeups, and 404/admin surfaces so the flat system is consistent across the app.
 - Keep real numbers already present in the data visible: CGPA, internships, CTF rankings, certifications, team size, and project facts. Do not invent new metrics.
 - Preserve the route manifest, fallback data path, Supabase integration, admin editing, and deployed project behavior.
+- Store the four About metrics in the existing `settings` table and expose them in `/admin/settings`, with safe seed defaults and public fallback behavior.
 
 ## Project structure
 

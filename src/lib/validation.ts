@@ -135,6 +135,10 @@ export const settingsSchema = z.object({
   linkedin: urlish,
   github: urlish,
   phone: z.string().trim().max(40).optional().or(z.literal("")).transform((v) => v || null),
+  aboutCgpa: z.string().trim().min(1).max(40),
+  aboutInternships: z.string().trim().min(1).max(40),
+  aboutCtfRankings: z.string().trim().min(1).max(40),
+  aboutCertifications: z.string().trim().min(1).max(40),
   seoTitle: z.string().trim().max(120).default(""),
   seoDescription: z.string().trim().max(300).default(""),
 });
