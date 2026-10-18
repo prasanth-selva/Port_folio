@@ -6,8 +6,8 @@ import type { Project } from "@/lib/types";
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
-    <Reveal delay={index * 0.06}>
-      <article className="border border-[#2E3238] bg-[#18191D]">
+    <Reveal delay={index * 0.06} className="min-w-0 shrink-0 basis-[88%] snap-start sm:basis-[70%] md:basis-[48%] lg:basis-[34%]">
+      <article className="h-full border border-[#2E3238] bg-[#18191D]">
         <Link href={`/projects/${project.slug}`} className="group block">
           <div className="relative aspect-[16/9] overflow-hidden border-b border-[#2E3238] bg-[#202228]">
             {project.cover_image ? (
@@ -58,9 +58,15 @@ export default function ProjectsSection({ projects }: { projects: Project[] }) {
         </Reveal>
       </div>
 
-      <div className="mt-12 grid gap-6 md:grid-cols-2">
+      <div
+        className="project-rail mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain pb-5"
+        aria-label="Projects — scroll left to right"
+      >
         {publishedProjects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} />)}
       </div>
+      <p className="mt-1 text-right text-[10px] uppercase tracking-[0.16em] text-white/35 sm:hidden">
+        Swipe left and right to browse
+      </p>
     </div>
   );
 }
