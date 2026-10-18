@@ -15,10 +15,8 @@
 - [x] **Titanium controls:** Restyled navigation, buttons, cards, rules, inputs, media frames, and status elements with cool metallic whites and thin titanium borders.
 - [x] **Mood-board hero:** Applied the supplied obsidian/titanium direction to the hero without adding fake stock imagery or decorative orbs.
 - [x] **Validation and ship:** Typecheck, lint, build, JSON, diff, and live HTTP checks pass. The mood-board pass is pushed and live in production.
-- [x] **Responsive projects rail:** Project cards scroll left-to-right with responsive widths and touch-safe overflow behavior.
-- [x] **Full-viewport project slides:** Each project uses the available viewport width at mobile, tablet, and desktop breakpoints so the first and last projects are fully visible rather than half-cropped.
-- [x] **Default scroll-through project scene:** While the Projects section is in view, normal page scrolling moves the full-width project track from left to right; the next section does not begin until the complete project track has been shown.
-- [x] **Scroll-through validation and ship:** Typecheck, lint, production build, live HTTP check, GitHub push, and production deployment pass. The active deployment is `2e3614a`.
+- [x] **Projects layout rollback:** Per the latest request, removed the optional/full-screen horizontal experiments and restored the original responsive top-to-bottom project grid.
+- [x] **Rollback validation and ship:** Typecheck, lint, production build, clean local HTTP check, GitHub push, and production deployment pass.
 
 ## About metrics configuration
 

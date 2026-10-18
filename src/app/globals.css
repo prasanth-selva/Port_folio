@@ -49,17 +49,6 @@ body {
 
 .section-wash { background: transparent; }
 
-.project-rail {
-  scrollbar-color: #3a3e45 transparent;
-  scrollbar-width: thin;
-  scroll-behavior: auto;
-}
-
-.project-rail::-webkit-scrollbar { height: 6px; }
-.project-rail::-webkit-scrollbar-track { background: transparent; }
-.project-rail::-webkit-scrollbar-thumb { background: #3a3e45; border: 0; }
-.project-rail::-webkit-scrollbar-thumb:hover { background: var(--accent-metal); }
-
 .mono-label {
   @apply font-sans text-[10px] font-medium uppercase tracking-[0.18em] text-[#9CA3AF];
 }
