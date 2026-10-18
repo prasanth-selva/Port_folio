@@ -31,9 +31,9 @@ export const SEED_SETTINGS = {
 
 export const SEED_ABOUT = {
   bio: [
-    "I'm Prasanth Selva, a third-year B.E. Computer Science and Engineering (Cybersecurity) student at KGISL Institute of Technology in Coimbatore. I graduate in May 2027 and work on SOC operations, web security, and security-focused software.",
+    "I'm Prasanth Selva, a B.E. Computer Science and Engineering (Cybersecurity) student at KGISL Institute of Technology in Coimbatore, graduating in 2028. My main focus is vulnerability assessment and penetration testing (VAPT), with a strong interest in web application security.",
     "I am President of VYUGAM, the Cyber Department Association. I help run workshops, CTFs, and training for more than 300 students. I have also worked in a SOC, a cybercrime police station, and a product startup.",
-    "I am looking for cybersecurity engineering work where I can improve detection, test applications, and build useful internal tools.",
+    "I am looking for cybersecurity engineering work where I can assess and test web applications, find practical security issues, and build useful internal tools.",
   ],
   photo: null as string | null,
   stats: [
