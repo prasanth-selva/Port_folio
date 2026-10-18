@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { Reveal, SectionHeading } from "@/components/ui/Reveal";
 import type { Project } from "@/lib/types";
@@ -50,49 +50,74 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
 export default function ProjectsSection({ projects }: { projects: Project[] }) {
   const publishedProjects = projects.filter((p) => p.published);
+  const sceneRef = useRef<HTMLDivElement | null>(null);
   const railRef = useRef<HTMLDivElement | null>(null);
+  const [railDistance, setRailDistance] = useState(0);
 
-  const handleRailWheel = (event: React.WheelEvent<HTMLDivElement>) => {
-    const rail = railRef.current;
-    if (!rail) return;
+  useLayoutEffect(() => {
+    const measure = () => {
+      const rail = railRef.current;
+      if (rail) setRailDistance(Math.max(0, rail.scrollWidth - rail.clientWidth));
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    if (railRef.current) observer.observe(railRef.current);
+    window.addEventListener("resize", measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [publishedProjects.length]);
 
-    const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
-    if (!delta) return;
+  useEffect(() => {
+    const syncRailToPage = () => {
+      const scene = sceneRef.current;
+      const rail = railRef.current;
+      if (!scene || !rail || !railDistance) return;
 
-    const maxScroll = rail.scrollWidth - rail.clientWidth;
-    const nextScroll = Math.max(0, Math.min(maxScroll, rail.scrollLeft + delta));
-    const canScrollHorizontally = nextScroll !== rail.scrollLeft;
+      const sceneTop = scene.getBoundingClientRect().top + window.scrollY;
+      const progress = Math.max(0, Math.min(railDistance, window.scrollY - sceneTop));
+      rail.scrollLeft = progress;
+    };
 
-    // Keep normal page scrolling at either end of the rail, but turn the
-    // wheel into horizontal movement while there are cards left to browse.
-    if (canScrollHorizontally) {
-      event.preventDefault();
-      rail.scrollLeft = nextScroll;
-    }
-  };
+    syncRailToPage();
+    window.addEventListener("scroll", syncRailToPage, { passive: true });
+    window.addEventListener("resize", syncRailToPage);
+    return () => {
+      window.removeEventListener("scroll", syncRailToPage);
+      window.removeEventListener("resize", syncRailToPage);
+    };
+  }, [railDistance]);
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
-      <div className="flex flex-wrap items-end justify-between gap-6">
-        <SectionHeading index="03" label="PROJECTS" title={<>Selected projects.</>} />
-        <Reveal delay={0.15}>
-          <p className="max-w-sm text-sm leading-6 text-white/60">
-            Working products and security tools. Open a project to see its stack, links, and available screenshots.
-          </p>
-        </Reveal>
-      </div>
+    <div
+      ref={sceneRef}
+      className="relative"
+      style={{ height: `calc(100vh + ${railDistance}px)` }}
+    >
+      <div className="sticky top-0 flex min-h-screen flex-col justify-center overflow-hidden py-16 md:py-20">
+        <div className="mx-auto w-full max-w-6xl px-6">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <SectionHeading index="03" label="PROJECTS" title={<>Selected projects.</>} />
+            <Reveal delay={0.15}>
+              <p className="max-w-sm text-sm leading-6 text-white/60">
+                Keep scrolling to move through the projects. Each card includes its stack, links, and available screenshots.
+              </p>
+            </Reveal>
+          </div>
+        </div>
 
-      <div
-        ref={railRef}
-        onWheel={handleRailWheel}
-        className="project-rail relative left-1/2 mt-12 flex w-screen -translate-x-1/2 snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain px-5 pb-5 touch-pan-x sm:px-8 lg:px-12"
-        aria-label="Projects — scroll left to right"
-      >
-        {publishedProjects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} />)}
+        <div
+          ref={railRef}
+          className="project-rail relative left-1/2 mt-12 flex w-screen -translate-x-1/2 gap-5 overflow-hidden px-5 pb-5 sm:px-8 lg:px-12"
+          aria-label="Projects — continue scrolling to move left to right"
+        >
+          {publishedProjects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} />)}
+        </div>
+        <p className="mt-1 px-6 text-center text-[10px] uppercase tracking-[0.16em] text-white/35">
+          Scroll to move through projects
+        </p>
       </div>
-      <p className="mt-1 text-right text-[10px] uppercase tracking-[0.16em] text-white/35 sm:hidden">
-        Swipe left and right to browse
-      </p>
     </div>
   );
 }
