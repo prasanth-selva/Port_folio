@@ -6,4 +6,4 @@
 - [x] **Typography and spacing:** The public app now uses one Geist Sans family with a simpler type scale, comfortable line height, and consistent section/card spacing.
 - [x] **Remove fake elements:** Removed the floating skill orbit, decorative cursor, terminal easter egg, glow effects, and unused decorative UI while preserving real project, certification, achievement, and contact functionality.
 - [x] **Preserve behavior:** Public routes, route manifest, admin editing, Supabase fallback behavior, certificate evidence viewer, and the real hero frame sequence remain available.
-- [x] **Verification and ship:** Typecheck, lint, production build, JSON validation, and diff checks pass. GitHub push and hosted deployment follow after the final commit.
+- [x] **Verification and ship:** Typecheck, lint, production build, JSON validation, and diff checks pass. Commit `60cd3ec` is pushed to GitHub and the production deployment is live.
