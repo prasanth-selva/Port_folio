@@ -14,4 +14,4 @@
 - [x] **Poppins typography:** Loaded Poppins as the single public typeface and removed the remaining Geist/mono visual language.
 - [x] **Titanium controls:** Restyled navigation, buttons, cards, rules, inputs, media frames, and status elements with cool metallic whites and thin titanium borders.
 - [x] **Mood-board hero:** Applied the supplied obsidian/titanium direction to the hero without adding fake stock imagery or decorative orbs.
-- [x] **Validation and ship:** Typecheck, lint, build, JSON, and diff checks pass. The mood-board pass is ready to push and deploy.
+- [x] **Validation and ship:** Typecheck, lint, build, JSON, diff, and live HTTP checks pass. The mood-board pass is pushed and live in production.
