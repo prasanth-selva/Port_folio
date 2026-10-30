@@ -1,8 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource/poppins/400.css";
-import "@fontsource/poppins/500.css";
-import "@fontsource/poppins/600.css";
-import "@fontsource/poppins/700.css";
 
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import { getSettings } from "@/lib/data";
@@ -68,11 +64,8 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const settings = await getSettings().catch(() => null);
-  const name = settings?.seoTitle?.split("—")[0].trim() || "Manisha Nithya";
-  const title = settings?.seoTitle || `${name} — Portfolio`;
-  const description =
-    settings?.seoDescription ||
-    `Portfolio of ${name}, B.E. CSE & Cybersecurity student graduating in 2029.`;
+  const seoTitle = settings?.seoTitle ?? "";
+  const name = seoTitle.split("—")[0]?.trim() || "Manisha Nithya";
 
   return (
     <html lang="en">

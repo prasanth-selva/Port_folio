@@ -37,15 +37,15 @@ export function aboutFromSetting(value: unknown): AboutContent {
 
   const stats = Array.isArray(raw.stats)
     ? raw.stats
-        .map((s) => {
+        .map((s): StatItem | null => {
           if (!s || typeof s !== "object") return null;
           const stat = s as { label?: unknown; value?: unknown; suffix?: unknown };
           if (typeof stat.label !== "string" || !stat.label.trim()) return null;
-          const value = Number(stat.value);
-          if (!Number.isFinite(value)) return null;
+          const val = stat.value;
+          if (typeof val !== "number" && typeof val !== "string") return null;
           return {
             label: stat.label.trim(),
-            value,
+            value: typeof val === "number" && !Number.isFinite(val) ? 0 : val,
             suffix: typeof stat.suffix === "string" ? stat.suffix : "",
           };
         })

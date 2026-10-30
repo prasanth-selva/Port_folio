@@ -32,6 +32,9 @@ export default async function HomePage() {
       getCertifications(),
     ]);
 
+  const seoTitle = settings?.seoTitle ?? "";
+  const name = seoTitle.split("—")[0]?.trim() || "Manisha Nithya";
+
   return (
     <>
       <PortfolioPageView />
@@ -41,7 +44,7 @@ export default async function HomePage() {
           <CyberCoreScroll
             badge={settings.heroBadge}
             resumeUrl={settings.resumeUrl}
-            name={settings.seoTitle.split("—")[0].trim() || "Manisha Nithya"}
+            name={name}
           />
         </SectionShell>
         <SectionShell kind="grid" id="about">

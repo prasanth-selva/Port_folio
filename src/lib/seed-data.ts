@@ -14,6 +14,10 @@ export const SEED_SETTINGS = {
   linkedin: "https://linkedin.com/in/manisha-nithya",
   github: "https://github.com/manisha-nithya",
   phone: null as string | null,
+  aboutCgpa: "8.5",
+  aboutInternships: "0",
+  aboutCtfRankings: "1",
+  aboutCertifications: "2",
   seoTitle: "Manisha Nithya — B.E. CSE & Cybersecurity Student",
   seoDescription:
     "Portfolio of Manisha Nithya, B.E. CSE & Cybersecurity student graduating in 2029. Building secure systems, exploring web security, and learning in public.",

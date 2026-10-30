@@ -13,7 +13,7 @@ const LINKS = [
   { href: "#contact", label: "Contact" },
 ] as const;
 
-export default function Navbar({ name = "Manisha Nithya" }: { name?: string }) {
+export default function Navbar() {
   const [active, setActive] = useState<string>("");
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);

@@ -2,7 +2,6 @@ import type { SiteSettings } from "@/lib/data";
 
 export default function Footer({ settings }: { settings: SiteSettings }) {
   const year = new Date().getFullYear();
-  const name = settings.seoTitle?.split("—")[0].trim() || "Manisha Nithya";
   const handle = "manisha-nithya";
   return (
     <footer className="relative border-t border-white/5">

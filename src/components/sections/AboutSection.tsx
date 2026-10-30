@@ -43,28 +43,18 @@ export default function AboutSection({ photoUrl, content }: Props) {
           <div>
             <div className="relative aspect-[4/5] overflow-hidden border border-[#2E3238] bg-[#18191D]">
               {photo ? (
-<<<<<<< HEAD
-                <Image src={photo} alt="Portrait of Manisha Nithya" fill sizes="(max-width: 768px) 100vw, 240px" className="object-cover" />
-=======
                 <Image
                   src={photo}
                   alt="Portrait of Manisha Nithya"
                   fill
-                  sizes="(max-width: 768px) 100vw, 280px"
+                  sizes="(max-width: 768px) 100vw, 240px"
                   className="object-cover"
                 />
->>>>>>> f2a2e60 (Fix Manisha identity across hero and profile sections)
               ) : (
                 <div className="flex h-full items-end p-4 text-sm text-white/40">Photo not uploaded</div>
               )}
             </div>
-<<<<<<< HEAD
             <p className="mt-3 text-xs leading-5 text-white/40">B.E. CSE & Cybersecurity — Class of 2029</p>
-=======
-            <p className="mt-3 font-mono text-[11px] tracking-[0.2em] text-white/35">
-              B.E. COMPUTER SCIENCE & ENGINEERING
-            </p>
->>>>>>> f2a2e60 (Fix Manisha identity across hero and profile sections)
           </div>
         </Reveal>
 
