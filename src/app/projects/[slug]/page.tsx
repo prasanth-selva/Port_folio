@@ -22,7 +22,7 @@ export async function generateMetadata({
     title: project.title,
     description: project.tagline ?? project.description.slice(0, 160),
     openGraph: {
-      title: `${project.title} — Prasanth Selva`,
+      title: `${project.title} — Manisha Nithya`,
       description: project.tagline ?? project.description.slice(0, 160),
       images: project.cover_image ? [{ url: project.cover_image }] : undefined,
     },

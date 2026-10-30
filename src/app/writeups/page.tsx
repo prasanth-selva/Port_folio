@@ -7,7 +7,7 @@ import { formatDate } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Writeups",
   description:
-    "CTF writeups, AppSec notes and bug-bounty learnings from Prasanth Selva.",
+    "Notes and writeups on what Manisha Nithya is learning and building.",
 };
 
 export default async function WriteupsPage() {
