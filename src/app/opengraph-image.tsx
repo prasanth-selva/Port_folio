@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Prasanth Selva — Cybersecurity Engineer";
+export const alt = "Manisha Nithya — B.E. CSE & Cybersecurity Student";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -32,7 +32,7 @@ export default async function OpengraphImage() {
             <circle cx="16" cy="15" r="3.4" fill="#ECEFF3" />
           </svg>
           <span style={{ fontSize: 24, letterSpacing: "0.2em", color: "rgba(255,255,255,0.6)" }}>
-            {"PRASANTH.SELVA"}
+            {"MANISHA.NITHYA"}
           </span>
         </div>
 
@@ -45,10 +45,10 @@ export default async function OpengraphImage() {
               letterSpacing: "-0.02em",
             }}
           >
-            Cybersecurity projects
+            Securing systems,
           </div>
-          <div style={{ fontSize: 76, fontWeight: 700, lineHeight: 1.05, color: "#ECEFF3" }}>
-            by Prasanth Selva.
+          <div style={{ fontSize: 76, fontWeight: 700, lineHeight: 1.05, color: "#73E0BE" }}>
+            building secure software.
           </div>
         </div>
 
@@ -62,8 +62,8 @@ export default async function OpengraphImage() {
             paddingTop: 24,
           }}
         >
-          <span>CYBERSECURITY · SOC · WEB SECURITY</span>
-          <span>B.E. CSE — CLASS OF 2027</span>
+          <span>CYBERSECURITY · PYTHON · LINUX · WEB SECURITY</span>
+          <span>B.E. CSE & CYBERSECURITY — CLASS OF 2029</span>
         </div>
       </div>
     ),

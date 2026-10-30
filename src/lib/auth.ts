@@ -63,7 +63,7 @@ export const authOptions: NextAuthOptions = {
         const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase() ?? "";
         if (!email || !adminEmail || email !== adminEmail) return null;
         if (!password || !passwordMatches(password)) return null;
-        return { id: "admin", name: "Prasanth Selva", email: adminEmail };
+        return { id: "admin", name: "Manisha Nithya", email: adminEmail };
       },
     }),
   ],

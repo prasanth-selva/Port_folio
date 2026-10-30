@@ -9,6 +9,7 @@ import {
   SEED_SKILLS,
 } from "@/lib/seed-data";
 import { SUPABASE_MISSING_MSG, supabasePublic } from "@/lib/supabase";
+import { aboutFromSetting, type AboutContent } from "@/lib/about";
 import type {
   Achievement,
   Certification,
@@ -171,3 +172,19 @@ export async function getSettings(): Promise<SiteSettings> {
 }
 
 export { SUPABASE_MISSING_MSG };
+
+/**
+ * About content is stored as a `settings` row (`about` key) when the admin
+ * edits it; otherwise the canonical seed copy renders.
+ */
+export async function getAboutContent(): Promise<AboutContent> {
+  const sb = supabasePublic();
+  if (!sb) return aboutFromSetting(null);
+  try {
+    const { data, error } = await sb.from("settings").select("key, value").eq("key", "about");
+    if (error || !data || data.length === 0) return aboutFromSetting(null);
+    return aboutFromSetting((data[0] as { key: string; value: unknown }).value);
+  } catch {
+    return aboutFromSetting(null);
+  }
+}

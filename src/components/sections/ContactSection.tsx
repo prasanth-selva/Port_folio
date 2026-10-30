@@ -14,6 +14,7 @@ type Status = "idle" | "sending" | "sent" | "error";
 export default function ContactSection({ settings }: { settings: SiteSettings }) {
   const [status, setStatus] = useState<Status>("idle");
   const [serverError, setServerError] = useState<string | null>(null);
+  const handle = "manisha-nithya";
 
   const {
     register,
@@ -77,7 +78,7 @@ export default function ContactSection({ settings }: { settings: SiteSettings })
                   rel="noopener noreferrer"
                   className="group flex items-center gap-3 text-white/60 transition-colors hover:text-accent-metal"
                 >
-                  <span className="text-accent-metal/60">→</span> linkedin/in/prasanth-selva
+                  <span className="text-accent-cyan/60">→</span> linkedin/in/{handle}
                 </a>
               </li>
               <li>
@@ -87,7 +88,7 @@ export default function ContactSection({ settings }: { settings: SiteSettings })
                   rel="noopener noreferrer"
                   className="group flex items-center gap-3 text-white/60 transition-colors hover:text-accent-metal"
                 >
-                  <span className="text-accent-metal/60">→</span> github/prasanth-selva
+                  <span className="text-accent-cyan/60">→</span> github/{handle}
                 </a>
               </li>
             </ul>

@@ -15,33 +15,32 @@ const siteUrl = getSiteUrl();
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Prasanth Selva — Cybersecurity Engineer",
-    template: "%s — Prasanth Selva",
+    default: "Manisha Nithya — Portfolio",
+    template: "%s — Manisha Nithya",
   },
   description:
-    "Portfolio of Prasanth Selva, a cybersecurity student working with SOC operations, web security, Python, Linux, and security tools.",
+    "Portfolio of Manisha Nithya, B.E. CSE & Cybersecurity student graduating in 2029. Building secure systems, exploring web security, and learning in public.",
   keywords: [
-    "Prasanth Selva",
+    "Manisha Nithya",
     "cybersecurity",
-    "SOC analyst",
-    "penetration testing",
-    "CTF",
+    "computer science",
     "web security",
+    "python",
     "portfolio",
   ],
-  authors: [{ name: "Prasanth Selva" }],
-  creator: "Prasanth Selva",
+  authors: [{ name: "Manisha Nithya" }],
+  creator: "Manisha Nithya",
   openGraph: {
     type: "website",
-    siteName: "Prasanth Selva",
-    title: "Prasanth Selva — Cybersecurity Engineer",
+    siteName: "Manisha Nithya",
+    title: "Manisha Nithya — Portfolio",
     description:
-      "Cybersecurity student projects, internships, certificates, and contact details.",
+      "B.E. CSE & Cybersecurity student building secure systems and documenting the journey.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Prasanth Selva — Cybersecurity Engineer",
-    description: "Cybersecurity projects, work history, and certificates.",
+    title: "Manisha Nithya — Portfolio",
+    description: "Building secure systems, one project at a time.",
   },
   robots: { index: true, follow: true },
   icons: {
@@ -69,6 +68,12 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const settings = await getSettings().catch(() => null);
+  const name = settings?.seoTitle?.split("—")[0].trim() || "Manisha Nithya";
+  const title = settings?.seoTitle || `${name} — Portfolio`;
+  const description =
+    settings?.seoDescription ||
+    `Portfolio of ${name}, B.E. CSE & Cybersecurity student graduating in 2029.`;
+
   return (
     <html lang="en">
       <body className="min-h-screen bg-base font-sans">
@@ -80,26 +85,20 @@ export default async function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
-              name: "Prasanth Selva",
-              jobTitle: "Cybersecurity Engineer (aspiring)",
-              email: `mailto:${settings?.email ?? "prasanthselvaraj1511@gmail.com"}`,
+              name,
+              email: `mailto:${settings?.email ?? "manishanithya7@gmail.com"}`,
               url: siteUrl,
-              alumniOf: {
-                "@type": "CollegeOrUniversity",
-                name: "KGiSL Institute of Technology, Coimbatore",
-              },
               knowsAbout: [
-                "SOC operations",
-                "threat monitoring",
-                "Linux",
+                "Cybersecurity",
+                "Web Security",
+                "Computer Science",
                 "Python",
-                "SIEM",
-                "IDS/IPS",
-                "Web security",
+                "Linux",
+                "Data Structures",
               ],
               sameAs: [
-                settings?.linkedin ?? "https://linkedin.com/in/prasanth-selva-1810aa315",
-                settings?.github ?? "https://github.com/prasanth-selva",
+                settings?.linkedin ?? "https://linkedin.com/in/manisha-nithya",
+                settings?.github ?? "https://github.com/manisha-nithya",
               ].filter(Boolean),
             }),
           }}

@@ -2,16 +2,17 @@ import type { SiteSettings } from "@/lib/data";
 
 export default function Footer({ settings }: { settings: SiteSettings }) {
   const year = new Date().getFullYear();
+  const name = settings.seoTitle?.split("—")[0].trim() || "Manisha Nithya";
+  const handle = "manisha-nithya";
   return (
     <footer className="relative border-t border-white/5">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="font-sans text-sm font-semibold tracking-tight text-white/90">
-            <span className="text-accent-metal">&gt;_</span> prasanth.selva
+          <p className="font-mono text-sm font-semibold tracking-tight text-white/90">
+            <span className="text-accent-cyan">&gt;_</span> {handle}
           </p>
-          <p className="mt-2 max-w-sm text-sm leading-relaxed text-[#9CA3AF]">
-            Aspiring cybersecurity engineer. Breaking things responsibly since
-            the first segfault.
+          <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/50">
+            B.E. CSE & Cybersecurity student. Securing systems, exploring web security, and learning in public.
           </p>
         </div>
 
@@ -25,7 +26,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
             rel="noopener noreferrer"
             className="transition-colors hover:text-accent-metal"
           >
-            linkedin/in/prasanth-selva
+            linkedin/in/{handle}
           </a>
           <a
             href={settings.github}
@@ -33,7 +34,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
             rel="noopener noreferrer"
             className="transition-colors hover:text-accent-metal"
           >
-            github/prasanth-selva
+            github/{handle}
           </a>
         </div>
 

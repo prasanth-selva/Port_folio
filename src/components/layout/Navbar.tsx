@@ -13,10 +13,11 @@ const LINKS = [
   { href: "#contact", label: "Contact" },
 ] as const;
 
-export default function Navbar() {
+export default function Navbar({ name = "Manisha Nithya" }: { name?: string }) {
   const [active, setActive] = useState<string>("");
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const handle = "manisha-nithya";
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 24, mass: 0.4 });
 
@@ -51,8 +52,8 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6" aria-label="Primary">
-        <a href="#top" className="font-sans text-sm font-semibold tracking-tight text-white/90">
-          <span className="text-accent-metal">&gt;_</span> prasanth.selva
+        <a href="#top" className="font-mono text-sm font-semibold tracking-tight text-white/90">
+          <span className="text-accent-cyan">&gt;_</span> {handle}
         </a>
 
         <ul className="hidden items-center gap-1 md:flex">

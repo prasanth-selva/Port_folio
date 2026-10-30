@@ -11,6 +11,7 @@ import ProjectsSection from "@/components/sections/ProjectsSection";
 import SkillsSection from "@/components/sections/SkillsSection";
 import SectionShell from "@/components/sections/SectionShell";
 import {
+  getAboutContent,
   getAchievements,
   getCertifications,
   getExperience,
@@ -20,9 +21,10 @@ import {
 } from "@/lib/data";
 
 export default async function HomePage() {
-  const [settings, projects, experience, skills, achievements, certifications] =
+  const [settings, about, projects, experience, skills, achievements, certifications] =
     await Promise.all([
       getSettings(),
+      getAboutContent(),
       getProjects(),
       getExperience(),
       getSkills(),
@@ -39,7 +41,7 @@ export default async function HomePage() {
           <CyberCoreScroll badge={settings.heroBadge} resumeUrl={settings.resumeUrl} />
         </SectionShell>
         <SectionShell kind="grid" id="about">
-          <AboutSection photoUrl={settings.aboutPhoto} stats={settings.aboutStats} />
+          <AboutSection photoUrl={settings.aboutPhoto} content={about} />
         </SectionShell>
         <SectionShell id="experience">
           <ExperienceSection items={experience} />
