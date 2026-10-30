@@ -38,7 +38,11 @@ export default async function HomePage() {
       <Navbar />
       <main id="top" className="relative">
         <SectionShell kind="hero">
-          <CyberCoreScroll badge={settings.heroBadge} resumeUrl={settings.resumeUrl} />
+          <CyberCoreScroll
+            badge={settings.heroBadge}
+            resumeUrl={settings.resumeUrl}
+            name={settings.seoTitle.split("—")[0].trim() || "Manisha Nithya"}
+          />
         </SectionShell>
         <SectionShell kind="grid" id="about">
           <AboutSection photoUrl={settings.aboutPhoto} content={about} />

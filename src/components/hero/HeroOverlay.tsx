@@ -13,12 +13,14 @@ type Props = {
   scrollYProgress: MotionValue<number>;
   badge: string;
   resumeUrl: string | null;
+  /** Display name, e.g. "Manisha Nithya" — derived from site settings. */
+  name?: string;
 };
 
 /**
  * Scroll-synced text overlays with short, readable copy.
  */
-export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
+export function HeroOverlay({ scrollYProgress, badge, resumeUrl, name = "Manisha Nithya" }: Props) {
   const introOpacity = useTransform(
     scrollYProgress,
     [0, 0.02, 0.16, 0.22],
@@ -67,10 +69,10 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
       >
         <div>
           <h1 className="text-balance text-5xl font-semibold leading-[1.05] tracking-tight text-white/90 md:text-7xl">
-            Prasanth Selva.
+            {name}.
           </h1>
           <p className="mt-4 text-lg text-white/60 md:text-2xl">
-            Security work, built precisely.
+            Securing systems, building robust software.
           </p>
         </div>
       </motion.div>
@@ -83,9 +85,9 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
         <div className="max-w-md">
           <p className="mono-label mb-3">01 — SECURITY</p>
           <p className="text-3xl font-semibold leading-tight tracking-tight text-white/90 md:text-5xl">
-            SOC operations.
+            Cybersecurity &amp; systems.
             <br />
-            <span className="text-[#9CA3AF]">Threat monitoring and triage.</span>
+            <span className="text-[#9CA3AF]">Web security and robust defense.</span>
           </p>
         </div>
       </motion.div>
@@ -98,9 +100,9 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
         <div className="max-w-md">
           <p className="mono-label mb-3">02 — PRECISION</p>
           <p className="text-3xl font-semibold leading-tight tracking-tight text-white/90 md:text-5xl">
-            Linux. Python. SIEM.
+            Python. Linux.
             <br />
-            IDS/IPS. <span className="text-[#9CA3AF]">Web security.</span>
+            <span className="text-[#9CA3AF]">Next.js &amp; secure engineering.</span>
           </p>
         </div>
       </motion.div>
@@ -112,7 +114,7 @@ export function HeroOverlay({ scrollYProgress, badge, resumeUrl }: Props) {
       >
         <p className="mono-label mb-4">03 — INNOVATION</p>
         <p className="text-3xl font-semibold tracking-tight text-white/90 md:text-5xl">
-          Need security work?
+          Ready to build securely?
         </p>
         <div className="pointer-events-auto mt-8 flex flex-wrap items-center justify-center gap-4">
           <MagneticLink href="#projects">See projects</MagneticLink>

@@ -14,6 +14,8 @@ type Props = {
   /** e.g. "B.E. CSE (Cybersecurity) — Class of 2028" */
   badge: string;
   resumeUrl: string | null;
+  /** Display name shown in the hero headline, e.g. "Manisha Nithya". */
+  name?: string;
 };
 
 /**
@@ -26,7 +28,7 @@ type Props = {
  *   target frame for butter-smooth motion even on jumpy trackpads.
  * - If the manifest/preload fails, a procedural canvas-drawn core takes over.
  */
-export default function CyberCoreScroll({ badge, resumeUrl }: Props) {
+export default function CyberCoreScroll({ badge, resumeUrl, name }: Props) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -218,6 +220,7 @@ export default function CyberCoreScroll({ badge, resumeUrl }: Props) {
             scrollYProgress={scrollYProgress}
             badge={badge}
             resumeUrl={resumeUrl}
+            name={name}
           />
         )}
 
@@ -244,6 +247,7 @@ export default function CyberCoreScroll({ badge, resumeUrl }: Props) {
             scrollYProgress={scrollYProgress}
             badge={badge}
             resumeUrl={resumeUrl}
+            name={name}
           />
         )}
       </div>
