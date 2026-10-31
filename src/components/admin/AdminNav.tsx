@@ -19,7 +19,7 @@ const ITEMS = [
 export default function AdminNav({ unread, compact }: { unread: number; compact?: boolean }) {
   const pathname = usePathname();
   return (
-    <nav className={`mt-4 grid gap-1 ${compact ? "" : ""}`} aria-label="Admin">
+    <nav className={`mt-4 grid gap-1.5 ${compact ? "grid-cols-2 sm:grid-cols-3" : ""}`} aria-label="Admin">
       {ITEMS.map((item) => {
         const p = pathname ?? "";
         const active =
@@ -28,15 +28,15 @@ export default function AdminNav({ unread, compact }: { unread: number; compact?
           <Link
             key={item.href}
             href={item.href}
-            className={`flex items-center justify-between rounded-md px-4 py-2 font-sans text-xs uppercase tracking-[0.15em] transition-colors ${
+            className={`flex items-center justify-between rounded-lg px-3.5 py-2.5 font-sans text-xs uppercase tracking-[0.15em] transition-colors ${
               active
-                ? "border border-accent-metal/30 bg-accent-metal/[0.07] text-accent-metal"
-                : "text-[#9CA3AF] hover:bg-white/[0.04] hover:text-white/85"
+                ? "border border-accent-metal/30 bg-accent-metal/[0.12] text-white font-semibold"
+                : "text-white/60 hover:bg-white/[0.06] hover:text-white"
             }`}
           >
-            {item.label}
+            <span className="truncate">{item.label}</span>
             {item.href === "/admin/inbox" && unread > 0 && (
-              <span className="rounded-md bg-accent-metal px-2 py-0.5 text-[10px] font-bold text-black">
+              <span className="ml-2 rounded-full bg-accent-metal px-2 py-0.5 text-[10px] font-bold text-black">
                 {unread}
               </span>
             )}
