@@ -25,7 +25,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
             rel="noopener noreferrer"
             className="transition-colors hover:text-accent-cyan"
           >
-            linkedin/in/prasanth-selva
+            linkedin/in/prasanth-selva-1511ps
           </a>
           <a
             href={settings.github}
