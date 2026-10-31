@@ -95,7 +95,7 @@ export default async function RootLayout({
                 "Web security",
               ],
               sameAs: [
-                settings?.linkedin ?? "https://linkedin.com/in/prasanth-selva-1810aa315",
+                settings?.linkedin ?? "https://www.linkedin.com/in/prasanth-selva-1511ps/",
                 settings?.github ?? "https://github.com/prasanth-selva",
               ].filter(Boolean),
             }),

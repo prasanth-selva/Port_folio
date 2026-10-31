@@ -37,7 +37,7 @@ export function ResumeUploader({ currentUrl }: { currentUrl: string | null }) {
       const persist = new FormData();
       persist.set("resumeUrl", res.url);
       persist.set("email", "prasanthselvaraj1511@gmail.com");
-      persist.set("linkedin", "https://linkedin.com/in/prasanth-selva-1810aa315");
+      persist.set("linkedin", "https://www.linkedin.com/in/prasanth-selva-1511ps/");
       persist.set("github", "https://github.com/prasanth-selva");
       persist.set("phone", "");
       const saved = await saveSettings(persist);

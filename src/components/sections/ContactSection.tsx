@@ -79,7 +79,7 @@ export default function ContactSection() {
                   rel="noopener noreferrer"
                   className="group flex items-center gap-3 text-white/60 transition-colors hover:text-accent-cyan"
                 >
-                  <span className="text-accent-cyan/60">→</span> linkedin/in/prasanth-selva
+                  <span className="text-accent-cyan/60">→</span> linkedin/in/prasanth-selva-1511ps
                 </a>
               </li>
               <li>

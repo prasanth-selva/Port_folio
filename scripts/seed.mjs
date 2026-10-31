@@ -40,10 +40,9 @@ await upsertAll("achievements", seed.achievements, "id");
 await upsertAll("skills", seed.skills, "id");
 await upsertAll("posts", seed.posts, "slug");
 
-const settingsRows = Object.entries(seed.settings).map(([key, value]) => ({
-  key,
-  value,
-}));
+const settingsRows = Object.entries(seed.settings)
+  .filter(([, value]) => value !== null)
+  .map(([key, value]) => ({ key, value }));
 await upsertAll("settings", settingsRows, "key");
 
 console.log("Seed complete.");
